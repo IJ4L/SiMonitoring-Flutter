@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/obscure_text.dart';
-import 'package:simor/ui/pages/scan_card_page.dart';
 
 import '../../cubit/loading_button.dart';
 import '../widgets/costume_button.dart';
