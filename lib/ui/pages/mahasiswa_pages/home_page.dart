@@ -1,12 +1,21 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:simor/cubit/camera_cubit.dart';
+import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
 import '../../widgets/card_info_profile.dart';
 
-class Homemahasiswa extends StatelessWidget {
+class Homemahasiswa extends StatefulWidget {
   const Homemahasiswa({super.key});
 
+  @override
+  State<Homemahasiswa> createState() => _HomemahasiswaState();
+}
+
+class _HomemahasiswaState extends State<Homemahasiswa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,12 +61,20 @@ class Homemahasiswa extends StatelessWidget {
                             value: 'Reza Maulana',
                           ),
                           SizedBox(height: 16.h),
-                          Costumebutton(
-                            title: 'Datang',
-                            colorTitle: Colors.white,
-                            colorButton: const Color(0xff2A55C9),
-                            ontap: () {},
-                          ),
+                          // Costumebutton(
+                          //   title: 'Datang',
+                          //   colorTitle: Colors.white,
+                          //   colorButton: const Color(0xff2A55C9),
+                          //   ontap: () {
+                          //     context.read<CameraCubit>().startCamera(0);
+                          //     Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //         builder: (context) => const Camerapage(),
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
                           SizedBox(height: 10.h),
                           Costumebutton(
                             title: 'Kegiatan',
