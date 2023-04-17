@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:simor/shared/colors.dart';
 
 class Costumebutton extends StatelessWidget {
   const Costumebutton({
     super.key,
     required this.title,
-    required this.colorTitle,
-    required this.colorButton,
+    this.colorTitle = whiteColor,
+    this.colorButton = primaryColor,
     this.progres = false,
     required this.ontap,
   });
@@ -27,6 +28,7 @@ class Costumebutton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: ontap,
+          borderRadius: BorderRadius.circular(8.w),
           child: SizedBox(
             height: 40.h,
             width: double.infinity,

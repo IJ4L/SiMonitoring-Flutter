@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/camera_cubit.dart';
+import 'package:simor/shared/colors.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
@@ -63,8 +64,6 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                           SizedBox(height: 16.h),
                           Costumebutton(
                             title: 'Datang',
-                            colorTitle: Colors.white,
-                            colorButton: const Color(0xff2A55C9),
                             ontap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -75,22 +74,16 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                           SizedBox(height: 10.h),
                           Costumebutton(
                             title: 'Kegiatan',
-                            colorTitle: Colors.white,
-                            colorButton: const Color(0xff2A55C9),
                             ontap: () {},
                           ),
                           SizedBox(height: 10.h),
                           Costumebutton(
                             title: 'Kendala',
-                            colorTitle: Colors.white,
-                            colorButton: const Color(0xff2A55C9),
                             ontap: () {},
                           ),
                           SizedBox(height: 10.h),
                           Costumebutton(
                             title: 'Pulang',
-                            colorTitle: Colors.white,
-                            colorButton: const Color(0xff2A55C9),
                             ontap: () {},
                           ),
                         ],

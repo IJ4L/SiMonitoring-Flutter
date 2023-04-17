@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'camera_state.dart';
@@ -33,7 +32,7 @@ class CameraCubit extends Cubit<CameraState> {
     try {
       final image = await _controller.takePicture();
 
-      print(image.path);
+      emit(CameraTakePicture(image.path));
     } catch (e) {
       emit(CameraError(e.toString()));
     }
