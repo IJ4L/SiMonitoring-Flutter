@@ -1,21 +1,15 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/camera_cubit.dart';
 import 'package:simor/ui/pages/login_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/home_page.dart';
-import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/pages/scan_card_page.dart';
 import 'package:simor/ui/pages/splash_screen.dart';
 
-late List<CameraDescription> _cameras;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  _cameras = await availableCameras();
-  runApp(const CameraApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

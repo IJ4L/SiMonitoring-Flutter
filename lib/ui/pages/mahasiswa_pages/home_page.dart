@@ -61,20 +61,17 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                             value: 'Reza Maulana',
                           ),
                           SizedBox(height: 16.h),
-                          // Costumebutton(
-                          //   title: 'Datang',
-                          //   colorTitle: Colors.white,
-                          //   colorButton: const Color(0xff2A55C9),
-                          //   ontap: () {
-                          //     context.read<CameraCubit>().startCamera(0);
-                          //     Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //         builder: (context) => const Camerapage(),
-                          //       ),
-                          //     );
-                          //   },
-                          // ),
+                          Costumebutton(
+                            title: 'Datang',
+                            colorTitle: Colors.white,
+                            colorButton: const Color(0xff2A55C9),
+                            ontap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CameraPage(),
+                              ),
+                            ),
+                          ),
                           SizedBox(height: 10.h),
                           Costumebutton(
                             title: 'Kegiatan',

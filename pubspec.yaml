@@ -10,16 +10,15 @@ environment:
 
 dependencies:
   bloc: ^8.1.1
+  camera: ^0.10.4
   cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
   flutter_screenutil: ^5.7.0
   page_transition: ^2.0.9
-  camera: ^0.10.4
-  video_player: ^2.6.1
   permission_handler: ^10.2.0
-  path_provider: ^2.0.14
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -31,6 +30,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/icons/
 
   fonts:
     - family: Montserrat

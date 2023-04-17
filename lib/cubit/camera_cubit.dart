@@ -1,44 +1,41 @@
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:simor/services/camera_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'camera_state.dart';
 
 class CameraCubit extends Cubit<CameraState> {
   CameraCubit() : super(CameraInitial());
 
-  late List<CameraDescription> cameras;
-  late CameraController cameraController;
+  late CameraController _controller;
 
-  Future<void> startCamera(int direction) async {
-    emit(CameraLoading());
+  Future<void> initializeCamera() async {
+    try {
+      final cameras = await availableCameras();
+      final firstCamera = cameras.first;
 
-    cameras = await availableCameras();
+      _controller = CameraController(
+        firstCamera,
+        ResolutionPreset.high,
+      );
 
-    cameraController = CameraController(
-      cameras[direction],
-      ResolutionPreset.high,
-      enableAudio: false,
-    );
+      await _controller.initialize();
 
-    await cameraController.initialize().then((value) {
-      emit(CameraReady());
-    }).catchError((e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    });
+      emit(CameraReady(_controller));
+    } catch (e) {
+      emit(CameraError(e.toString()));
+    }
   }
 
-  Future<void> useCamera() async {
-    emit(CameraLoading());
-
+  void takePicture() async {
     try {
-      await CameraService().initialize();
-      emit(CameraReady());
+      final image = await _controller.takePicture();
+
+      print(image.path);
     } catch (e) {
-      print(e.toString());
+      emit(CameraError(e.toString()));
     }
   }
 }
