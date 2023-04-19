@@ -8,6 +8,7 @@ import 'package:simor/shared/colors.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
 import '../../../cubit/camera_cubit.dart';
+import '../../widgets/costume_dialog.dart';
 
 class CameraPage extends StatelessWidget {
   const CameraPage({super.key});
@@ -77,7 +78,15 @@ class CameraPage extends StatelessWidget {
                         title: 'Kirim Foto',
                         colorTitle: whiteColor,
                         colorButton: primaryColor,
-                        ontap: () {},
+                        ontap: () => showDialog<void>(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return const Dialoginfo(
+                              title: 'Foto Berhasil di kirim',
+                            );
+                          },
+                        ),
                       ),
                     ),
                   )

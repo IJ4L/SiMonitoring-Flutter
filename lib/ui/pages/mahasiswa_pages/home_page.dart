@@ -1,13 +1,9 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/cubit/camera_cubit.dart';
 import 'package:simor/shared/colors.dart';
-import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
-import '../../widgets/card_info_profile.dart';
+import '../../widgets/costume_card.dart';
 
 class Homemahasiswa extends StatefulWidget {
   const Homemahasiswa({super.key});
@@ -39,7 +35,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                     height: 634.h,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: whiteColor,
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(25.w),
                       ),
@@ -64,28 +60,17 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                           SizedBox(height: 16.h),
                           Costumebutton(
                             title: 'Datang',
-                            ontap: () => Navigator.push(
+                            ontap: () => Navigator.pushNamed(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => const CameraPage(),
-                              ),
+                              'take-picture',
                             ),
                           ),
                           SizedBox(height: 10.h),
-                          Costumebutton(
-                            title: 'Kegiatan',
-                            ontap: () {},
-                          ),
+                          Costumebutton(title: 'Kegiatan', ontap: () {}),
                           SizedBox(height: 10.h),
-                          Costumebutton(
-                            title: 'Kendala',
-                            ontap: () {},
-                          ),
+                          Costumebutton(title: 'Kendala', ontap: () {}),
                           SizedBox(height: 10.h),
-                          Costumebutton(
-                            title: 'Pulang',
-                            ontap: () {},
-                          ),
+                          Costumebutton(title: 'Pulang', ontap: () {}),
                         ],
                       ),
                     ),

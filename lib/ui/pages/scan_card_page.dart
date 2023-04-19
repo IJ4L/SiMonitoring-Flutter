@@ -38,10 +38,8 @@ class Scancard extends StatelessWidget {
                 SizedBox(height: 45.h),
                 Text(
                   'Scan Kartu Anda!',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20.sp,
-                  ),
+                  style:
+                      TextStyle(fontWeight: FontWeight.w600, fontSize: 20.sp),
                   textScaleFactor: 1,
                 ),
                 const Spacer(),
