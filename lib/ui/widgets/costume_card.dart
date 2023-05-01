@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/shared/colors.dart';
+import 'package:simor/shared/themes.dart';
 
 class Infoprofile extends StatelessWidget {
   const Infoprofile({
@@ -21,7 +21,7 @@ class Infoprofile extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         decoration: BoxDecoration(
           border: Border.all(
-            color: greyColor.withOpacity(0.19),
+            color: kGreyColor.withOpacity(0.19),
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(10.r),
@@ -45,7 +45,7 @@ class Infoprofile extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
-                color: textInfoColor,
+                color: kTextInfoColor,
               ),
               textScaleFactor: 1,
             ),

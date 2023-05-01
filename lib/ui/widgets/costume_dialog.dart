@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../shared/colors.dart';
+import '../../shared/themes.dart';
 import 'costume_button.dart';
 
 class Dialoginfo extends StatelessWidget {
@@ -34,7 +34,7 @@ class Dialoginfo extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16.sp,
-                color: textInfoColor,
+                color: kTextInfoColor,
               ),
               textScaleFactor: 1,
             ),

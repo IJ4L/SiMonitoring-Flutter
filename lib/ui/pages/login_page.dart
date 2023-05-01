@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
+import 'package:simor/shared/themes.dart';
 
 import '../../cubit/loading_button_cubit.dart';
 import '../widgets/costume_button.dart';
@@ -46,10 +47,9 @@ class Loginpage extends StatelessWidget {
                     ),
                     Text(
                       'PRAKTEK PENGENALAN LAPANGAN',
-                      style: TextStyle(
+                      style: whiteTextStyle.copyWith(
                         fontSize: 16.sp,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white,
+                        fontWeight: light,
                       ),
                       textScaleFactor: 1,
                     ),
@@ -86,7 +86,7 @@ class Loginpage extends StatelessWidget {
                             progres: isLoading,
                             ontap: () => Navigator.pushReplacementNamed(
                               context,
-                              'scan-card',
+                              '/scan-card',
                             ),
                           );
                         },

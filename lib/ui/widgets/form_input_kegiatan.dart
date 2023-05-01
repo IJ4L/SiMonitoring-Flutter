@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../shared/colors.dart';
+import '../../shared/themes.dart';
 
 class FormInputKegiatan extends StatelessWidget {
   const FormInputKegiatan({
@@ -22,7 +22,7 @@ class FormInputKegiatan extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
-                  color: textInfoColor,
+                  color: kTextInfoColor,
                 ),
                 textScaleFactor: 1,
               ),
@@ -30,7 +30,7 @@ class FormInputKegiatan extends StatelessWidget {
                 height: 24.h,
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 decoration: BoxDecoration(
-                  color: secongColor,
+                  color: kSecondColor,
                   borderRadius: BorderRadius.circular(4.w),
                 ),
                 child: Row(
@@ -46,7 +46,7 @@ class FormInputKegiatan extends StatelessWidget {
                     Text(
                       "Pilih Waktu",
                       style: TextStyle(
-                        color: whiteColor,
+                        color: kWhiteColor,
                         fontSize: 12.sp,
                       ),
                       textScaleFactor: 1,
@@ -59,23 +59,23 @@ class FormInputKegiatan extends StatelessWidget {
           SizedBox(height: 16.h),
           TextFormField(
             maxLines: 5,
-            cursorColor: blackColor,
+            cursorColor: kBlackColor,
             decoration: InputDecoration(
               hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
               hintStyle: TextStyle(
-                color: greyColor.withOpacity(0.4),
+                color: kGreyColor.withOpacity(0.4),
                 fontStyle: FontStyle.italic,
                 fontSize: 12.sp,
               ),
               floatingLabelBehavior: FloatingLabelBehavior.never,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
-                borderSide: const BorderSide(color: textInfoColor),
+                borderSide: const BorderSide(color: kTextInfoColor),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(
-                  color: textInfoColor,
+                  color: kTextInfoColor,
                 ),
               ),
             ),

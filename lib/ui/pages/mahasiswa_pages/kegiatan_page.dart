@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:simor/shared/colors.dart';
+import 'package:simor/shared/themes.dart';
 
+import '../../../cubit/index_cubit.dart';
 import '../../widgets/form_input_kegiatan.dart';
 
 class Kegiatanmahasiswa extends StatelessWidget {
@@ -11,7 +13,7 @@ class Kegiatanmahasiswa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
+      backgroundColor: kWhiteColor,
       body: Column(
         children: [
           Container(
@@ -47,34 +49,40 @@ class Kegiatanmahasiswa extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            height: 160.h * 3,
-            width: double.infinity,
-            margin: EdgeInsets.symmetric(vertical: 12.h),
-            child: ListView.separated(
-              itemBuilder: (context, index) => const FormInputKegiatan(),
-              separatorBuilder: (_, index) => SizedBox(height: 12.h),
-              itemCount: 3,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-            ),
+          BlocBuilder<IndexCubit, int>(
+            builder: (context, state) {
+              return Container(
+                height: 160.h * state,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(vertical: 12.h),
+                child: ListView.separated(
+                  itemBuilder: (context, index) => const FormInputKegiatan(),
+                  separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                  itemCount: state,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                ),
+              );
+            },
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const ButtonWithIcon(
+                ButtonWithIcon(
                   title: 'Tambah',
                   icon: "assets/icons/add.svg",
-                  color: transparantColor,
-                  colorBorder: secongColor,
+                  color: kTransparantColor,
+                  colorBorder: kSecondColor,
+                  ontap: () => context.read<IndexCubit>().increment(),
                 ),
                 SizedBox(width: 16.h),
-                const ButtonWithIcon(
+                ButtonWithIcon(
                   title: "Simpan",
                   icon: "assets/icons/memory.svg",
-                  colorBorder: whiteColor,
+                  colorBorder: kWhiteColor,
+                  ontap: () {},
                 )
               ],
             ),
@@ -91,12 +99,14 @@ class ButtonWithIcon extends StatelessWidget {
     super.key,
     required this.title,
     required this.icon,
-    this.color = primaryColor,
-    this.colorBorder = transparantColor,
+    this.color = kPrimaryColor,
+    this.colorBorder = kTransparantColor,
+    required this.ontap,
   });
 
   final String icon, title;
   final Color color, colorBorder;
+  final Function() ontap;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +121,7 @@ class ButtonWithIcon extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: ontap,
             borderRadius: BorderRadius.circular(8.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/shared/colors.dart';
+import 'package:simor/shared/themes.dart';
 
 class Costumebutton extends StatelessWidget {
   const Costumebutton({
     super.key,
     required this.title,
-    this.colorTitle = whiteColor,
-    this.colorButton = primaryColor,
+    this.colorTitle = kWhiteColor,
+    this.colorButton = kPrimaryColor,
     this.progres = false,
     required this.ontap,
   });

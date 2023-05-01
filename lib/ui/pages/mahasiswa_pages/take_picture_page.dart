@@ -4,10 +4,10 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/shared/colors.dart';
+import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
-import '../../../cubit/camera_cubit.dart';
+import '../../../cubit/camera_cubit/camera_cubit.dart';
 import '../../widgets/costume_dialog.dart';
 
 class CameraPage extends StatelessWidget {
@@ -56,7 +56,9 @@ class CameraPage extends StatelessWidget {
                   ],
                 ),
               );
-            } else if (state is CameraTakePicture) {
+            }
+
+            if (state is CameraTakePicture) {
               return Stack(
                 children: [
                   SizedBox(
@@ -76,8 +78,8 @@ class CameraPage extends StatelessWidget {
                       ),
                       child: Costumebutton(
                         title: 'Kirim Foto',
-                        colorTitle: whiteColor,
-                        colorButton: primaryColor,
+                        colorTitle: kWhiteColor,
+                        colorButton: kPrimaryColor,
                         ontap: () => showDialog<void>(
                           context: context,
                           barrierDismissible: true,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/shared/colors.dart';
+import 'package:simor/shared/themes.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -40,7 +40,7 @@ class _SplashscreenState extends State<Splashscreen> {
                     style: TextStyle(
                       fontSize: 65.sp,
                       fontWeight: FontWeight.w600,
-                      color: whiteColor,
+                      color: kWhiteColor,
                     ),
                     textScaleFactor: 1.0,
                   ),
@@ -49,7 +49,7 @@ class _SplashscreenState extends State<Splashscreen> {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w300,
-                      color: whiteColor,
+                      color: kWhiteColor,
                     ),
                     textScaleFactor: 1.0,
                   )

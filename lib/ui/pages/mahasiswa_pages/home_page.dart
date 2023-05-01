@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/shared/colors.dart';
+import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
 import '../../widgets/costume_card.dart';
@@ -35,7 +35,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                     height: 634.h,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: whiteColor,
+                      color: kWhiteColor,
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(25.w),
                       ),
@@ -46,9 +46,13 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                         children: [
                           SizedBox(height: 100.h),
                           const Infoprofile(
-                              title: 'Nama Mahasiswa:', value: 'John Doe'),
+                            title: 'Nama Mahasiswa:',
+                            value: 'John Doe',
+                          ),
                           const Infoprofile(
-                              title: 'Nim:', value: '60900121070'),
+                            title: 'Nim:',
+                            value: '60900121070',
+                          ),
                           const Infoprofile(
                             title: 'Tempat PPL:',
                             value: 'Makassar Digital Valley',
@@ -62,7 +66,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                             title: 'Datang',
                             ontap: () => Navigator.pushNamed(
                               context,
-                              'take-picture',
+                              '/take-picture',
                             ),
                           ),
                           SizedBox(height: 10.h),
