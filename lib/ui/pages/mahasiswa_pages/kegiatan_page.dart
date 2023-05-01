@@ -14,42 +14,38 @@ class Kegiatanmahasiswa extends StatelessWidget {
       backgroundColor: whiteColor,
       body: Column(
         children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(25.w),
-                ),
-                child: Image.asset(
-                  "assets/images/backgorund.png",
-                  width: MediaQuery.of(context).size.width,
-                  height: 130.h,
-                  fit: BoxFit.cover,
-                ),
+          Container(
+            height: 130.h,
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage("assets/images/backgorund.png"),
+                fit: BoxFit.cover,
               ),
-              Positioned(
-                left: 22.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: const Icon(
-                        Icons.arrow_back_outlined,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Image.asset(
-                      "assets/images/logo.png",
-                      height: 55.h,
-                      width: 202.w,
-                      fit: BoxFit.fill,
-                    ),
-                    const SizedBox(),
-                  ],
-                ),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(25.w),
               ),
-            ],
+            ),
+            child: SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(
+                      Icons.arrow_back_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Image.asset(
+                    "assets/images/logo.png",
+                    height: 55.h,
+                    width: 202.w,
+                    fit: BoxFit.fill,
+                  ),
+                  const SizedBox(),
+                ],
+              ),
+            ),
           ),
           Container(
             height: 160.h * 3,
