@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/shared/colors.dart';
+
+import '../../widgets/form_input_kegiatan.dart';
 
 class Kegiatanmahasiswa extends StatelessWidget {
   const Kegiatanmahasiswa({super.key});
@@ -25,190 +28,120 @@ class Kegiatanmahasiswa extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 65.h,
                 left: 22.w,
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    Icons.arrow_back_outlined,
-                    color: Colors.white,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(
+                        Icons.arrow_back_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Image.asset(
+                      "assets/images/logo.png",
+                      height: 55.h,
+                      width: 202.w,
+                      fit: BoxFit.fill,
+                    ),
+                    const SizedBox(),
+                  ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 45.h),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    "assets/images/logo.png",
-                    height: 55.h,
-                    width: 202.w,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              )
             ],
           ),
-          SizedBox(height: 14.h),
+          Container(
+            height: 160.h * 3,
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(vertical: 12.h),
+            child: ListView.separated(
+              itemBuilder: (context, index) => const FormInputKegiatan(),
+              separatorBuilder: (_, index) => SizedBox(height: 12.h),
+              itemCount: 3,
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+            ),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Deskripsi Kegiatan:',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: textInfoColor,
-                  ),
-                  textScaleFactor: 1,
-                ),
-                Container(
-                  height: 24.h,
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  decoration: BoxDecoration(
-                    color: secongColor,
-                    borderRadius: BorderRadius.circular(4.w),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        "assets/icons/clock.png",
-                        height: 14.r,
-                        width: 14.r,
-                        fit: BoxFit.fill,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        "Pilih Waktu",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.sp,
-                        ),
-                        textScaleFactor: 1,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: 16.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: TextFormField(
-              maxLines: 6,
-              decoration: InputDecoration(
-                hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
-                hintStyle: TextStyle(
-                  color: greyColor.withOpacity(0.4),
-                  fontStyle: FontStyle.italic,
-                  fontSize: 12.sp,
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                  borderSide: const BorderSide(color: textInfoColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                  borderSide: const BorderSide(
-                    color: textInfoColor,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 24.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 42.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: secongColor,
-                      ),
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {},
-                        borderRadius: BorderRadius.circular(8.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.add, color: secongColor),
-                            SizedBox(
-                              width: 19.0.w,
-                            ),
-                            Text(
-                              'Tambah',
-                              style: TextStyle(
-                                color: secongColor,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                              ),
-                              textScaleFactor: 1,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                const ButtonWithIcon(
+                  title: 'Tambah',
+                  icon: "assets/icons/add.svg",
+                  color: transparantColor,
+                  colorBorder: secongColor,
                 ),
                 SizedBox(width: 16.h),
-                Expanded(
-                  child: Container(
-                    height: 42.h,
-                    width: 154,
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {},
-                        borderRadius: BorderRadius.circular(8.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/icons/memory.png",
-                              width: 16.r,
-                              height: 16.r,
-                              fit: BoxFit.fill,
-                              color: whiteColor,
-                            ),
-                            SizedBox(
-                              width: 19.0.w,
-                            ),
-                            Text(
-                              'Tambah',
-                              style: TextStyle(
-                                color: whiteColor,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                              ),
-                              textScaleFactor: 1,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                const ButtonWithIcon(
+                  title: "Simpan",
+                  icon: "assets/icons/memory.svg",
+                  colorBorder: whiteColor,
                 )
               ],
             ),
           ),
+          SizedBox(height: 12.h),
         ],
+      ),
+    );
+  }
+}
+
+class ButtonWithIcon extends StatelessWidget {
+  const ButtonWithIcon({
+    super.key,
+    required this.title,
+    required this.icon,
+    this.color = primaryColor,
+    this.colorBorder = transparantColor,
+  });
+
+  final String icon, title;
+  final Color color, colorBorder;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        height: 42.h,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(10.r),
+          border: Border.all(color: colorBorder),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(8.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  icon,
+                  width: 16.r,
+                  height: 16.r,
+                  fit: BoxFit.fill,
+                ),
+                SizedBox(
+                  width: 19.0.w,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: colorBorder,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14.sp,
+                  ),
+                  textScaleFactor: 1,
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
