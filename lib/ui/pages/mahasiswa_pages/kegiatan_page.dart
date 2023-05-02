@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/shared/themes.dart';
+import 'package:simor/ui/widgets/costume_dialog.dart';
 
 import '../../../cubit/index_cubit.dart';
 import '../../widgets/form_input_kegiatan.dart';
@@ -82,7 +83,15 @@ class Kegiatanmahasiswa extends StatelessWidget {
                   title: "Simpan",
                   icon: "assets/icons/memory.svg",
                   colorBorder: kWhiteColor,
-                  ontap: () {},
+                  ontap: () => showDialog<void>(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return const Dialoginfo(
+                        title: 'Kendala berhasil di simpan!',
+                      );
+                    },
+                  ),
                 )
               ],
             ),

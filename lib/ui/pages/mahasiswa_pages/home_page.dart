@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:simor/cubit/index_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
@@ -70,7 +72,16 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                             ),
                           ),
                           SizedBox(height: 10.h),
-                          Costumebutton(title: 'Kegiatan', ontap: () {}),
+                          Costumebutton(
+                            title: 'Kegiatan',
+                            ontap: () {
+                              context.read<IndexCubit>().initial();
+                              Navigator.pushNamed(
+                                context,
+                                '/kegiatan-mahasiswa',
+                              );
+                            },
+                          ),
                           SizedBox(height: 10.h),
                           Costumebutton(title: 'Kendala', ontap: () {}),
                           SizedBox(height: 10.h),
@@ -83,21 +94,17 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
               ),
               Positioned(
                 top: 80.h,
-                left: 100.w,
+                left: 110.w,
                 child: Container(
+                  width: 139.r,
+                  height: 139.r,
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: kBlackColor,
                     borderRadius: BorderRadius.circular(139.r / 2),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(139.r / 2),
-                    child: Image.network(
-                      "https://images.unsplash.com/flagged/photo-1559502867-c406bd78ff24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=685&q=80",
-                      width: 139.r,
-                      height: 139.r,
-                      fit: BoxFit.cover,
-                    ),
                   ),
                 ),
               ),

@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           title: 'SiMonitoring',
           theme: ThemeData(fontFamily: 'Montserrat'),
           debugShowCheckedModeBanner: false,
-          initialRoute: 'kegiatan-mahasiswa',
+          initialRoute: '/',
           routes: {
             '/': (context) => const Splashscreen(),
             '/login': (context) => const Loginpage(),

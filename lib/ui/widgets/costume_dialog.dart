@@ -45,7 +45,7 @@ class Dialoginfo extends StatelessWidget {
               ),
               child: Costumebutton(
                 title: 'Continue',
-                ontap: () {},
+                ontap: () => Navigator.pushNamed(context, '/home-mahasiswa'),
               ),
             ),
           ],
