@@ -79,6 +79,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                               Navigator.pushNamed(
                                 context,
                                 '/kegiatan-mahasiswa',
+                                arguments: {'type': true},
                               );
                             },
                           ),

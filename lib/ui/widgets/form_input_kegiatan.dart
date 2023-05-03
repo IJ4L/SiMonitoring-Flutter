@@ -11,7 +11,7 @@ class FormInputKegiatan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      padding: EdgeInsets.symmetric(horizontal: 21.w),
       child: Column(
         children: [
           Row(
@@ -58,7 +58,7 @@ class FormInputKegiatan extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           TextFormField(
-            maxLines: 5,
+            maxLines: 7,
             cursorColor: kBlackColor,
             decoration: InputDecoration(
               hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',

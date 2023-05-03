@@ -15,89 +15,93 @@ class Kegiatanmahasiswa extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      body: Column(
-        children: [
-          Container(
-            height: 130.h,
-            decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage("assets/images/backgorund.png"),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(25.w),
-              ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(130.h),
+        child: Container(
+          height: 130.h,
+          decoration: BoxDecoration(
+            image: const DecorationImage(
+              image: AssetImage("assets/images/backgorund.png"),
+              fit: BoxFit.cover,
             ),
-            child: SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(
-                      Icons.arrow_back_outlined,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Image.asset(
-                    "assets/images/logo.png",
-                    height: 55.h,
-                    width: 202.w,
-                    fit: BoxFit.fill,
-                  ),
-                  const SizedBox(),
-                ],
-              ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(25.w),
             ),
           ),
-          BlocBuilder<IndexCubit, int>(
-            builder: (context, state) {
-              return Container(
-                height: 160.h * state,
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 12.h),
-                child: ListView.separated(
-                  itemBuilder: (context, index) => const FormInputKegiatan(),
-                  separatorBuilder: (_, index) => SizedBox(height: 12.h),
-                  itemCount: state,
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                ),
-              );
-            },
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: SafeArea(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ButtonWithIcon(
-                  title: 'Tambah',
-                  icon: "assets/icons/add.svg",
-                  color: kTransparantColor,
-                  colorBorder: kSecondColor,
-                  ontap: () => context.read<IndexCubit>().increment(),
-                ),
-                SizedBox(width: 16.h),
-                ButtonWithIcon(
-                  title: "Simpan",
-                  icon: "assets/icons/memory.svg",
-                  colorBorder: kWhiteColor,
-                  ontap: () => showDialog<void>(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return const Dialoginfo(
-                        title: 'Kendala berhasil di simpan!',
-                      );
-                    },
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(
+                    Icons.arrow_back_outlined,
+                    color: Colors.white,
                   ),
-                )
+                ),
+                Image.asset(
+                  "assets/images/logo.png",
+                  height: 55.h,
+                  width: 202.w,
+                  fit: BoxFit.fill,
+                ),
+                const SizedBox(),
               ],
             ),
           ),
-          SizedBox(height: 12.h),
-        ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            BlocBuilder<IndexCubit, int>(
+              builder: (context, state) {
+                return Container(
+                  height: 200.h * state,
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(vertical: 12.h),
+                  child: ListView.separated(
+                    itemBuilder: (context, index) => const FormInputKegiatan(),
+                    separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                    itemCount: state,
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ButtonWithIcon(
+              title: 'Tambah',
+              icon: "assets/icons/add.svg",
+              color: kTransparantColor,
+              colorBorder: kSecondColor,
+              ontap: () => context.read<IndexCubit>().increment(),
+            ),
+            SizedBox(width: 16.h),
+            ButtonWithIcon(
+              title: "Simpan",
+              icon: "assets/icons/memory.svg",
+              colorBorder: kWhiteColor,
+              ontap: () => showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return const Dialoginfo(
+                    title: 'Kendala berhasil di simpan!',
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
