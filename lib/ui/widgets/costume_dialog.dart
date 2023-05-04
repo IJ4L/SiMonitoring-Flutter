@@ -11,17 +11,19 @@ class Dialoginfo extends StatelessWidget {
     required this.title,
     this.pageTo = true,
     this.type = true,
+    this.height = 300,
   });
 
   final String title;
   final bool pageTo;
   final bool type;
+  final int height;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
-        height: 320.r,
+        height: height.r,
         width: 320.r,
         color: Colors.white,
         child: Column(
@@ -35,18 +37,17 @@ class Dialoginfo extends StatelessWidget {
             SizedBox(height: 16.h),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 16.sp,
+                fontSize: 16,
                 color: kTextInfoColor,
               ),
+              textAlign: TextAlign.center,
               textScaleFactor: 1,
             ),
             SizedBox(height: 24.h),
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 60.w,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 60.w),
               child: Costumebutton(
                 title: 'Continue',
                 ontap: () {
@@ -60,6 +61,7 @@ class Dialoginfo extends StatelessWidget {
                           context,
                           '/scan-card',
                           (route) => false,
+                          arguments: {'type': pageTo},
                         );
                 },
               ),

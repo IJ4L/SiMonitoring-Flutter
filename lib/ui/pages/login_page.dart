@@ -87,6 +87,7 @@ class Loginpage extends StatelessWidget {
                             ontap: () => Navigator.pushReplacementNamed(
                               context,
                               '/scan-card',
+                              arguments: {'type': true},
                             ),
                           );
                         },
