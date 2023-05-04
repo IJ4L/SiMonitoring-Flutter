@@ -26,8 +26,8 @@ class FormInputKegiatan extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 16.sp,
+                style: const TextStyle(
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: kTextInfoColor,
                 ),
@@ -51,11 +51,11 @@ class FormInputKegiatan extends StatelessWidget {
                             fit: BoxFit.fill,
                           ),
                           SizedBox(width: 8.w),
-                          Text(
+                          const Text(
                             "Pilih Waktu",
                             style: TextStyle(
                               color: kWhiteColor,
-                              fontSize: 12.sp,
+                              fontSize: 12,
                             ),
                             textScaleFactor: 1,
                           ),

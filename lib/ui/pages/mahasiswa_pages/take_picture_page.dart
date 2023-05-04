@@ -87,6 +87,7 @@ class CameraPage extends StatelessWidget {
                           builder: (BuildContext context) {
                             return const Dialoginfo(
                               title: 'Foto Berhasil di kirim',
+                              pageTo: false,
                             );
                           },
                         ),

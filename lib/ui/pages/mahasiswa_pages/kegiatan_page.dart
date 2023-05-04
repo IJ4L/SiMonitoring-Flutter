@@ -118,7 +118,7 @@ class Kegiatanmahasiswa extends StatelessWidget {
                 ],
               ),
             ),
-            page['type'] == true ? SizedBox(height: 12.h) : const SizedBox(),
+            // page['type'] == true ? SizedBox(height: 12.h) : const SizedBox(),
           ],
         ),
       ),
