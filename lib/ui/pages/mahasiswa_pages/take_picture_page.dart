@@ -16,6 +16,8 @@ class CameraPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> type =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return BlocProvider<CameraCubit>(
       create: (_) => CameraCubit()..initializeCamera(),
       child: Scaffold(
@@ -85,9 +87,9 @@ class CameraPage extends StatelessWidget {
                           context: context,
                           barrierDismissible: true,
                           builder: (BuildContext context) {
-                            return const Dialoginfo(
+                            return Dialoginfo(
                               title: 'Foto Berhasil di kirim',
-                              pageTo: false,
+                              pageTo: type['inOut'],
                             );
                           },
                         ),

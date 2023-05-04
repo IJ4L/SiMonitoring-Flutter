@@ -73,7 +73,6 @@ class Scancard extends StatelessWidget {
                 ],
               ),
             ),
-            const CircularProgressIndicator()
           ],
         ),
       ),

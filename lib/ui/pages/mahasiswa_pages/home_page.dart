@@ -70,7 +70,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                             ontap: () => Navigator.pushNamed(
                               context,
                               '/take-picture',
-                              arguments: {'type': true},
+                              arguments: {'type': true, 'inOut': true},
                             ),
                           ),
                           SizedBox(height: 10.h),
@@ -101,7 +101,11 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                           Costumebutton(
                             title: 'Pulang',
                             ontap: () {
-                              Navigator.pushNamed(context, '/take-picture');
+                              Navigator.pushNamed(
+                                context,
+                                '/take-picture',
+                                arguments: {'inOut': false},
+                              );
                             },
                           ),
                         ],

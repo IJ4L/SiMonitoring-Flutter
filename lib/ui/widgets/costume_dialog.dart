@@ -10,10 +10,12 @@ class Dialoginfo extends StatelessWidget {
     super.key,
     required this.title,
     this.pageTo = true,
+    this.type = true,
   });
 
   final String title;
   final bool pageTo;
+  final bool type;
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +49,19 @@ class Dialoginfo extends StatelessWidget {
               ),
               child: Costumebutton(
                 title: 'Continue',
-                ontap: () => pageTo == true
-                    ? Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/home-mahasiswa',
-                        (route) => false,
-                      )
-                    : Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/scan-card',
-                        (route) => false,
-                      ),
+                ontap: () {
+                  pageTo
+                      ? Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/home-mahasiswa',
+                          (route) => false,
+                        )
+                      : Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/scan-card',
+                          (route) => false,
+                        );
+                },
               ),
             ),
           ],
