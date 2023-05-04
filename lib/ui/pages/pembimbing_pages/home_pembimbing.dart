@@ -76,6 +76,14 @@ class Homepembimbing extends StatelessWidget {
                         maxLines: 4,
                       ),
                     ),
+                    Container(
+                      height: 0.4.h,
+                      width: 230.w,
+                      margin: EdgeInsets.only(top: 10.h),
+                      decoration: BoxDecoration(
+                        color: kBlackColor.withOpacity(0.1),
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -91,9 +99,7 @@ class Homepembimbing extends StatelessWidget {
                       style: TextStyle(fontSize: 8.sp),
                       textScaleFactor: 1.0,
                     ),
-                    const SizedBox(
-                      height: 4.0,
-                    ),
+                    SizedBox(height: 4.h),
                     Text(
                       'Reza Maulana',
                       style: TextStyle(
@@ -106,7 +112,7 @@ class Homepembimbing extends StatelessWidget {
                 ),
                 Container(
                   height: 24.h,
-                  width: 1.w,
+                  width: 0.4.w,
                   decoration: BoxDecoration(
                     color: kBlackColor.withOpacity(0.1),
                   ),
@@ -118,9 +124,7 @@ class Homepembimbing extends StatelessWidget {
                       style: TextStyle(fontSize: 8.sp),
                       textScaleFactor: 1.0,
                     ),
-                    const SizedBox(
-                      height: 4.0,
-                    ),
+                    SizedBox(height: 4.h),
                     Text(
                       'Rini Apriliani',
                       style: TextStyle(
@@ -132,7 +136,7 @@ class Homepembimbing extends StatelessWidget {
                   ],
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
