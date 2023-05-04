@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/index_cubit.dart';
 import 'package:simor/ui/pages/login_page.dart';
-import 'package:simor/ui/pages/mahasiswa_pages/home_page.dart';
+import 'package:simor/ui/pages/mahasiswa_pages/home_mahasiswa.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/kegiatan_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/pages/scan_card_page.dart';

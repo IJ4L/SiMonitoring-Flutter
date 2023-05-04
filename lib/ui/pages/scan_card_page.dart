@@ -24,6 +24,7 @@ class Scancard extends StatelessWidget {
                     title:
                         'Rencana Kegiatan, Kendala,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!',
                     height: 370,
+                    type: false,
                   );
                 },
               ),

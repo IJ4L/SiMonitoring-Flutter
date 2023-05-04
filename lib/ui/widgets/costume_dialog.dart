@@ -50,20 +50,28 @@ class Dialoginfo extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 60.w),
               child: Costumebutton(
                 title: 'Continue',
-                ontap: () {
-                  pageTo
-                      ? Navigator.pushNamedAndRemoveUntil(
+                ontap: type
+                    ? () {
+                        pageTo
+                            ? Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/home-mahasiswa',
+                                (route) => false,
+                              )
+                            : Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/scan-card',
+                                (route) => false,
+                                arguments: {'type': pageTo},
+                              );
+                      }
+                    : () {
+                        Navigator.pushNamedAndRemoveUntil(
                           context,
-                          '/home-mahasiswa',
+                          '/login',
                           (route) => false,
-                        )
-                      : Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/scan-card',
-                          (route) => false,
-                          arguments: {'type': pageTo},
                         );
-                },
+                      },
               ),
             ),
           ],

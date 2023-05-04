@@ -59,7 +59,7 @@ class Kegiatanmahasiswa extends StatelessWidget {
               builder: (context, state) {
                 final pageProveus = page['type'];
                 return Container(
-                  height: 200.h * state,
+                  height: 160.h * state,
                   width: double.infinity,
                   margin: EdgeInsets.only(top: 12.h),
                   child: ListView.separated(
