@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../shared/themes.dart';
 import 'costume_button.dart';
@@ -17,16 +18,15 @@ class Dialoginfo extends StatelessWidget {
     return AlertDialog(
       content: Container(
         height: 320.r,
-        width: 330.r,
+        width: 320.r,
         color: Colors.white,
         child: Column(
           children: [
             SizedBox(height: 30.h),
-            Image.asset(
-              "assets/icons/Succes.png",
+            SvgPicture.asset(
+              "assets/icons/Succes.svg",
               width: 150.r,
               height: 150.r,
-              fit: BoxFit.fill,
             ),
             SizedBox(height: 16.h),
             Text(
@@ -45,7 +45,11 @@ class Dialoginfo extends StatelessWidget {
               ),
               child: Costumebutton(
                 title: 'Continue',
-                ontap: () => Navigator.pushNamed(context, '/home-mahasiswa'),
+                ontap: () => Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/home-mahasiswa',
+                  (route) => false,
+                ),
               ),
             ),
           ],

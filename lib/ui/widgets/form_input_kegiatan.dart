@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../shared/themes.dart';
 
 class FormInputKegiatan extends StatelessWidget {
   const FormInputKegiatan({
     super.key,
+    required this.title,
+    required this.wrong,
+    this.waktu = true,
   });
+
+  final String title, wrong;
+  final bool waktu;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +25,7 @@ class FormInputKegiatan extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Deskripsi Kegiatan:',
+                title,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
@@ -26,34 +33,36 @@ class FormInputKegiatan extends StatelessWidget {
                 ),
                 textScaleFactor: 1,
               ),
-              Container(
-                height: 24.h,
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                decoration: BoxDecoration(
-                  color: kSecondColor,
-                  borderRadius: BorderRadius.circular(4.w),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      "assets/icons/clock.png",
-                      height: 14.r,
-                      width: 14.r,
-                      fit: BoxFit.fill,
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      "Pilih Waktu",
-                      style: TextStyle(
-                        color: kWhiteColor,
-                        fontSize: 12.sp,
+              waktu == true
+                  ? Container(
+                      height: 24.h,
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      decoration: BoxDecoration(
+                        color: kSecondColor,
+                        borderRadius: BorderRadius.circular(4.w),
                       ),
-                      textScaleFactor: 1,
-                    ),
-                  ],
-                ),
-              )
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/clock.svg",
+                            height: 14.r,
+                            width: 14.r,
+                            fit: BoxFit.fill,
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            "Pilih Waktu",
+                            style: TextStyle(
+                              color: kWhiteColor,
+                              fontSize: 12.sp,
+                            ),
+                            textScaleFactor: 1,
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(),
             ],
           ),
           SizedBox(height: 16.h),

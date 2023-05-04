@@ -17,6 +17,7 @@ class Homemahasiswa extends StatefulWidget {
 class _HomemahasiswaState extends State<Homemahasiswa> {
   @override
   Widget build(BuildContext context) {
+    final IndexCubit index = context.read<IndexCubit>();
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -69,13 +70,14 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                             ontap: () => Navigator.pushNamed(
                               context,
                               '/take-picture',
+                              arguments: {'type': true},
                             ),
                           ),
                           SizedBox(height: 10.h),
                           Costumebutton(
                             title: 'Kegiatan',
                             ontap: () {
-                              context.read<IndexCubit>().initial();
+                              index.initial();
                               Navigator.pushNamed(
                                 context,
                                 '/kegiatan-mahasiswa',
@@ -84,9 +86,24 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                             },
                           ),
                           SizedBox(height: 10.h),
-                          Costumebutton(title: 'Kendala', ontap: () {}),
+                          Costumebutton(
+                            title: 'Kendala',
+                            ontap: () {
+                              index.initial();
+                              Navigator.pushNamed(
+                                context,
+                                '/kegiatan-mahasiswa',
+                                arguments: {'type': false},
+                              );
+                            },
+                          ),
                           SizedBox(height: 10.h),
-                          Costumebutton(title: 'Pulang', ontap: () {}),
+                          Costumebutton(
+                            title: 'Pulang',
+                            ontap: () {
+                              Navigator.pushNamed(context, '/take-picture');
+                            },
+                          ),
                         ],
                       ),
                     ),

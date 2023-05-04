@@ -13,6 +13,9 @@ class Kegiatanmahasiswa extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> page =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final IndexCubit index = context.read<IndexCubit>();
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: PreferredSize(
@@ -24,9 +27,7 @@ class Kegiatanmahasiswa extends StatelessWidget {
               image: AssetImage("assets/images/backgorund.png"),
               fit: BoxFit.cover,
             ),
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(25.w),
-            ),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(25.w)),
           ),
           child: SafeArea(
             child: Row(
@@ -56,12 +57,21 @@ class Kegiatanmahasiswa extends StatelessWidget {
           children: [
             BlocBuilder<IndexCubit, int>(
               builder: (context, state) {
+                final pageProveus = page['type'];
                 return Container(
                   height: 200.h * state,
                   width: double.infinity,
-                  margin: EdgeInsets.symmetric(vertical: 12.h),
+                  margin: EdgeInsets.only(top: 12.h),
                   child: ListView.separated(
-                    itemBuilder: (context, index) => const FormInputKegiatan(),
+                    itemBuilder: (context, index) => FormInputKegiatan(
+                      title: pageProveus == true
+                          ? 'Deskripsi Kegiatan:'
+                          : 'Kendala:',
+                      wrong: pageProveus == true
+                          ? 'Deskripsikan Rencana Kegiatanmu Hari Ini'
+                          : 'Deskripsikan kendalamu hari ini',
+                      waktu: pageProveus,
+                    ),
                     separatorBuilder: (_, index) => SizedBox(height: 12.h),
                     itemCount: state,
                     padding: EdgeInsets.zero,
@@ -70,36 +80,45 @@ class Kegiatanmahasiswa extends StatelessWidget {
                 );
               },
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ButtonWithIcon(
-              title: 'Tambah',
-              icon: "assets/icons/add.svg",
-              color: kTransparantColor,
-              colorBorder: kSecondColor,
-              ontap: () => context.read<IndexCubit>().increment(),
-            ),
-            SizedBox(width: 16.h),
-            ButtonWithIcon(
-              title: "Simpan",
-              icon: "assets/icons/memory.svg",
-              colorBorder: kWhiteColor,
-              ontap: () => showDialog<void>(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return const Dialoginfo(
-                    title: 'Kendala berhasil di simpan!',
-                  );
-                },
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  page['type'] == true
+                      ? ButtonWithIcon(
+                          title: 'Tambah',
+                          icon: "assets/icons/add.svg",
+                          color: kTransparantColor,
+                          colorBorder: kSecondColor,
+                          ontap: () => index.increment(),
+                        )
+                      : Container(
+                          margin: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width / 2.5,
+                          ),
+                        ),
+                  SizedBox(width: 16.h),
+                  ButtonWithIcon(
+                    title: "Simpan",
+                    icon: "assets/icons/memory.svg",
+                    colorBorder: kWhiteColor,
+                    ontap: () => showDialog<void>(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) {
+                        return Dialoginfo(
+                          title: page['type'] == true
+                              ? 'Rencana kegiatan\nberhasil di simpan'
+                              : 'Kendala berhasil di simpan!',
+                        );
+                      },
+                    ),
+                  )
+                ],
               ),
-            )
+            ),
+            page['type'] == true ? SizedBox(height: 12.h) : const SizedBox(),
           ],
         ),
       ),
@@ -145,9 +164,7 @@ class ButtonWithIcon extends StatelessWidget {
                   height: 16.r,
                   fit: BoxFit.fill,
                 ),
-                SizedBox(
-                  width: 19.0.w,
-                ),
+                SizedBox(width: 19.w),
                 Text(
                   title,
                   style: TextStyle(

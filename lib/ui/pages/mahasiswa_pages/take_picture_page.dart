@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
@@ -44,8 +45,8 @@ class CameraPage extends StatelessWidget {
                           onTap: () {
                             context.read<CameraCubit>().takePicture();
                           },
-                          child: Image.asset(
-                            "assets/icons/button_camera.png",
+                          child: SvgPicture.asset(
+                            "assets/icons/button_camera.svg",
                             height: 60.r,
                             width: 60.r,
                             fit: BoxFit.fill,
@@ -94,11 +95,11 @@ class CameraPage extends StatelessWidget {
                   )
                 ],
               );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
             }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           },
         ),
       ),
