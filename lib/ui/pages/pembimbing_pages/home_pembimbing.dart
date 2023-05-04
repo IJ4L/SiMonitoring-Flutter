@@ -94,23 +94,9 @@ class Homepembimbing extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Column(
-                  children: [
-                    Text(
-                      'Dosen Pembimbing',
-                      style: TextStyle(fontSize: 8.sp),
-                      textScaleFactor: 1.0,
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      'Reza Maulana',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textScaleFactor: 1.0,
-                    ),
-                  ],
+                const MajorMaker(
+                  title: 'Dosen Pembimbing',
+                  value: 'Reza Maulana',
                 ),
                 Container(
                   height: 24.h,
@@ -119,23 +105,9 @@ class Homepembimbing extends StatelessWidget {
                     color: kBlackColor.withOpacity(0.1),
                   ),
                 ),
-                Column(
-                  children: [
-                    Text(
-                      'Pembimbing Lapangan',
-                      style: TextStyle(fontSize: 8.sp),
-                      textScaleFactor: 1.0,
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      'Rini Apriliani',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textScaleFactor: 1.0,
-                    ),
-                  ],
+                const MajorMaker(
+                  title: 'Pembimbing Lapanagan',
+                  value: 'Rini Apriliani',
                 ),
               ],
             ),
@@ -161,67 +133,7 @@ class Homepembimbing extends StatelessWidget {
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.zero,
-                itemBuilder: (context, index) => Container(
-                  height: 80.h,
-                  padding: EdgeInsets.symmetric(
-                    vertical: 12.h,
-                    horizontal: 6.w,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.h),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Ahmad Ilham',
-                                style: TextStyle(
-                                  fontWeight: medium,
-                                  fontSize: 20.sp,
-                                ),
-                                textScaleFactor: 1,
-                              ),
-                              SizedBox(height: 6.h),
-                              Text(
-                                '60900121070',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: light,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                                textScaleFactor: 1,
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          SvgPicture.asset(
-                            "assets/icons/check_box_on.svg",
-                            width: 28.r,
-                            height: 28.r,
-                            fit: BoxFit.fill,
-                          ),
-                          SizedBox(width: 6.h),
-                          SvgPicture.asset(
-                            "assets/icons/check_box_off.svg",
-                            width: 28.r,
-                            height: 28.r,
-                            fit: BoxFit.fill,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-                      Container(
-                        height: 1.h,
-                        width: double.infinity,
-                        color: kBlackColor.withOpacity(0.1),
-                      )
-                    ],
-                  ),
-                ),
+                itemBuilder: (context, index) => const CardMahasiswa(),
                 separatorBuilder: (_, index) => const SizedBox(height: 0),
                 itemCount: 6,
               ),
@@ -249,11 +161,116 @@ class Homepembimbing extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.h),
             child: Costumebutton(
               title: 'Scan Kartu NFC Mahasiswa',
-              ontap: () {},
+              ontap: () => Navigator.pushNamed(context, '/choice-scan'),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class CardMahasiswa extends StatelessWidget {
+  const CardMahasiswa({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 80.h,
+      padding: EdgeInsets.symmetric(
+        vertical: 12.h,
+        horizontal: 6.w,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.h),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Ahmad Ilham',
+                    style: TextStyle(
+                      fontWeight: medium,
+                      fontSize: 20.sp,
+                    ),
+                    textScaleFactor: 1,
+                  ),
+                  SizedBox(height: 6.h),
+                  Text(
+                    '60900121070',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: light,
+                      fontStyle: FontStyle.italic,
+                    ),
+                    textScaleFactor: 1,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              SvgPicture.asset(
+                "assets/icons/check_box_on.svg",
+                width: 28.r,
+                height: 28.r,
+                fit: BoxFit.fill,
+              ),
+              SizedBox(width: 6.h),
+              SvgPicture.asset(
+                "assets/icons/check_box_off.svg",
+                width: 28.r,
+                height: 28.r,
+                fit: BoxFit.fill,
+              ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Container(
+            height: 1.h,
+            width: double.infinity,
+            color: kBlackColor.withOpacity(0.1),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class MajorMaker extends StatelessWidget {
+  const MajorMaker({
+    super.key,
+    required this.title,
+    required this.value,
+  });
+
+  final String title, value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontSize: 8.sp),
+          overflow: TextOverflow.ellipsis,
+          textScaleFactor: 1.0,
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+          ),
+          overflow: TextOverflow.ellipsis,
+          textScaleFactor: 1.0,
+        ),
+      ],
     );
   }
 }
