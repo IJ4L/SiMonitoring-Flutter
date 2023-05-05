@@ -2,36 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../widgets/costume_dialog.dart';
-
 class Scancard extends StatelessWidget {
   const Scancard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> typePage =
+    final Map<String, dynamic> item =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: () => typePage['type'] == true
-            ? Navigator.pushNamed(context, '/home-mahasiswa')
-            : showDialog<void>(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return const Dialoginfo(
-                    title:
-                        'Rencana Kegiatan, Kendala,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!',
-                    height: 370,
-                    type: false,
-                  );
-                },
-              ),
+        // onTap: () => typePage['type'] == true
+        //     ? Navigator.pushNamed(context, '/home-mahasiswa')
+        //     : showDialog<void>(
+        //         context: context,
+        //         barrierDismissible: true,
+        //         builder: (BuildContext context) {
+        //           return const Dialoginfo(
+        //             title:
+        //                 'Rencana Kegiatan, Kendala,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!',
+        //             height: 370,
+        //             type: false,
+        //           );
+        //         },
+        //       ),
         child: Stack(
           children: [
-            Image.asset(
-              "assets/images/bg_scan_1.png",
+            SvgPicture.asset(
+              "assets/images/${item['bg']}",
               height: 202.h,
               fit: BoxFit.fill,
             ),
@@ -48,13 +46,10 @@ class Scancard extends StatelessWidget {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  SizedBox(height: 28.h),
+                  SizedBox(height: 44.h),
                   SvgPicture.asset(
-                    typePage['type'] == true
-                        ? "assets/images/bg_scan_In.svg"
-                        : "assets/images/bg_scan_out.svg",
-                    width: 300.w,
-                    height: 140.h,
+                    'assets/images/${item['card']}',
+                    width: 320.w,
                     fit: BoxFit.fill,
                   ),
                   SizedBox(height: 45.h),

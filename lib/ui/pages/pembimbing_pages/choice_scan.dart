@@ -48,42 +48,16 @@ class ChoiceScan extends StatelessWidget {
                       textScaleFactor: 1,
                     ),
                     SizedBox(height: 34.h),
-                    Container(
-                      height: 50.h,
-                      width: 170.w,
-                      decoration: BoxDecoration(
-                        color: kWhiteColor,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Datang',
-                          style: blueTextStyle.copyWith(
-                            fontSize: 14.sp,
-                            fontWeight: semiBold,
-                          ),
-                          textScaleFactor: 1,
-                        ),
-                      ),
+                    const ButtonChoice(
+                      title: 'Datang',
+                      bg: 'bg_scan_2.svg',
+                      card: 'bg_presensi_in.svg',
                     ),
                     SizedBox(height: 16.h),
-                    Container(
-                      height: 50.h,
-                      width: 170.w,
-                      decoration: BoxDecoration(
-                        color: kWhiteColor,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Pulang',
-                          style: blueTextStyle.copyWith(
-                            fontSize: 14.sp,
-                            fontWeight: semiBold,
-                          ),
-                          textScaleFactor: 1,
-                        ),
-                      ),
+                    const ButtonChoice(
+                      title: 'Pulang',
+                      bg: 'bg_scan_2.svg',
+                      card: 'bg_presensi_out.svg',
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -101,6 +75,47 @@ class ChoiceScan extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ButtonChoice extends StatelessWidget {
+  const ButtonChoice({
+    super.key,
+    required this.title,
+    required this.bg,
+    required this.card,
+  });
+
+  final String title;
+  final String bg, card;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(
+        context,
+        '/scan-card',
+        arguments: {'bg': bg, 'card': card},
+      ),
+      child: Container(
+        height: 50.h,
+        width: 170.w,
+        decoration: BoxDecoration(
+          color: kWhiteColor,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: blueTextStyle.copyWith(
+              fontSize: 14.sp,
+              fontWeight: semiBold,
+            ),
+            textScaleFactor: 1,
+          ),
+        ),
       ),
     );
   }
