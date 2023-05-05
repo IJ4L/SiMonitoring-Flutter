@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simor/shared/themes.dart';
+import 'package:simor/ui/widgets/costume_dialog.dart';
 
 class Scancard extends StatelessWidget {
   const Scancard({super.key});
@@ -12,7 +14,20 @@ class Scancard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, item['tap']),
+        onTap: item['isDialog']
+            ? () => showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return const Dialoginfo(
+                      title:
+                          'Rencana Kegiatan, Kendala,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!',
+                      height: 370,
+                      type: false,
+                    );
+                  },
+                )
+            : () => Navigator.pushNamed(context, item['tap']),
         child: Stack(
           children: [
             SvgPicture.asset(
@@ -42,7 +57,7 @@ class Scancard extends StatelessWidget {
                   SizedBox(height: 45.h),
                   Text(
                     'Scan Kartu Anda!',
-                    style: TextStyle(
+                    style: blackTextStyle.copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 20.sp,
                     ),

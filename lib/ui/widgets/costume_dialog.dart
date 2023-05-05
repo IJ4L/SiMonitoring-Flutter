@@ -62,7 +62,13 @@ class Dialoginfo extends StatelessWidget {
                                 context,
                                 '/scan-card',
                                 (route) => false,
-                                arguments: {'type': pageTo},
+                                arguments: {
+                                  'type': pageTo,
+                                  'bg': 'bg_scan_1.svg',
+                                  'card': 'bg_scan_out.svg',
+                                  'height': 38.h,
+                                  'isDialog': true
+                                },
                               );
                       }
                     : () {

@@ -91,7 +91,8 @@ class Loginpage extends StatelessWidget {
                                 'bg': 'bg_scan_1.svg',
                                 'card': 'bg_scan_In.svg',
                                 'height': 38.h,
-                                'tap': '/home-mahasiswa'
+                                'tap': '/home-mahasiswa',
+                                'isDialog': false,
                               },
                             ),
                           );
