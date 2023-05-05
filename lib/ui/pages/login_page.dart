@@ -88,8 +88,10 @@ class Loginpage extends StatelessWidget {
                               context,
                               '/scan-card',
                               arguments: {
-                                'bg': 'assets/images/bg_scan_1.svg',
+                                'bg': 'bg_scan_1.svg',
                                 'card': 'bg_scan_In.svg',
+                                'height': 38.h,
+                                'tap': '/home-mahasiswa'
                               },
                             ),
                           );

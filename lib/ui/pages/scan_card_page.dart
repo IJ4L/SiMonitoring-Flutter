@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:simor/ui/widgets/dialog_absen_widget.dart';
 
 class Scancard extends StatelessWidget {
   const Scancard({super.key});
@@ -13,7 +12,7 @@ class Scancard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: () => dialogAbsen(context, item['status']),
+        onTap: () => Navigator.pushNamed(context, item['tap']),
         child: Stack(
           children: [
             SvgPicture.asset(
@@ -34,7 +33,7 @@ class Scancard extends StatelessWidget {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  SizedBox(height: 44.h),
+                  SizedBox(height: item['height']),
                   SvgPicture.asset(
                     'assets/images/${item['card']}',
                     width: 320.w,
