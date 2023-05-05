@@ -13,7 +13,7 @@ class Scancard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: () => dialogAbsen(context, 'Datang'),
+        onTap: () => dialogAbsen(context, item['status']),
         child: Stack(
           children: [
             SvgPicture.asset(

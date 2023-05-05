@@ -58,6 +58,7 @@ class ChoiceScan extends StatelessWidget {
                       title: 'Pulang',
                       bg: 'bg_scan_2.svg',
                       card: 'bg_presensi_out.svg',
+                      status: 'Pulang',
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -86,10 +87,12 @@ class ButtonChoice extends StatelessWidget {
     required this.title,
     required this.bg,
     required this.card,
+    this.status = 'Datang',
   });
 
   final String title;
   final String bg, card;
+  final String status;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +100,7 @@ class ButtonChoice extends StatelessWidget {
       onTap: () => Navigator.pushNamed(
         context,
         '/scan-card',
-        arguments: {'bg': bg, 'card': card},
+        arguments: {'bg': bg, 'card': card, 'status': status},
       ),
       child: Container(
         height: 50.h,

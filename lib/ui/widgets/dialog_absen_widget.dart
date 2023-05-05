@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/shared/themes.dart';
 
 Future<void> dialogAbsen(BuildContext context, String status) {
@@ -32,22 +33,30 @@ Future<void> dialogAbsen(BuildContext context, String status) {
                     ),
                     textScaleFactor: 1.0,
                   ),
-                  // GestureDetector(
-                  //   onTap: () => Navigator.pop(context),
-                  //   child: Image.asset(
-                  //     "assets/images/kali.png",
-                  //     width: 12.0.w,
-                  //     height: 12.0.h,
-                  //     fit: BoxFit.fill,
-                  //   ),
-                  // ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: SvgPicture.asset(
+                      "assets/icons/back.svg",
+                      width: 12.w,
+                      height: 12.h,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: 14.h),
-              const Text(
-                'Pastikan Foto Pada Kartu Sesuai Dengan\nWajah Asli Mahasiswa',
-                style: TextStyle(color: kGreyColor, fontSize: 13, height: 1.6),
-                textScaleFactor: 1.0,
+              SizedBox(height: 6.h),
+              Row(
+                children: [
+                  Text(
+                    'Pastikan Foto Pada Kartu Sesuai Dengan\nWajah Asli Mahasiswa',
+                    style: TextStyle(
+                      color: kGreyColor,
+                      fontSize: 11.sp,
+                      height: 1.6,
+                    ),
+                    textScaleFactor: 1.0,
+                  ),
+                ],
               ),
               Container(
                 height: 146.r,
@@ -103,23 +112,26 @@ Future<void> dialogAbsen(BuildContext context, String status) {
                 ),
               ),
               SizedBox(height: 12.h),
-              Container(
-                height: 44.h,
-                width: 190.w,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: kPrimaryColor,
-                  ),
-                  borderRadius: BorderRadius.circular(12.w),
-                ),
-                child: Center(
-                  child: Text(
-                    'Batal',
-                    style: blueTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: semiBold,
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  height: 44.h,
+                  width: 190.w,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: kPrimaryColor,
                     ),
-                    textScaleFactor: 1.0,
+                    borderRadius: BorderRadius.circular(12.w),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Batal',
+                      style: blueTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: semiBold,
+                      ),
+                      textScaleFactor: 1.0,
+                    ),
                   ),
                 ),
               )

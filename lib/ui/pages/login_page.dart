@@ -86,8 +86,11 @@ class Loginpage extends StatelessWidget {
                             progres: isLoading,
                             ontap: () => Navigator.pushReplacementNamed(
                               context,
-                              '/home-pembimbing',
-                              arguments: {'type': true},
+                              '/scan-card',
+                              arguments: {
+                                'bg': 'assets/images/bg_scan_1.svg',
+                                'card': 'bg_scan_In.svg',
+                              },
                             ),
                           );
                         },
