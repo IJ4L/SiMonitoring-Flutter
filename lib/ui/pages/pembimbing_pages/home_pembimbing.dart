@@ -80,7 +80,7 @@ class Homepembimbing extends StatelessWidget {
                     ),
                     Container(
                       height: 0.4.h,
-                      width: 230.w,
+                      width: 230.spMin,
                       margin: EdgeInsets.only(top: 10.h),
                       decoration: BoxDecoration(
                         color: kBlackColor.withOpacity(0.1),
