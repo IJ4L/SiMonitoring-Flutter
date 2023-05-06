@@ -111,7 +111,8 @@ class ButtonChoice extends StatelessWidget {
           'card': card,
           'status': status,
           'tap': tap,
-          'height': 44.h
+          'height': 44.h,
+          'typePage': false,
         },
       ),
       child: Container(

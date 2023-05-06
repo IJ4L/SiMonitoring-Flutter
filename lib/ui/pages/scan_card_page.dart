@@ -14,20 +14,22 @@ class Scancard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: item['isDialog']
-            ? () => showDialog<void>(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return const Dialoginfo(
-                      title:
-                          'Rencana Kegiatan, Kendala,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!',
-                      height: 370,
-                      type: false,
-                    );
-                  },
-                )
-            : () => Navigator.pushNamed(context, item['tap']),
+        onTap: item['typePage']
+            ? item['isDialog']
+                ? () => showDialog<void>(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) {
+                        return const Dialoginfo(
+                          title:
+                              'Rencana Kegiatan, Kendala,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!',
+                          height: 370,
+                          type: false,
+                        );
+                      },
+                    )
+                : () => Navigator.pushNamed(context, item['tap'])
+            : item['tap'],
         child: Stack(
           children: [
             SvgPicture.asset(
