@@ -67,7 +67,8 @@ class Dialoginfo extends StatelessWidget {
                                   'bg': 'bg_scan_1.svg',
                                   'card': 'bg_scan_out.svg',
                                   'height': 38.h,
-                                  'isDialog': true
+                                  'isDialog': true,
+                                  'typePage': true
                                 },
                               );
                       }

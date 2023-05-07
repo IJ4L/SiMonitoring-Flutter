@@ -80,26 +80,28 @@ class Loginpage extends StatelessWidget {
                       child: BlocBuilder<LodingButtonCubit, bool>(
                         builder: (context, isLoading) {
                           return Costumebutton(
-                              title: 'Login',
-                              colorTitle: const Color(0xff2A55C9),
-                              colorButton: Colors.white,
-                              progres: isLoading,
-                              ontap: () => Navigator.pushNamed(
-                                    context,
-                                    '/home-pembimbing',
-                                  )
-                              // Navigator.pushReplacementNamed(
-                              //   context,
-                              //   '/scan-card',
-                              //   arguments: {
-                              //     'bg': 'bg_scan_1.svg',
-                              //     'card': 'bg_scan_In.svg',
-                              //     'height': 38.h,
-                              //     'tap': '/home-mahasiswa',
-                              //     'isDialog': false,
-                              //   },
-                              // ),
-                              );
+                            title: 'Login',
+                            colorTitle: const Color(0xff2A55C9),
+                            colorButton: Colors.white,
+                            progres: isLoading,
+                            ontap:
+                                // () => Navigator.pushNamed(
+                                //       context,
+                                //       '/home-pembimbing',
+                                //     )
+                                () => Navigator.pushReplacementNamed(
+                              context,
+                              '/scan-card',
+                              arguments: {
+                                'bg': 'bg_scan_1.svg',
+                                'card': 'bg_scan_In.svg',
+                                'height': 38.h,
+                                'tap': '/home-mahasiswa',
+                                'isDialog': false,
+                                'typePage': true
+                              },
+                            ),
+                          );
                         },
                       ),
                     ),
