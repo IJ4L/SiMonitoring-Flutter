@@ -7,11 +7,13 @@ const Color kWhiteColor = Color(0xffFFFFFF);
 const Color kGreyColor = Colors.grey;
 const Color kBlackColor = Colors.black;
 const Color kTransparantColor = Colors.transparent;
+const Color kYellowColor = Color(0xffFABA06);
 
 TextStyle blackTextStyle = const TextStyle(color: kBlackColor);
 TextStyle whiteTextStyle = const TextStyle(color: kWhiteColor);
 TextStyle blueTextStyle = const TextStyle(color: kPrimaryColor);
 TextStyle orangeTextStyle = const TextStyle(color: kSecondColor);
+TextStyle yellowTextStyle = const TextStyle(color: kYellowColor);
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;

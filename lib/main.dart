@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/index_cubit.dart';
+import 'package:simor/ui/pages/dosen_pages/home_dosen_page.dart';
 import 'package:simor/ui/pages/login_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/home_mahasiswa.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/kegiatan_page.dart';
@@ -28,7 +29,6 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => IndexCubit()),
-          // BlocProvider(create: (context) => AuthCubit()),
         ],
         child: MaterialApp(
           title: 'SiMonitoring',
@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
             '/kegiatan-mahasiswa': (context) => const Kegiatanmahasiswa(),
             '/home-pembimbing': (context) => const Homepembimbing(),
             '/choice-scan': (context) => const ChoiceScan(),
+            '/home-dosen': (context) => const HomeDosenPage(),
           },
         ),
       ),
