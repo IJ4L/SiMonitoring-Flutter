@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => IndexCubit()),
+          // BlocProvider(create: (context) => AuthCubit()),
         ],
         child: MaterialApp(
           title: 'SiMonitoring',
