@@ -11,13 +11,13 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthLoginSuccess extends AuthState {
-  final String token;
+class Authuccess extends AuthState {}
 
-  const AuthLoginSuccess({required this.token});
+class AuthFailed extends AuthState {
+  final String message;
+
+  const AuthFailed(this.message);
 
   @override
-  List<Object> get props => [token];
+  List<Object> get props => [message];
 }
-
-class AuthLoginFailed extends AuthState {}
