@@ -122,8 +122,9 @@ class LokasiPplPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    cardName('Dosen Pembimbing', 'Reza Maulana'),
-                    cardName('Pembimbing Lapangan', 'Rini Apriliani'),
+                    cardName('Dosen Pembimbing', 'Reza Maulana', true, 116),
+                    cardName(
+                        'Pembimbing Lapangan', 'Rini Apriliani', true, 116),
                   ],
                 ),
               ],
@@ -132,20 +133,36 @@ class LokasiPplPage extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               itemBuilder: (context, index) {
-                return Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(12.r),
-                  decoration: BoxDecoration(
-                    color: kWhiteColor,
-                    borderRadius: BorderRadius.circular(12.r),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x19000000),
-                        blurRadius: 2,
-                      ),
-                    ],
+                return GestureDetector(
+                  onTap: () => showDialog<void>(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        contentPadding: EdgeInsets.zero,
+                        insetPadding: EdgeInsets.zero,
+                        content: dialogMahasiswa(context),
+                      );
+                    },
                   ),
-                  child: const CostumeCardMhs(),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(12.r),
+                    decoration: BoxDecoration(
+                      color: kWhiteColor,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x19000000),
+                          blurRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: const CostumeCardMhs(),
+                  ),
                 );
               },
               separatorBuilder: (_, index) => SizedBox(height: 12.h),
@@ -158,13 +175,126 @@ class LokasiPplPage extends StatelessWidget {
     );
   }
 
-  Container cardName(String title, String subtitle) {
+  Container dialogMahasiswa(BuildContext context) {
+    return Container(
+      height: 460.h,
+      width: 300.w,
+      decoration: BoxDecoration(
+        color: kWhiteColor,
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.r),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Senin, 13 Juni 2022',
+                  style: blackTextStyle.copyWith(),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.close,
+                    color: kBlackColor,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: 164.r,
+            width: 164.r,
+            margin: EdgeInsets.symmetric(vertical: 14.h),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(164.r / 2),
+              border: Border.all(
+                width: 4.r,
+                color: kPrimaryColor,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              cardName('Jam Datang', '12.30', false, 86),
+              cardName('Jam Pulang', '16.30', false, 86),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: EdgeInsets.only(
+                  left: 16.w,
+                  bottom: 12.h,
+                  top: 22.h,
+                ),
+                child: Text(
+                  'Deskripsi Kegiatan: ',
+                  textScaleFactor: 1,
+                  style: blackTextStyle.copyWith(
+                    fontWeight: regular,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(6.r),
+                margin: EdgeInsets.only(right: 16.w),
+                decoration: BoxDecoration(
+                  color: kSecondColor,
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                child: Center(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/clock.svg',
+                      ),
+                      SizedBox(width: 4.h),
+                      Text(
+                        '12.30',
+                        style: whiteTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.all(16.r),
+            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.r),
+              border: Border.all(color: kBlackColor),
+            ),
+            child: Text(
+              "Lorem ipsum dolor sit amedo eiusmod empor incididunt ut sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+              textScaleFactor: 1,
+              style: blackTextStyle.copyWith(
+                fontWeight: regular,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container cardName(
+      String title, String subtitle, bool bgColor, double width) {
     return Container(
       height: 40.h,
-      width: 116.w,
+      width: width.w,
       margin: EdgeInsets.only(right: 8.w),
       decoration: BoxDecoration(
-        color: kWhiteColor.withOpacity(0.2),
+        color: bgColor ? kWhiteColor.withOpacity(0.2) : kPrimaryColor,
         borderRadius: BorderRadius.circular(6.r),
       ),
       child: Column(

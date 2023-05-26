@@ -86,7 +86,7 @@ class Loginpage extends StatelessWidget {
                               progres: isLoading,
                               ontap: () => Navigator.pushNamed(
                                     context,
-                                    '/home-dosen',
+                                    '/akhir-ppl',
                                   )
                               //     () => Navigator.pushReplacementNamed(
                               //   context,

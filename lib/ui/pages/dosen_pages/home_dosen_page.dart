@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/shared/themes.dart';
+import 'package:simor/ui/widgets/costume_button.dart';
 import 'package:simor/ui/widgets/date_picker.dart';
 
 class HomeDosenPage extends StatelessWidget {
@@ -75,53 +76,70 @@ class HomeDosenPage extends StatelessWidget {
             ),
           ),
           const DatePicker(),
-          Container(
-            height: 52.h,
-            width: double.infinity,
-            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: kYellowColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: kYellowColor),
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/error.svg',
-                  width: 24.r,
-                  height: 24.r,
-                ),
-                SizedBox(width: 14.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Info Kendala',
-                      style: yellowTextStyle.copyWith(fontWeight: semiBold),
-                      textScaleFactor: 1,
+          GestureDetector(
+            onTap: () => showDialog<void>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  contentPadding: EdgeInsets.zero,
+                  insetPadding: EdgeInsets.symmetric(horizontal: 16.w),
+                  content: Container(
+                    height: 360.h,
+                    decoration: BoxDecoration(
+                      color: kWhiteColor,
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
-                    SizedBox(height: 6.h),
-                    SizedBox(
-                      width: 220.w,
-                      child: Text(
-                        'Kendala di lokasi PPL (Makassarssssssssssssssss Digi ...',
-                        style: yellowTextStyle.copyWith(fontWeight: regular),
-                        textScaleFactor: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CardKendala(fade: true),
+                        Container(
+                          margin: EdgeInsets.only(left: 16.w, bottom: 12.h),
+                          child: Text(
+                            'Kendala',
+                            textScaleFactor: 1,
+                            style: blackTextStyle.copyWith(
+                              fontWeight: regular,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(16.r),
+                          margin: EdgeInsets.symmetric(horizontal: 16.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            border: Border.all(color: kBlackColor),
+                          ),
+                          child: Text(
+                            "Lorem ipsum dolor sit amedo eiusmod tempor incididunt uttempor incididunt uteiusmod tempor incididunt ut sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                            textScaleFactor: 1,
+                            style: blackTextStyle.copyWith(
+                              fontWeight: regular,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 76.w),
+                          child: Costumebutton(
+                            title: 'Terima',
+                            ontap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                        const Spacer(),
+                      ],
                     ),
-                  ],
-                ),
-                const Spacer(),
-                const Icon(
-                  Icons.close,
-                  color: kYellowColor,
-                  size: 24.0,
-                ),
-              ],
+                  ),
+                );
+              },
             ),
+            child: const CardKendala(fade: false),
           ),
           Container(
             margin: EdgeInsets.only(left: 16.w, bottom: 18.h),
@@ -239,6 +257,68 @@ class HomeDosenPage extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CardKendala extends StatelessWidget {
+  const CardKendala({
+    super.key,
+    required this.fade,
+  });
+
+  final bool fade;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      decoration: BoxDecoration(
+        color: kYellowColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: kYellowColor),
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            'assets/icons/error.svg',
+            width: 24.r,
+            height: 24.r,
+          ),
+          SizedBox(width: 14.w),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Info Kendala',
+                style: yellowTextStyle.copyWith(fontWeight: semiBold),
+                textScaleFactor: 1,
+              ),
+              SizedBox(height: 6.h),
+              SizedBox(
+                width: 220.w,
+                child: Text(
+                  'Jl. A. P. Pettarani No.13, Sinrijala, Kec. Panakkukang, Kota Makassar',
+                  style: yellowTextStyle.copyWith(fontWeight: regular),
+                  textScaleFactor: 1,
+                  overflow: fade ? TextOverflow.fade : TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          fade
+              ? const SizedBox()
+              : const Icon(
+                  Icons.close,
+                  color: kYellowColor,
+                  size: 24.0,
+                ),
+        ],
       ),
     );
   }
