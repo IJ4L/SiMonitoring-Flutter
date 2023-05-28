@@ -1,41 +1,43 @@
 import 'dart:convert';
 
-UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+MahasiswaModel mahasiswaModelFromJson(String str) =>
+    MahasiswaModel.fromJson(json.decode(str));
 
-String userModelToJson(UserModel data) => json.encode(data.toJson());
-
-class UserModel {
-  final int id;
-  final String username;
-  final String roles;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+class MahasiswaModel {
   final String nama;
+  final String roles;
+  final String nim;
+  final String dosenPembimbing;
+  final String pembimbingLapangan;
+  final String lokasi;
+  final dynamic datang;
+  final dynamic pulang;
+  final List<dynamic> kegiatan;
+  final dynamic kendala;
 
-  UserModel({
-    required this.id,
-    required this.username,
-    required this.roles,
-    required this.createdAt,
-    required this.updatedAt,
+  MahasiswaModel({
     required this.nama,
+    required this.roles,
+    required this.nim,
+    required this.dosenPembimbing,
+    required this.pembimbingLapangan,
+    required this.lokasi,
+    required this.datang,
+    required this.pulang,
+    required this.kegiatan,
+    required this.kendala,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"],
-        username: json["username"],
-        roles: json["roles"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+  factory MahasiswaModel.fromJson(Map<String, dynamic> json) => MahasiswaModel(
         nama: json["nama"],
+        roles: json["roles"],
+        nim: json["nim"],
+        dosenPembimbing: json["dosen_pembimbing"],
+        pembimbingLapangan: json["pembimbing_lapangan"],
+        lokasi: json["lokasi"],
+        datang: json["datang"],
+        pulang: json["pulang"],
+        kegiatan: List<dynamic>.from(json["kegiatan"].map((x) => x)),
+        kendala: json["kendala"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "username": username,
-        "roles": roles,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "nama": nama,
-      };
 }

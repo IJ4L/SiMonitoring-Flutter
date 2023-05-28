@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:simor/models/user_model.dart';
 
 class AuthRepository {
   final http.Client client;
@@ -12,17 +15,16 @@ class AuthRepository {
   Future<Either<String, void>> login(String username, String password) async {
     try {
       final response = await client.post(
-        Uri.parse('http://192.168.123.197:8000/api/login'),
-        body: {
-          'username': username,
-          'password': password,
-        },
+        Uri.parse('http://192.168.1.3:8000/api/login'),
+        headers: {'accept': 'application/json'},
+        body: {'username': username, 'password': password},
       );
 
       String token = response.body;
 
       if (response.statusCode == 200) {
         await setToken(token);
+        return const Right(null);
       }
 
       return Left(response.statusCode.toString());
@@ -31,23 +33,38 @@ class AuthRepository {
     }
   }
 
-  Future<Either<String, String>> getDataUser(String token) async {
+  Future<Either<String, MahasiswaModel>> getDataMahasiswa() async {
     try {
+      final token = await getUserToken();
+
       final response = await client.get(
-        Uri.parse('http://192.168.123.197:8000/api/me'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
+        Uri.parse('http://192.168.1.3:8000/api/me'),
+        headers: {'Authorization': 'Bearer $token'},
       );
 
+      final data = jsonDecode(response.body);
+
       if (response.statusCode == 200) {
-        return Right(response.body);
+        return Right(MahasiswaModel.fromJson(data['data']));
       }
 
       return Left(response.statusCode.toString());
     } catch (e) {
       return Left(e.toString());
     }
+  }
+
+  Future<String> getRoleUser() async {
+    final token = await getUserToken();
+
+    final response = await client.get(
+      Uri.parse('http://192.168.1.3:8000/api/me'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    final data = jsonDecode(response.body);
+
+    return data['data']['roles'];
   }
 
   Future<void> setToken(String token) {

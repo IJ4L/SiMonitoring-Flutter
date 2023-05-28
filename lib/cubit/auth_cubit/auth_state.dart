@@ -11,7 +11,7 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class Authuccess extends AuthState {}
+class AuthSuccess extends AuthState {}
 
 class AuthFailed extends AuthState {
   final String message;

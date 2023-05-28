@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/index_cubit.dart';
+import 'package:simor/cubit/obscure_text_cubit.dart';
+import 'package:simor/services/auth_remote_repository.dart';
 import 'package:simor/ui/pages/dosen_pages/akhir_ppl_page.dart';
 import 'package:simor/ui/pages/dosen_pages/home_dosen_page.dart';
 import 'package:simor/ui/pages/dosen_pages/lokasi_ppl_page.dart';
@@ -14,13 +19,20 @@ import 'package:simor/ui/pages/pembimbing_pages/home_pembimbing.dart';
 import 'package:simor/ui/pages/scan_card_page.dart';
 import 'package:simor/ui/pages/splash_screen.dart';
 
+import 'cubit/loading_button_cubit.dart';
+import 'package:http/http.dart' as http;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  runApp(MyApp(prefs: prefs));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final SharedPreferences prefs;
+
+  const MyApp({super.key, required this.prefs});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +43,13 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => IndexCubit()),
+          BlocProvider(create: (context) => LodingButtonCubit()),
+          BlocProvider(create: (context) => ObscureTextCubit()),
+          BlocProvider(
+            create: (context) => AuthCubit(
+              AuthRepository(client: http.Client(), sharedPreferences: prefs),
+            ),
+          )
         ],
         child: MaterialApp(
           title: 'SiMonitoring',

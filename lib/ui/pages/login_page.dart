@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/cubit/obscure_text_cubit.dart';
 import 'package:simor/shared/themes.dart';
 
+import '../../cubit/auth_cubit/auth_cubit.dart';
 import '../../cubit/loading_button_cubit.dart';
+import '../../cubit/obscure_text_cubit.dart';
 import '../widgets/costume_button.dart';
 import '../widgets/form_input_with_title.dart';
 
@@ -13,6 +14,8 @@ class Loginpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController usernameController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     return Scaffold(
       body: Stack(
         children: [
@@ -54,57 +57,52 @@ class Loginpage extends StatelessWidget {
                       textScaleFactor: 1,
                     ),
                     SizedBox(height: 48.h),
-                    const TextfieldMaker(
+                    TextfieldMaker(
                       title: 'Nim',
                       showIcon: false,
+                      controller: usernameController,
                     ),
                     SizedBox(height: 16.h),
-                    BlocProvider(
-                      create: (context) => ObscureTextCubit(),
-                      child: BlocBuilder<ObscureTextCubit, bool>(
-                        builder: (context, isObscure) {
-                          return TextfieldMaker(
-                            title: 'Password',
-                            obscure: isObscure,
-                            showIcon: true,
-                            icon: isObscure
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          );
-                        },
-                      ),
+                    BlocBuilder<ObscureTextCubit, bool>(
+                      builder: (context, state) {
+                        return TextfieldMaker(
+                          title: 'Password',
+                          obscure: state,
+                          showIcon: true,
+                          icon: state ? Icons.visibility : Icons.visibility_off,
+                          controller: passwordController,
+                        );
+                      },
                     ),
                     SizedBox(height: 32.h),
-                    BlocProvider(
-                      create: (context) => LodingButtonCubit(),
-                      child: BlocBuilder<LodingButtonCubit, bool>(
-                        builder: (context, isLoading) {
-                          return Costumebutton(
-                            title: 'Login',
-                            colorTitle: const Color(0xff2A55C9),
-                            colorButton: Colors.white,
-                            progres: isLoading,
-                            ontap:
-                                // () => Navigator.pushNamed(
-                                //       context,
-                                //       '/home-dosen',
-                                //     )
-                                () => Navigator.pushReplacementNamed(
-                              context,
-                              '/scan-card',
-                              arguments: {
-                                'bg': 'bg_scan_1.svg',
-                                'card': 'bg_scan_In.svg',
-                                'height': 38.h,
-                                'tap': '/home-mahasiswa',
-                                'isDialog': false,
-                                'typePage': true
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                    BlocBuilder<LodingButtonCubit, bool>(
+                      builder: (context, state) {
+                        return Costumebutton(
+                          title: 'Login',
+                          colorTitle: const Color(0xff2A55C9),
+                          colorButton: Colors.white,
+                          progres: state,
+                          ontap: () {
+                            context.read<AuthCubit>().login(
+                                  usernameController.text,
+                                  passwordController.text,
+                                );
+                            // Navigator.pushReplacementNamed(
+                            //   context,
+                            //   '/scan-card',
+                            //   arguments: {
+                            //     'bg': 'bg_scan_1.svg',
+                            //     'card': 'bg_scan_In.svg',
+                            //     'height': 38.h,
+                            //     'tap': '/home-mahasiswa',
+                            //     'isDialog': false,
+                            //     'typePage': true
+                            //   },
+                            // );
+                          },
+                        );
+                      },
+                    )
                   ],
                 ),
               ),

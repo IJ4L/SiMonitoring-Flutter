@@ -11,11 +11,13 @@ class TextfieldMaker extends StatelessWidget {
     this.obscure = false,
     this.icon = Icons.visibility,
     this.showIcon = false,
+    required this.controller,
   });
 
   final String title;
   final bool obscure, showIcon;
   final IconData icon;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class TextfieldMaker extends StatelessWidget {
           ),
         ),
         TextField(
+          controller: controller,
           cursorColor: Colors.white,
           style: const TextStyle(color: Colors.white),
           obscureText: obscure,
@@ -55,10 +58,7 @@ class TextfieldMaker extends StatelessWidget {
                     onTap: () {
                       context.read<ObscureTextCubit>().toggleObscure();
                     },
-                    child: Icon(
-                      icon,
-                      color: Colors.white,
-                    ),
+                    child: Icon(icon, color: Colors.white),
                   )
                 : null,
           ),

@@ -14,16 +14,16 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepository.login(username, password);
     result.fold(
       (failed) => emit(AuthFailed(failed)),
-      (success) => emit(Authuccess()),
+      (success) => emit(AuthSuccess()),
     );
   }
 
-  Future<void> getDataUser(String username, String password) async {
-    emit(AuthLoading());
-    final result = await authRepository.login(username, password);
-    result.fold(
-      (failed) => emit(AuthFailed(failed)),
-      (success) => emit(Authuccess()),
-    );
-  }
+  // Future<void> getDataUser() async {
+  //   emit(AuthLoading());
+  //   final result = await authRepository.getDataUser();
+  //   result.fold(
+  //     (failed) => emit(AuthFailed(failed)),
+  //     (success) => emit(AuthSuccess()),
+  //   );
+  // }
 }
