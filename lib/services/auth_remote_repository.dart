@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:simor/models/user_model.dart';
+import 'package:simor/models/dosen_pembimbing_model.dart';
+import 'package:simor/models/mahasiswa_model.dart';
 
 class AuthRepository {
   final http.Client client;
@@ -15,7 +16,7 @@ class AuthRepository {
   Future<Either<String, void>> login(String username, String password) async {
     try {
       final response = await client.post(
-        Uri.parse('http://192.168.1.3:8000/api/login'),
+        Uri.parse('http://192.168.1.5:8000/api/login'),
         headers: {'accept': 'application/json'},
         body: {'username': username, 'password': password},
       );
@@ -38,7 +39,7 @@ class AuthRepository {
       final token = await getUserToken();
 
       final response = await client.get(
-        Uri.parse('http://192.168.1.3:8000/api/me'),
+        Uri.parse('http://192.168.1.5:8000/api/me'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
@@ -54,11 +55,32 @@ class AuthRepository {
     }
   }
 
+  Future<Either<String, DosenPembimbinfModel>> getDataDosenPembimbing() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('http://192.168.1.5:8000/api/me'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        return Right(DosenPembimbinfModel.fromJson(data['data']));
+      }
+
+      return Left(response.statusCode.toString());
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
   Future<String> getRoleUser() async {
     final token = await getUserToken();
 
     final response = await client.get(
-      Uri.parse('http://192.168.1.3:8000/api/me'),
+      Uri.parse('http://192.168.1.5:8000/api/me'),
       headers: {'Authorization': 'Bearer $token'},
     );
 

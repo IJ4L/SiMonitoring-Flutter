@@ -50,7 +50,7 @@ class Scancard extends StatelessWidget {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  SizedBox(height: 68.h),
+                  SizedBox(height: 36.h),
                   SvgPicture.asset(
                     'assets/images/${item['card']}',
                     width: 320.w,
