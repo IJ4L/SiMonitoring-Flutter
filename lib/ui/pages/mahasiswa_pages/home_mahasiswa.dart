@@ -130,17 +130,26 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
               Positioned(
                 top: 80.h,
                 left: 110.w,
-                child: Container(
-                  width: 139.r,
-                  height: 139.r,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: kBlackColor,
-                    borderRadius: BorderRadius.circular(139.r / 2),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(139.r / 2),
-                  ),
+                child: BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthMahsiswa) {
+                      return Container(
+                        width: 139.r,
+                        height: 139.r,
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              state.mahasiswaModel.gambar,
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(139.r / 2),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 ),
               ),
             ],

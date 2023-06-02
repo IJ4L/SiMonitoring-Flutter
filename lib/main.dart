@@ -7,12 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/index_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
-import 'package:simor/services/auth_remote_repository.dart';
+import 'package:simor/services/auth_repository.dart';
 import 'package:simor/ui/pages/dosen_pages/akhir_ppl_page.dart';
 import 'package:simor/ui/pages/dosen_pages/home_dosen_page.dart';
 import 'package:simor/ui/pages/dosen_pages/lokasi_ppl_page.dart';
 import 'package:simor/ui/pages/login_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/home_mahasiswa.dart';
+import 'package:simor/ui/pages/mahasiswa_pages/info_scan_card_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/kegiatan_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/pages/pembimbing_pages/choice_scan.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
             '/login': (context) => const Loginpage(),
             '/scan-card': (context) => const Scancard(),
             '/home-mahasiswa': (context) => const Homemahasiswa(),
+            '/info-scan': (context) => const InfoScan(),
             '/take-picture': (context) => const CameraPage(),
             '/kegiatan-mahasiswa': (context) => const Kegiatanmahasiswa(),
             '/home-pembimbing': (context) => const Homepembimbing(),

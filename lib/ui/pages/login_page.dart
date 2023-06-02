@@ -22,14 +22,11 @@ class Loginpage extends StatelessWidget {
           if (state is AuthMahsiswa) {
             Navigator.pushNamed(
               context,
-              '/scan-card',
+              '/info-scan',
               arguments: {
+                'title': 'Datang',
                 'bg': 'bg_scan_1.svg',
                 'card': 'bg_scan_In.svg',
-                'height': 38.h,
-                'tap': '/home-mahasiswa',
-                'isDialog': false,
-                'typePage': true
               },
             );
           }

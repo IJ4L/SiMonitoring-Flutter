@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:simor/models/dosen_pembimbing_model.dart';
 import 'package:simor/models/mahasiswa_model.dart';
-import 'package:simor/services/auth_remote_repository.dart';
+import 'package:simor/services/auth_repository.dart';
 
 part 'auth_state.dart';
 

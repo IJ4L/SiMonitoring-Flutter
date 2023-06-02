@@ -17,6 +17,7 @@ class AuthRepository {
 
   Future<Either<String, void>> login(String username, String password) async {
     try {
+      await removeUserToken();
       final response = await client.post(
         Uri.parse('$baseUrl/login'),
         headers: {'accept': 'application/json'},
@@ -48,7 +49,16 @@ class AuthRepository {
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        return Right(MahasiswaModel.fromJson(data['data']));
+        final model = MahasiswaModel(
+          nama: data['data']['nama'],
+          nim: data['data']['nim'],
+          gambar: data['data']['gambar'],
+          roles: data['data']['roles'],
+          dosenPembimbing: data['data']['dosen_pembimbing'],
+          pembimbingLapangan: data['data']['pembimbing_lapangan'],
+          lokasi: data['data']['lokasi'],
+        );
+        return Right(model);
       }
 
       return Left(response.statusCode.toString());
