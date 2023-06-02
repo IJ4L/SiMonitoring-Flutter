@@ -112,4 +112,27 @@ class AuthRepository {
   Future<void> removeUserToken() {
     return sharedPreferences.remove(_userTokenKey);
   }
+
+  // Future<Either<String, void>> checkDatang() async {
+  //   try {
+  //     String token = await getUserToken();
+  //     final response = await client.get(
+  //       Uri.parse('$baseUrl/mahasiswa/datang/detail_datang_by_tanggal'),
+  //       headers: {
+  //         'accept': 'application/json',
+  //         'Authorization': 'Bearer $token',
+  //       },
+  //     );
+
+  //     final data = jsonDecode(response.body);
+
+  //     if (data['data'][0]['keterangan'].toString() == 'null') {
+  //       return const Right(null);
+  //     }
+
+  //     return const Left("erorr");
+  //   } catch (e) {
+  //     return Left(e.toString());
+  //   }
+  // }
 }
