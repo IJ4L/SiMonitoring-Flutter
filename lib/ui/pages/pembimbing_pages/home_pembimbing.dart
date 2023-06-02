@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/shared/themes.dart';
+import 'package:simor/ui/utils/date_formatter.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
 class Homepembimbing extends StatelessWidget {
@@ -80,7 +81,7 @@ class Homepembimbing extends StatelessWidget {
                     ),
                     Container(
                       height: 0.4.h,
-                      width: 230.spMin,
+                      width: 180.w,
                       margin: EdgeInsets.only(top: 10.h),
                       decoration: BoxDecoration(
                         color: kBlackColor.withOpacity(0.1),
@@ -121,7 +122,7 @@ class Homepembimbing extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  DateTime.now().toString(),
+                  dateFromat(),
                   style: whiteTextStyle.copyWith(
                     fontSize: 16.sp,
                     fontWeight: medium,
@@ -197,7 +198,7 @@ class CardMahasiswa extends StatelessWidget {
                     'Ahmad Ilham',
                     style: TextStyle(
                       fontWeight: medium,
-                      fontSize: 20.sp,
+                      fontSize: 18.sp,
                     ),
                     textScaleFactor: 1,
                   ),
@@ -205,7 +206,7 @@ class CardMahasiswa extends StatelessWidget {
                   Text(
                     '60900121070',
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                       fontWeight: light,
                       fontStyle: FontStyle.italic,
                     ),

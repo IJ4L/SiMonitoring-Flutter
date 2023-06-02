@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/index_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
@@ -48,21 +49,33 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                       child: Column(
                         children: [
                           SizedBox(height: 100.h),
-                          const Infoprofile(
-                            title: 'Nama Mahasiswa:',
-                            value: 'John Doe',
-                          ),
-                          const Infoprofile(
-                            title: 'Nim:',
-                            value: '60900121070',
-                          ),
-                          const Infoprofile(
-                            title: 'Tempat PPL:',
-                            value: 'Makassar Digital Valley',
-                          ),
-                          const Infoprofile(
-                            title: 'Dosen Pembimbing:',
-                            value: 'Reza Maulana',
+                          BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              if (state is AuthMahsiswa) {
+                                final data = state.mahasiswaModel;
+                                return Column(
+                                  children: [
+                                    Infoprofile(
+                                      title: 'Nama Mahasiswa:',
+                                      value: data.nama,
+                                    ),
+                                    Infoprofile(
+                                      title: 'Nim:',
+                                      value: data.nim,
+                                    ),
+                                    Infoprofile(
+                                      title: 'Tempat PPL:',
+                                      value: data.lokasi,
+                                    ),
+                                    Infoprofile(
+                                      title: 'Dosen Pembimbing:',
+                                      value: data.pembimbingLapangan,
+                                    ),
+                                  ],
+                                );
+                              }
+                              return Container();
+                            },
                           ),
                           SizedBox(height: 16.h),
                           Costumebutton(

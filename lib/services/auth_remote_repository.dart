@@ -13,10 +13,12 @@ class AuthRepository {
 
   AuthRepository({required this.client, required this.sharedPreferences});
 
+  final baseUrl = 'http://192.168.1.29:8000/api';
+
   Future<Either<String, void>> login(String username, String password) async {
     try {
       final response = await client.post(
-        Uri.parse('http://192.168.1.5:8000/api/login'),
+        Uri.parse('$baseUrl/login'),
         headers: {'accept': 'application/json'},
         body: {'username': username, 'password': password},
       );
@@ -39,7 +41,7 @@ class AuthRepository {
       final token = await getUserToken();
 
       final response = await client.get(
-        Uri.parse('http://192.168.1.5:8000/api/me'),
+        Uri.parse('$baseUrl/me'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
@@ -60,7 +62,7 @@ class AuthRepository {
       final token = await getUserToken();
 
       final response = await client.get(
-        Uri.parse('http://192.168.1.5:8000/api/me'),
+        Uri.parse('$baseUrl/me'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
@@ -80,7 +82,7 @@ class AuthRepository {
     final token = await getUserToken();
 
     final response = await client.get(
-      Uri.parse('http://192.168.1.5:8000/api/me'),
+      Uri.parse('$baseUrl/me'),
       headers: {'Authorization': 'Bearer $token'},
     );
 
