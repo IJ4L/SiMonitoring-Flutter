@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
+import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/index_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
@@ -78,49 +79,88 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                             },
                           ),
                           SizedBox(height: 16.h),
-                          Costumebutton(
-                            title: 'Datang',
-                            ontap: () => Navigator.pushNamed(
-                              context,
-                              '/take-picture',
-                              arguments: {'type': true, 'inOut': true},
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          Costumebutton(
-                            title: 'Kegiatan',
-                            ontap: () {
-                              index.initial();
-                              Navigator.pushNamed(
-                                context,
-                                '/kegiatan-mahasiswa',
-                                arguments: {'type': true},
-                              );
+                          BlocBuilder<ComeOutCubit, ComeOutState>(
+                            builder: (context, state) {
+                              if (state is ComeOutDatang) {
+                                final data = state.datangModel;
+                                return Column(
+                                  children: [
+                                    data.keterangan == 'null'
+                                        ? Costumebutton(
+                                            title: 'Datang',
+                                            ontap: () => Navigator.pushNamed(
+                                              context,
+                                              '/take-picture',
+                                              arguments: {
+                                                'type': true,
+                                                'inOut': true
+                                              },
+                                            ),
+                                          )
+                                        : Costumebutton(
+                                            title: 'Datang',
+                                            colorButton: kDisableColor,
+                                            ontap: () {},
+                                          ),
+                                    SizedBox(height: 10.h),
+                                    state.datangModel.keterangan != 'null'
+                                        ? Costumebutton(
+                                            title: 'Kegiatan',
+                                            ontap: () {
+                                              index.initial();
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/kegiatan-mahasiswa',
+                                                arguments: {'type': true},
+                                              );
+                                            },
+                                          )
+                                        : Costumebutton(
+                                            title: 'Kegiatan',
+                                            colorButton: kDisableColor,
+                                            ontap: () {},
+                                          ),
+                                    SizedBox(height: 10.h),
+                                    state.datangModel.keterangan != 'null'
+                                        ? Costumebutton(
+                                            title: 'Kendala',
+                                            ontap: () {
+                                              index.initial();
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/kegiatan-mahasiswa',
+                                                arguments: {'type': false},
+                                              );
+                                            },
+                                          )
+                                        : Costumebutton(
+                                            title: 'Kendala',
+                                            colorButton: kDisableColor,
+                                            ontap: () {},
+                                          ),
+                                    SizedBox(height: 10.h),
+                                    state.datangModel.keterangan != 'null'
+                                        ? Costumebutton(
+                                            title: 'Pulang',
+                                            ontap: () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/take-picture',
+                                                arguments: {'inOut': false},
+                                              );
+                                            },
+                                          )
+                                        : Costumebutton(
+                                            title: 'Pulang',
+                                            colorButton: kDisableColor,
+                                            ontap: () {},
+                                          ),
+                                  ],
+                                );
+                              }
+                              return Container();
                             },
-                          ),
-                          SizedBox(height: 10.h),
-                          Costumebutton(
-                            title: 'Kendala',
-                            ontap: () {
-                              index.initial();
-                              Navigator.pushNamed(
-                                context,
-                                '/kegiatan-mahasiswa',
-                                arguments: {'type': false},
-                              );
-                            },
-                          ),
-                          SizedBox(height: 10.h),
-                          Costumebutton(
-                            title: 'Pulang',
-                            ontap: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/take-picture',
-                                arguments: {'inOut': false},
-                              );
-                            },
-                          ),
+                          )
                         ],
                       ),
                     ),

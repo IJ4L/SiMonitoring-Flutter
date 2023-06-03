@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simor/models/datang_model.dart';
 
 class StatusRepository {
   final http.Client client;
@@ -13,7 +14,7 @@ class StatusRepository {
 
   final baseUrl = 'http://192.168.1.10:8000/api';
 
-  Future<Either<String, void>> checkDatang() async {
+  Future<Either<String, DatangModel>> checkDatang() async {
     try {
       String token = await getUserToken();
       final response = await client.get(
@@ -27,8 +28,7 @@ class StatusRepository {
       final data = jsonDecode(response.body);
 
       if (data['data'][0]['keterangan'].toString() == 'null') {
-        print('ok');
-        return const Right(null);
+        return Right(DatangModel.fromJson(data['data'][0]));
       }
 
       return const Left("erorr");

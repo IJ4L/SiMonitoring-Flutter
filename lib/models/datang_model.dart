@@ -25,8 +25,8 @@ class DatangModel {
   factory DatangModel.fromJson(Map<String, dynamic> json) => DatangModel(
         id: json["id"],
         mahasiswaId: json["mahasiswa_id"],
-        gambar: json["gambar"],
-        keterangan: json["keterangan"],
+        gambar: json["gambar"].toString(),
+        keterangan: json["keterangan"].toString(),
         tanggal: DateTime.parse(json["tanggal"]),
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),

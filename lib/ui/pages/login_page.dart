@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/shared/themes.dart';
 
 import '../../cubit/auth_cubit/auth_cubit.dart';
@@ -21,7 +20,6 @@ class Loginpage extends StatelessWidget {
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthMahsiswa) {
-            context.read<ComeOutCubit>().checkDatang();
             Navigator.pushNamed(
               context,
               '/info-scan',

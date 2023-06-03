@@ -13,6 +13,10 @@ class ComeOutLoading extends ComeOutState {}
 
 class ComeOutFailure extends ComeOutState {}
 
-class ComeOutDatang extends ComeOutState {}
+class ComeOutDatang extends ComeOutState {
+  final DatangModel datangModel;
+
+  const ComeOutDatang({required this.datangModel});
+}
 
 class ComeOutPulang extends ComeOutState {}

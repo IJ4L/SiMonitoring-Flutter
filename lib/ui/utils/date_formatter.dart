@@ -7,3 +7,8 @@ String dateFromat() {
 
   return formattedDate;
 }
+
+String formatTanggal(DateTime tanggal) {
+  String tanggalString = DateFormat('yyyy-MM-dd').format(tanggal);
+  return tanggalString;
+}
