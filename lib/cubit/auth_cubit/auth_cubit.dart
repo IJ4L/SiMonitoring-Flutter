@@ -54,15 +54,6 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  // Future<void> checkDatang() async {
-  //   emit(AuthLoading());
-  //   final result = await authRepository.checkDatang();
-  //   result.fold(
-  //     (failed) => emit(AuthFailed(failed)),
-  //     (success) => emit(AuthSuccess()),
-  //   );
-  // }
-
   @override
   void onChange(Change<AuthState> change) {
     super.onChange(change);

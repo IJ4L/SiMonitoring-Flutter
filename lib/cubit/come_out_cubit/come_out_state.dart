@@ -8,3 +8,11 @@ abstract class ComeOutState extends Equatable {
 }
 
 class ComeOutInitial extends ComeOutState {}
+
+class ComeOutLoading extends ComeOutState {}
+
+class ComeOutFailure extends ComeOutState {}
+
+class ComeOutDatang extends ComeOutState {}
+
+class ComeOutPulang extends ComeOutState {}

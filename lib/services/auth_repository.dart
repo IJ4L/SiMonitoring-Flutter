@@ -13,7 +13,7 @@ class AuthRepository {
 
   AuthRepository({required this.client, required this.sharedPreferences});
 
-  final baseUrl = 'http://192.168.1.29:8000/api';
+  final baseUrl = 'http://192.168.1.10:8000/api';
 
   Future<Either<String, void>> login(String username, String password) async {
     try {
@@ -49,16 +49,7 @@ class AuthRepository {
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        final model = MahasiswaModel(
-          nama: data['data']['nama'],
-          nim: data['data']['nim'],
-          gambar: data['data']['gambar'],
-          roles: data['data']['roles'],
-          dosenPembimbing: data['data']['dosen_pembimbing'],
-          pembimbingLapangan: data['data']['pembimbing_lapangan'],
-          lokasi: data['data']['lokasi'],
-        );
-        return Right(model);
+        return Right(MahasiswaModel.fromJson(data['data']));
       }
 
       return Left(response.statusCode.toString());
@@ -112,27 +103,4 @@ class AuthRepository {
   Future<void> removeUserToken() {
     return sharedPreferences.remove(_userTokenKey);
   }
-
-  // Future<Either<String, void>> checkDatang() async {
-  //   try {
-  //     String token = await getUserToken();
-  //     final response = await client.get(
-  //       Uri.parse('$baseUrl/mahasiswa/datang/detail_datang_by_tanggal'),
-  //       headers: {
-  //         'accept': 'application/json',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //     );
-
-  //     final data = jsonDecode(response.body);
-
-  //     if (data['data'][0]['keterangan'].toString() == 'null') {
-  //       return const Right(null);
-  //     }
-
-  //     return const Left("erorr");
-  //   } catch (e) {
-  //     return Left(e.toString());
-  //   }
-  // }
 }
