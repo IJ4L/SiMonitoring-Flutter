@@ -103,7 +103,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                             ontap: () {},
                                           ),
                                     SizedBox(height: 10.h),
-                                    state.datangModel.keterangan != 'null'
+                                    data.keterangan != 'null'
                                         ? Costumebutton(
                                             title: 'Kegiatan',
                                             ontap: () {
@@ -121,7 +121,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                             ontap: () {},
                                           ),
                                     SizedBox(height: 10.h),
-                                    state.datangModel.keterangan != 'null'
+                                    data.keterangan != 'null'
                                         ? Costumebutton(
                                             title: 'Kendala',
                                             ontap: () {
@@ -139,7 +139,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                             ontap: () {},
                                           ),
                                     SizedBox(height: 10.h),
-                                    state.datangModel.keterangan != 'null'
+                                    data.keterangan != 'null'
                                         ? Costumebutton(
                                             title: 'Pulang',
                                             ontap: () {
@@ -173,15 +173,14 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                 child: BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     if (state is AuthMahsiswa) {
+                      final data = state.mahasiswaModel;
                       return Container(
                         width: 139.r,
                         height: 139.r,
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(
-                              state.mahasiswaModel.gambar,
-                            ),
+                            image: NetworkImage(data.gambar),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(139.r / 2),

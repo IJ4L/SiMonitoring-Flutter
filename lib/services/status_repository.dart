@@ -12,7 +12,7 @@ class StatusRepository {
 
   StatusRepository({required this.client, required this.sharedPreferences});
 
-  final baseUrl = 'http://192.168.1.10:8000/api';
+  final baseUrl = 'http://192.168.239.197:8000/api';
 
   Future<Either<String, DatangModel>> checkDatang() async {
     try {
@@ -27,7 +27,8 @@ class StatusRepository {
 
       final data = jsonDecode(response.body);
 
-      if (data['data'][0]['keterangan'].toString() == 'null') {
+      if (data['data'][0]['keterangan'].toString() == 'null' ||
+          data['data'][0]['keterangan'].toString() == 'hadir') {
         return Right(DatangModel.fromJson(data['data'][0]));
       }
 

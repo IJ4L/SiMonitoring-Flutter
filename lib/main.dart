@@ -7,8 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/index_cubit.dart';
+import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
 import 'package:simor/services/auth_repository.dart';
+import 'package:simor/services/mahasiswa_repository.dart';
 import 'package:simor/services/status_repository.dart';
 import 'package:simor/ui/pages/dosen_pages/akhir_ppl_page.dart';
 import 'package:simor/ui/pages/dosen_pages/home_dosen_page.dart';
@@ -58,6 +60,14 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => ComeOutCubit(
               StatusRepository(client: http.Client(), sharedPreferences: prefs),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => MahasiswaCubit(
+              MahasiswaRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
             ),
           )
         ],
