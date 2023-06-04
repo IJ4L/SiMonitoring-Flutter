@@ -6,7 +6,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
-import 'package:simor/cubit/index_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
 import 'package:simor/services/auth_repository.dart';
@@ -49,7 +48,6 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) => MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => IndexCubit()),
           BlocProvider(create: (context) => LodingButtonCubit()),
           BlocProvider(create: (context) => ObscureTextCubit()),
           BlocProvider(

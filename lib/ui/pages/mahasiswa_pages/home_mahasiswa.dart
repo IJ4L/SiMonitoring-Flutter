@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
-import 'package:simor/cubit/index_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
@@ -19,7 +18,6 @@ class Homemahasiswa extends StatefulWidget {
 class _HomemahasiswaState extends State<Homemahasiswa> {
   @override
   Widget build(BuildContext context) {
-    final IndexCubit index = context.read<IndexCubit>();
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -107,7 +105,6 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                         ? Costumebutton(
                                             title: 'Kegiatan',
                                             ontap: () {
-                                              index.initial();
                                               Navigator.pushNamed(
                                                 context,
                                                 '/kegiatan-mahasiswa',
@@ -125,7 +122,6 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                         ? Costumebutton(
                                             title: 'Kendala',
                                             ontap: () {
-                                              index.initial();
                                               Navigator.pushNamed(
                                                 context,
                                                 '/kegiatan-mahasiswa',

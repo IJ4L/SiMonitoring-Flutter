@@ -4,17 +4,26 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../shared/themes.dart';
 
-class FormInputKegiatan extends StatelessWidget {
-  const FormInputKegiatan({
-    super.key,
+class FormInputKegiatan extends StatefulWidget {
+  FormInputKegiatan({
+    Key? key,
     required this.title,
     required this.wrong,
     this.waktu = true,
-  });
+    required this.controller,
+    required this.time,
+  }) : super(key: key);
 
   final String title, wrong;
   final bool waktu;
+  final TextEditingController controller;
+  late final String time;
 
+  @override
+  State<FormInputKegiatan> createState() => _FormInputKegiatanState();
+}
+
+class _FormInputKegiatanState extends State<FormInputKegiatan> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +34,7 @@ class FormInputKegiatan extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                title,
+                widget.title,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -33,33 +42,37 @@ class FormInputKegiatan extends StatelessWidget {
                 ),
                 textScaleFactor: 1,
               ),
-              waktu == true
-                  ? Container(
-                      height: 24.h,
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      decoration: BoxDecoration(
-                        color: kSecondColor,
-                        borderRadius: BorderRadius.circular(4.w),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/clock.svg",
-                            height: 14.r,
-                            width: 14.r,
-                            fit: BoxFit.fill,
-                          ),
-                          SizedBox(width: 8.w),
-                          const Text(
-                            "Pilih Waktu",
-                            style: TextStyle(
-                              color: kWhiteColor,
-                              fontSize: 12,
+              widget.waktu == true
+                  ? GestureDetector(
+                      onTap: () => _showTimePicker(context),
+                      child: Container(
+                        height: 24.h,
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        decoration: BoxDecoration(
+                          color: kSecondColor,
+                          borderRadius: BorderRadius.circular(4.w),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/clock.svg",
+                              height: 14.r,
+                              width: 14.r,
+                              fit: BoxFit.fill,
                             ),
-                            textScaleFactor: 1,
-                          ),
-                        ],
+                            SizedBox(width: 8.w),
+                            Text(
+                              widget.time,
+                              style: TextStyle(
+                                color: kWhiteColor,
+                                fontSize: 12.sp,
+                              ),
+                              textScaleFactor: 1,
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   : Container(),
@@ -67,10 +80,11 @@ class FormInputKegiatan extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           TextFormField(
+            controller: widget.controller,
             maxLines: 7,
             cursorColor: kBlackColor,
             decoration: InputDecoration(
-              hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
+              hintText: widget.wrong,
               hintStyle: TextStyle(
                 color: kGreyColor.withOpacity(0.4),
                 fontStyle: FontStyle.italic,
@@ -92,5 +106,21 @@ class FormInputKegiatan extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _showTimePicker(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      helpText: 'Pilih Waktu',
+    );
+
+    if (pickedTime != null) {
+      final String formattedTime = pickedTime.toString().substring(11, 15);
+      setState(() {
+        widget.time = formattedTime;
+        print(widget.time);
+      });
+    }
   }
 }

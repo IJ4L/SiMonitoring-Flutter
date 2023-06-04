@@ -1,21 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_dialog.dart';
 
-import '../../../cubit/index_cubit.dart';
 import '../../widgets/form_input_kegiatan.dart';
 
-class Kegiatanmahasiswa extends StatelessWidget {
+class Kegiatanmahasiswa extends StatefulWidget {
   const Kegiatanmahasiswa({super.key});
+
+  @override
+  State<Kegiatanmahasiswa> createState() => _KegiatanmahasiswaState();
+}
+
+class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
+  final List<TextEditingController> _controllers = [];
+  final List<String> _time = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _addTextField();
+    _addTime();
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _addTextField() {
+    _controllers.add(TextEditingController());
+    setState(() {});
+  }
+
+  void _addTime() {
+    _time.add('Pilih Waktu');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> page =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final IndexCubit index = context.read<IndexCubit>();
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: PreferredSize(
@@ -55,30 +85,30 @@ class Kegiatanmahasiswa extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            BlocBuilder<IndexCubit, int>(
-              builder: (context, state) {
-                final pageProveus = page['type'];
-                return Container(
-                  height: 160.h * state,
-                  width: double.infinity,
-                  margin: EdgeInsets.only(top: 12.h),
-                  child: ListView.separated(
-                    itemBuilder: (context, index) => FormInputKegiatan(
-                      title: pageProveus == true
-                          ? 'Deskripsi Kegiatan:'
-                          : 'Kendala:',
-                      wrong: pageProveus == true
-                          ? 'Deskripsikan Rencana Kegiatanmu Hari Ini'
-                          : 'Deskripsikan kendalamu hari ini',
-                      waktu: pageProveus,
-                    ),
-                    separatorBuilder: (_, index) => SizedBox(height: 12.h),
-                    itemCount: state,
-                    padding: EdgeInsets.zero,
-                    physics: const NeverScrollableScrollPhysics(),
-                  ),
-                );
-              },
+            Container(
+              height: 160.h * _controllers.length,
+              width: double.infinity,
+              margin: EdgeInsets.only(top: 12.h),
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  var pageProveus = page['type'];
+                  return FormInputKegiatan(
+                    controller: _controllers[index],
+                    time: _time[index],
+                    title: pageProveus == true
+                        ? 'Deskripsi Kegiatan:'
+                        : 'Kendala:',
+                    wrong: pageProveus == true
+                        ? 'Deskripsikan Rencana Kegiatanmu Hari Ini'
+                        : 'Deskripsikan kendalamu hari ini',
+                    waktu: pageProveus,
+                  );
+                },
+                separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                itemCount: _controllers.length,
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -91,7 +121,10 @@ class Kegiatanmahasiswa extends StatelessWidget {
                           icon: "assets/icons/add.svg",
                           color: kTransparantColor,
                           colorBorder: kSecondColor,
-                          ontap: () => index.increment(),
+                          ontap: () {
+                            _addTextField();
+                            _addTime();
+                          },
                         )
                       : Container(
                           margin: EdgeInsets.only(
@@ -103,22 +136,27 @@ class Kegiatanmahasiswa extends StatelessWidget {
                     title: "Simpan",
                     icon: "assets/icons/memory.svg",
                     colorBorder: kWhiteColor,
-                    ontap: () => showDialog<void>(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (BuildContext context) {
-                        return Dialoginfo(
-                          title: page['type'] == true
-                              ? 'Rencana kegiatan\nberhasil di simpan'
-                              : 'Kendala berhasil di simpan!',
-                        );
-                      },
-                    ),
+                    ontap: () {
+                      for (var i = 0; i < _controllers.length; i++) {
+                        print(_controllers[i].text);
+                        print(_time[i]);
+                      }
+                      showDialog<void>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return Dialoginfo(
+                            title: page['type'] == true
+                                ? 'Rencana kegiatan\nberhasil di simpan'
+                                : 'Kendala berhasil di simpan!',
+                          );
+                        },
+                      );
+                    },
                   )
                 ],
               ),
             ),
-            // page['type'] == true ? SizedBox(height: 12.h) : const SizedBox(),
           ],
         ),
       ),
