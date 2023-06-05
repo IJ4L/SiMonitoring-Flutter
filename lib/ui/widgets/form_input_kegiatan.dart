@@ -26,92 +26,97 @@ class FormInputKegiatan extends StatefulWidget {
 }
 
 class _FormInputKegiatanState extends State<FormInputKegiatan> {
+  final _fromkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 21.w),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                widget.title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: kTextInfoColor,
+    return Form(
+      key: _fromkey,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 21.w),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: kTextInfoColor,
+                  ),
+                  textScaleFactor: 1,
                 ),
-                textScaleFactor: 1,
-              ),
-              widget.waktu == true
-                  ? GestureDetector(
-                      onTap: () => _showTimePicker(context),
-                      child: Container(
-                        height: 24.h,
-                        padding: EdgeInsets.symmetric(horizontal: 8.w),
-                        decoration: BoxDecoration(
-                          color: kSecondColor,
-                          borderRadius: BorderRadius.circular(4.w),
+                widget.waktu == true
+                    ? GestureDetector(
+                        onTap: () => _showTimePicker(context),
+                        child: Container(
+                          height: 24.h,
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          decoration: BoxDecoration(
+                            color: kSecondColor,
+                            borderRadius: BorderRadius.circular(4.w),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/clock.svg",
+                                height: 14.r,
+                                width: 14.r,
+                                fit: BoxFit.fill,
+                              ),
+                              SizedBox(width: 8.w),
+                              BlocBuilder<TimeCubit, List<String>>(
+                                builder: (context, state) {
+                                  return Text(
+                                    state[widget.index] == ''
+                                        ? "Pilih Waktu"
+                                        : state[widget.index],
+                                    style: TextStyle(
+                                      color: kWhiteColor,
+                                      fontSize: 12.sp,
+                                    ),
+                                    textScaleFactor: 1,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/clock.svg",
-                              height: 14.r,
-                              width: 14.r,
-                              fit: BoxFit.fill,
-                            ),
-                            SizedBox(width: 8.w),
-                            BlocBuilder<TimeCubit, List<String>>(
-                              builder: (context, state) {
-                                return Text(
-                                  state[widget.index] == ''
-                                      ? "Pilih Waktu"
-                                      : state[widget.index],
-                                  style: TextStyle(
-                                    color: kWhiteColor,
-                                    fontSize: 12.sp,
-                                  ),
-                                  textScaleFactor: 1,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : Container(),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          TextFormField(
-            controller: widget.controller,
-            maxLines: 7,
-            cursorColor: kBlackColor,
-            decoration: InputDecoration(
-              hintText: widget.wrong,
-              hintStyle: TextStyle(
-                color: kGreyColor.withOpacity(0.4),
-                fontStyle: FontStyle.italic,
-                fontSize: 12.sp,
-              ),
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16.r),
-                borderSide: const BorderSide(color: kTextInfoColor),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16.r),
-                borderSide: const BorderSide(
-                  color: kTextInfoColor,
+                      )
+                    : Container(),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            TextFormField(
+              controller: widget.controller,
+              maxLines: 7,
+              cursorColor: kBlackColor,
+              decoration: InputDecoration(
+                hintText: widget.wrong,
+                hintStyle: TextStyle(
+                  color: kGreyColor.withOpacity(0.4),
+                  fontStyle: FontStyle.italic,
+                  fontSize: 12.sp,
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: const BorderSide(color: kTextInfoColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: const BorderSide(
+                    color: kTextInfoColor,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

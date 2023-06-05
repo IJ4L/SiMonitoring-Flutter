@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/time_cubit.dart';
+import 'package:simor/models/kegiatan_model.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_dialog.dart';
 
@@ -22,8 +24,8 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
   void initState() {
     super.initState();
     _addTextField();
-
     context.read<TimeCubit>().addnew();
+    context.read<MahasiswaCubit>().getKegiatan();
   }
 
   @override
@@ -82,82 +84,108 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: 160.h * _controllers.length,
-              width: double.infinity,
-              margin: EdgeInsets.only(top: 12.h),
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  var pageProveus = page['type'];
-                  return FormInputKegiatan(
-                    controller: _controllers[index],
-                    title: pageProveus == true
-                        ? 'Deskripsi Kegiatan:'
-                        : 'Kendala:',
-                    wrong: pageProveus == true
-                        ? 'Deskripsikan Rencana Kegiatanmu Hari Ini'
-                        : 'Deskripsikan kendalamu hari ini',
-                    waktu: pageProveus,
-                    index: index,
-                  );
-                },
-                separatorBuilder: (_, index) => SizedBox(height: 12.h),
-                itemCount: _controllers.length,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  page['type'] == true
-                      ? ButtonWithIcon(
-                          title: 'Tambah',
-                          icon: "assets/icons/add.svg",
-                          color: kTransparantColor,
-                          colorBorder: kSecondColor,
-                          ontap: () {
-                            _addTextField();
-                            context.read<TimeCubit>().addnew();
-                          },
-                        )
-                      : Container(
-                          margin: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width / 2.5,
-                          ),
-                        ),
-                  SizedBox(width: 16.h),
-                  ButtonWithIcon(
-                    title: "Simpan",
-                    icon: "assets/icons/memory.svg",
-                    colorBorder: kWhiteColor,
-                    ontap: () {
-                      for (var i = 0; i < _controllers.length; i++) {
-                        print(_controllers[i].text);
-                        print(context.read<TimeCubit>().state[i]);
-                      }
-                      showDialog<void>(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext context) {
-                          return Dialoginfo(
-                            title: page['type'] == true
-                                ? 'Rencana kegiatan\nberhasil di simpan'
-                                : 'Kendala berhasil di simpan!',
+      body: BlocListener<MahasiswaCubit, MahasiswaState>(
+        listener: (context, state) {
+          if (state is MahasiswaGetkegiatan) {
+            if (state.kegiatan.isNotEmpty) {
+              _controllers.clear();
+              for (var i = 0; i < state.kegiatan.length; i++) {
+                _controllers.add(
+                    TextEditingController(text: state.kegiatan[i].deskripsi));
+                context.read<TimeCubit>().addTime(state.kegiatan[i].jam, i);
+              }
+            }
+          }
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              BlocBuilder<MahasiswaCubit, MahasiswaState>(
+                builder: (context, state) {
+                  if (state is MahasiswaGetkegiatan) {
+                    return Container(
+                      height: 160.h * _controllers.length,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(top: 12.h),
+                      child: ListView.separated(
+                        itemBuilder: (context, index) {
+                          var pageProveus = page['type'];
+                          return FormInputKegiatan(
+                            controller: _controllers[index],
+                            title: pageProveus == true
+                                ? 'Deskripsi Kegiatan:'
+                                : 'Kendala:',
+                            wrong: pageProveus == true
+                                ? 'Deskripsikan Rencana Kegiatanmu Hari Ini'
+                                : 'Deskripsikan kendalamu hari ini',
+                            waktu: pageProveus,
+                            index: index,
                           );
                         },
-                      );
-                    },
-                  )
-                ],
+                        separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                        itemCount: _controllers.length,
+                        padding: EdgeInsets.zero,
+                        physics: const NeverScrollableScrollPhysics(),
+                      ),
+                    );
+                  }
+                  return Container();
+                },
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    page['type'] == true
+                        ? ButtonWithIcon(
+                            title: 'Tambah',
+                            icon: "assets/icons/add.svg",
+                            color: kTransparantColor,
+                            colorBorder: kSecondColor,
+                            ontap: () {
+                              _addTextField();
+                              context.read<TimeCubit>().addnew();
+                            },
+                          )
+                        : Container(
+                            margin: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width / 2.5,
+                            ),
+                          ),
+                    SizedBox(width: 16.h),
+                    ButtonWithIcon(
+                      title: "Simpan",
+                      icon: "assets/icons/memory.svg",
+                      colorBorder: kWhiteColor,
+                      ontap: () {
+                        for (var i = 0; i < _controllers.length; i++) {
+                          context.read<MahasiswaCubit>().saveKegiatan(
+                                KegiatanModel(
+                                  id: i.toString(),
+                                  jam: context.read<TimeCubit>().state[i],
+                                  deskripsi: _controllers[i].text,
+                                ),
+                              );
+                        }
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return Dialoginfo(
+                              title: page['type'] == true
+                                  ? 'Rencana kegiatan\nberhasil di simpan'
+                                  : 'Kendala berhasil di simpan!',
+                            );
+                          },
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

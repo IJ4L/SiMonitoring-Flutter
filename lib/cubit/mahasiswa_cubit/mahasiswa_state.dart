@@ -15,3 +15,11 @@ class MahasiswaFailure extends MahasiswaState {
   final String message;
   const MahasiswaFailure(this.message);
 }
+
+class MahasiswaGetkegiatan extends MahasiswaState {
+  final List<KegiatanModel> kegiatan;
+  const MahasiswaGetkegiatan(this.kegiatan);
+
+  @override
+  List<Object> get props => [kegiatan];
+}
