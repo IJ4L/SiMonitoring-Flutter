@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../cubit/time_cubit.dart';
 import '../../shared/themes.dart';
 
 class FormInputKegiatan extends StatefulWidget {
-  FormInputKegiatan({
+  const FormInputKegiatan({
     Key? key,
     required this.title,
     required this.wrong,
     this.waktu = true,
     required this.controller,
-    required this.time,
+    required this.index,
   }) : super(key: key);
 
   final String title, wrong;
   final bool waktu;
   final TextEditingController controller;
-  late final String time;
+  final int index;
 
   @override
   State<FormInputKegiatan> createState() => _FormInputKegiatanState();
@@ -63,13 +65,19 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
                               fit: BoxFit.fill,
                             ),
                             SizedBox(width: 8.w),
-                            Text(
-                              widget.time,
-                              style: TextStyle(
-                                color: kWhiteColor,
-                                fontSize: 12.sp,
-                              ),
-                              textScaleFactor: 1,
+                            BlocBuilder<TimeCubit, List<String>>(
+                              builder: (context, state) {
+                                return Text(
+                                  state[widget.index] == ''
+                                      ? "Pilih Waktu"
+                                      : state[widget.index],
+                                  style: TextStyle(
+                                    color: kWhiteColor,
+                                    fontSize: 12.sp,
+                                  ),
+                                  textScaleFactor: 1,
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -109,18 +117,21 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
   }
 
   void _showTimePicker(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      helpText: 'Pilih Waktu',
-    );
+    TimeOfDay selectedTime = TimeOfDay.now();
+    final TimeOfDay? pickeds = await showTimePicker(
+        context: context,
+        initialTime: selectedTime,
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+            child: child!,
+          );
+        });
 
-    if (pickedTime != null) {
-      final String formattedTime = pickedTime.toString().substring(11, 15);
-      setState(() {
-        widget.time = formattedTime;
-        print(widget.time);
-      });
+    if (pickeds != null) {
+      final String formattedTime = pickeds.toString().substring(11, 15);
+      // ignore: use_build_context_synchronously
+      context.read<TimeCubit>().addTime(formattedTime, widget.index);
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
+import 'package:simor/cubit/time_cubit.dart';
 import 'package:simor/services/auth_repository.dart';
 import 'package:simor/services/mahasiswa_repository.dart';
 import 'package:simor/services/status_repository.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => LodingButtonCubit()),
           BlocProvider(create: (context) => ObscureTextCubit()),
+          BlocProvider(create: (context) => TimeCubit()),
           BlocProvider(
             create: (context) => AuthCubit(
               AuthRepository(client: http.Client(), sharedPreferences: prefs),

@@ -6,6 +6,7 @@ class MahasiswaRepository {
   final http.Client client;
   final SharedPreferences sharedPreferences;
   final String _userTokenKey = 'user_token';
+  final String _kegiatanKey = 'user_token';
 
   MahasiswaRepository({required this.client, required this.sharedPreferences});
 
@@ -37,7 +38,7 @@ class MahasiswaRepository {
   }
 
   Future<String> saveKegiatan() async {
-    return sharedPreferences.getString(_userTokenKey) ?? '';
+    return sharedPreferences.getString(_kegiatanKey) ?? '';
   }
 
   Future<String> getUserToken() async {

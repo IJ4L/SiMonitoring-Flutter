@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simor/cubit/time_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_dialog.dart';
 
@@ -15,13 +17,13 @@ class Kegiatanmahasiswa extends StatefulWidget {
 
 class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
   final List<TextEditingController> _controllers = [];
-  final List<String> _time = [];
 
   @override
   void initState() {
     super.initState();
     _addTextField();
-    _addTime();
+
+    context.read<TimeCubit>().addnew();
   }
 
   @override
@@ -34,11 +36,6 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
 
   void _addTextField() {
     _controllers.add(TextEditingController());
-    setState(() {});
-  }
-
-  void _addTime() {
-    _time.add('Pilih Waktu');
     setState(() {});
   }
 
@@ -64,7 +61,10 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/home-mahasiswa', (route) => false);
+                  },
                   child: const Icon(
                     Icons.arrow_back_outlined,
                     color: Colors.white,
@@ -94,7 +94,6 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                   var pageProveus = page['type'];
                   return FormInputKegiatan(
                     controller: _controllers[index],
-                    time: _time[index],
                     title: pageProveus == true
                         ? 'Deskripsi Kegiatan:'
                         : 'Kendala:',
@@ -102,6 +101,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                         ? 'Deskripsikan Rencana Kegiatanmu Hari Ini'
                         : 'Deskripsikan kendalamu hari ini',
                     waktu: pageProveus,
+                    index: index,
                   );
                 },
                 separatorBuilder: (_, index) => SizedBox(height: 12.h),
@@ -123,7 +123,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                           colorBorder: kSecondColor,
                           ontap: () {
                             _addTextField();
-                            _addTime();
+                            context.read<TimeCubit>().addnew();
                           },
                         )
                       : Container(
@@ -139,7 +139,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                     ontap: () {
                       for (var i = 0; i < _controllers.length; i++) {
                         print(_controllers[i].text);
-                        print(_time[i]);
+                        print(context.read<TimeCubit>().state[i]);
                       }
                       showDialog<void>(
                         context: context,
