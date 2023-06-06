@@ -43,8 +43,6 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> page =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: PreferredSize(
@@ -65,7 +63,10 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamedAndRemoveUntil(
-                        context, '/home-mahasiswa', (route) => false);
+                      context,
+                      '/home-mahasiswa',
+                      (route) => false,
+                    );
                   },
                   child: const Icon(
                     Icons.arrow_back_outlined,
@@ -90,9 +91,9 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
             if (state.kegiatan.isNotEmpty) {
               _controllers.clear();
               for (var i = 0; i < state.kegiatan.length; i++) {
-                _controllers.add(
-                    TextEditingController(text: state.kegiatan[i].deskripsi));
-                context.read<TimeCubit>().addTime(state.kegiatan[i].jam, i);
+                final data = state.kegiatan[i];
+                _controllers.add(TextEditingController(text: data.deskripsi));
+                context.read<TimeCubit>().addTime(data.jam, i);
               }
             }
           }
@@ -108,24 +109,17 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                       width: double.infinity,
                       margin: EdgeInsets.only(top: 12.h),
                       child: ListView.separated(
+                        padding: EdgeInsets.zero,
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          var pageProveus = page['type'];
                           return FormInputKegiatan(
                             controller: _controllers[index],
-                            title: pageProveus == true
-                                ? 'Deskripsi Kegiatan:'
-                                : 'Kendala:',
-                            wrong: pageProveus == true
-                                ? 'Deskripsikan Rencana Kegiatanmu Hari Ini'
-                                : 'Deskripsikan kendalamu hari ini',
-                            waktu: pageProveus,
+                            title: 'Deskripsi Kegiatan:',
                             index: index,
                           );
                         },
                         separatorBuilder: (_, index) => SizedBox(height: 12.h),
                         itemCount: _controllers.length,
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
                       ),
                     );
                   }
@@ -137,22 +131,16 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    page['type'] == true
-                        ? ButtonWithIcon(
-                            title: 'Tambah',
-                            icon: "assets/icons/add.svg",
-                            color: kTransparantColor,
-                            colorBorder: kSecondColor,
-                            ontap: () {
-                              _addTextField();
-                              context.read<TimeCubit>().addnew();
-                            },
-                          )
-                        : Container(
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width / 2.5,
-                            ),
-                          ),
+                    ButtonWithIcon(
+                      title: 'Tambah',
+                      icon: "assets/icons/add.svg",
+                      color: kTransparantColor,
+                      colorBorder: kSecondColor,
+                      ontap: () {
+                        _addTextField();
+                        context.read<TimeCubit>().addnew();
+                      },
+                    ),
                     SizedBox(width: 16.h),
                     ButtonWithIcon(
                       title: "Simpan",
@@ -172,10 +160,8 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                           context: context,
                           barrierDismissible: true,
                           builder: (BuildContext context) {
-                            return Dialoginfo(
-                              title: page['type'] == true
-                                  ? 'Rencana kegiatan\nberhasil di simpan'
-                                  : 'Kendala berhasil di simpan!',
+                            return const Dialoginfo(
+                              title: 'Rencana kegiatan\nberhasil di simpan',
                             );
                           },
                         );

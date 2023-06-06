@@ -58,17 +58,13 @@ class Dialoginfo extends StatelessWidget {
                                 '/home-mahasiswa',
                                 (route) => false,
                               )
-                            : Navigator.pushNamedAndRemoveUntil(
+                            : Navigator.pushNamed(
                                 context,
-                                '/scan-card',
-                                (route) => false,
+                                '/info-scan',
                                 arguments: {
-                                  'type': pageTo,
+                                  'title': 'Datang',
                                   'bg': 'bg_scan_1.svg',
                                   'card': 'bg_scan_out.svg',
-                                  'height': 38.h,
-                                  'isDialog': true,
-                                  'typePage': true
                                 },
                               );
                       }

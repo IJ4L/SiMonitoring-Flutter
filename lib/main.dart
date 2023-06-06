@@ -19,6 +19,7 @@ import 'package:simor/ui/pages/login_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/home_mahasiswa.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/info_scan_card_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/kegiatan_page.dart';
+import 'package:simor/ui/pages/mahasiswa_pages/kendala_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/pages/pembimbing_pages/choice_scan.dart';
 import 'package:simor/ui/pages/pembimbing_pages/home_pembimbing.dart';
@@ -84,6 +85,7 @@ class MyApp extends StatelessWidget {
             '/info-scan': (context) => const InfoScan(),
             '/take-picture': (context) => const CameraPage(),
             '/kegiatan-mahasiswa': (context) => const Kegiatanmahasiswa(),
+            '/kendala-mahasiswa': (context) => const KendalaMahasiswa(),
             '/home-pembimbing': (context) => const Homepembimbing(),
             '/choice-scan': (context) => const ChoiceScan(),
             '/home-dosen': (context) => const HomeDosenPage(),

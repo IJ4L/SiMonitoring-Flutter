@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
+import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
@@ -108,7 +109,6 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                               Navigator.pushNamed(
                                                 context,
                                                 '/kegiatan-mahasiswa',
-                                                arguments: {'type': true},
                                               );
                                             },
                                           )
@@ -122,10 +122,12 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                         ? Costumebutton(
                                             title: 'Kendala',
                                             ontap: () {
+                                              context
+                                                  .read<MahasiswaCubit>()
+                                                  .cekKendala();
                                               Navigator.pushNamed(
                                                 context,
-                                                '/kegiatan-mahasiswa',
-                                                arguments: {'type': false},
+                                                '/kendala-mahasiswa',
                                               );
                                             },
                                           )

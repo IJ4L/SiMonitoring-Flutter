@@ -23,3 +23,11 @@ class MahasiswaGetkegiatan extends MahasiswaState {
   @override
   List<Object> get props => [kegiatan];
 }
+
+class MahasiswaGetKendala extends MahasiswaState {
+  final KendalaModel kendala;
+  const MahasiswaGetKendala(this.kendala);
+
+  @override
+  List<Object> get props => [kendala];
+}

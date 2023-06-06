@@ -13,7 +13,7 @@ class AuthRepository {
 
   AuthRepository({required this.client, required this.sharedPreferences});
 
-  final baseUrl = 'http://192.168.234.197:8000/api';
+  final baseUrl = 'http://192.168.1.14:8000/api';
 
   Future<Either<String, void>> login(String username, String password) async {
     try {

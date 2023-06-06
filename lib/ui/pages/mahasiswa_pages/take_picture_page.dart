@@ -105,7 +105,6 @@ class CameraPage extends StatelessWidget {
                 ],
               );
             }
-
             return const Center(
               child: CircularProgressIndicator(),
             );

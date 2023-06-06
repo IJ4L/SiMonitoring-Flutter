@@ -17,7 +17,6 @@ class TimeCubit extends Cubit<List<String>> {
     } else {
       updatedTime[index] = timePick;
     }
-
     emit(updatedTime);
   }
 
