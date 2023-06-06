@@ -38,6 +38,30 @@ class StatusRepository {
     }
   }
 
+  Future<Either<String, String>> checkPulang() async {
+    try {
+      String token = await getUserToken();
+      final response = await client.get(
+        Uri.parse('$baseUrl/mahasiswa/pulang/detail_pulang_by_tanggal'),
+        headers: {
+          'accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+      final status = data['data'][0]['keterangan'].toString();
+
+      if (data['data'][0]['keterangan'].toString() == 'hadir') {
+        return Right(status);
+      }
+
+      return const Left("erorr");
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
   Future<String> getUserToken() async {
     return sharedPreferences.getString(_userTokenKey) ?? "";
   }

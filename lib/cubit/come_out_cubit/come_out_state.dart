@@ -19,4 +19,10 @@ class ComeOutDatang extends ComeOutState {
   const ComeOutDatang({required this.datangModel});
 }
 
-class ComeOutPulang extends ComeOutState {}
+class ComeOutPulang extends ComeOutState {
+  final String status;
+  const ComeOutPulang({required this.status});
+
+  @override
+  List<Object> get props => [status];
+}

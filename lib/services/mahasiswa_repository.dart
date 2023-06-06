@@ -31,11 +31,11 @@ class MahasiswaRepository {
       var response = await client.send(request);
       if (response.statusCode == 200) {
         return const Right(null);
-      } else {
-        return Left(
-          'Gagal mengirim gambar. Status code: ${response.statusCode}',
-        );
       }
+
+      return Left(
+        'Gagal mengirim gambar. Status code: ${response.statusCode}',
+      );
     } catch (e) {
       return Left(e.toString());
     }
@@ -56,11 +56,11 @@ class MahasiswaRepository {
 
       if (response.statusCode == 200) {
         return const Right(null);
-      } else {
-        return Left(
-          'Gagal mengirim deskripsi. Status code: ${response.statusCode}',
-        );
       }
+
+      return Left(
+        'Gagal mengirim deskripsi. Status code: ${response.statusCode}',
+      );
     } catch (e) {
       return Left(e.toString());
     }
@@ -81,11 +81,11 @@ class MahasiswaRepository {
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         return Right(KendalaModel.fromJson(data['data'][0]));
-      } else {
-        return Left(
-          'Gagal mengirim deskripsi. Status code: ${response.statusCode}',
-        );
       }
+
+      return Left(
+        'Gagal mengambil deskripsi. Status code: ${response.statusCode}',
+      );
     } catch (e) {
       return Left(e.toString());
     }
@@ -106,11 +106,42 @@ class MahasiswaRepository {
       var response = await client.send(request);
       if (response.statusCode == 200) {
         return const Right(null);
-      } else {
-        return Left(
-          'Gagal mengirim gambar. Status code: ${response.statusCode}',
-        );
       }
+
+      return Left(
+        'Gagal mengirim gambar. Status code: ${response.statusCode}',
+      );
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, void>> upKegiatan() async {
+    try {
+      final token = await getUserToken();
+      final listKegiatan = await getKegiatan();
+
+      for (var kegiatan in listKegiatan) {
+        var response = await client.post(
+          Uri.parse('$baseUrl/mahasiswa/kegiatan/create'),
+          headers: {
+            'accept': 'application/json',
+            'authorization': 'Bearer $token',
+          },
+          body: {
+            'deskripsi': kegiatan.deskripsi,
+            'jam_mulai': kegiatan.jam,
+            'jam_selesai': kegiatan.jam,
+          },
+        );
+
+        if (response.statusCode == 200) {
+          await deleteAllKegiatan();
+          return const Right(null);
+        }
+      }
+
+      return const Left('Gagal mengirim');
     } catch (e) {
       return Left(e.toString());
     }

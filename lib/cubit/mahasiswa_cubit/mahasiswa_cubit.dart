@@ -41,6 +41,11 @@ class MahasiswaCubit extends Cubit<MahasiswaState> {
     );
   }
 
+  Future<void> upFotoKegiatan(String imagePath) async {
+    await mahasiswaRepository.upFoto(imagePath);
+    await mahasiswaRepository.upKegiatan();
+  }
+
   @override
   void onChange(Change<MahasiswaState> change) {
     super.onChange(change);

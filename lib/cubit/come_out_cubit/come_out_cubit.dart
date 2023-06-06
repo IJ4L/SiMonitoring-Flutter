@@ -20,6 +20,15 @@ class ComeOutCubit extends Cubit<ComeOutState> {
     );
   }
 
+  Future<void> checkPulang() async {
+    emit(ComeOutLoading());
+    final result = await statusRepository.checkPulang();
+    result.fold(
+      (failed) => emit(ComeOutFailure()),
+      (success) => emit(ComeOutPulang(status: success)),
+    );
+  }
+
   @override
   void onChange(Change<ComeOutState> change) {
     super.onChange(change);

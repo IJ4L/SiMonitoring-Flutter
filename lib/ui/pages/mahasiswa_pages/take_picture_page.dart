@@ -85,9 +85,13 @@ class CameraPage extends StatelessWidget {
                         colorTitle: kWhiteColor,
                         colorButton: kPrimaryColor,
                         ontap: () {
-                          context
-                              .read<MahasiswaCubit>()
-                              .datang(state.imagePath);
+                          type['inOut'] == true
+                              ? context
+                                  .read<MahasiswaCubit>()
+                                  .datang(state.imagePath)
+                              : context
+                                  .read<MahasiswaCubit>()
+                                  .upFotoKegiatan(state.imagePath);
                           showDialog<void>(
                             context: context,
                             barrierDismissible: true,

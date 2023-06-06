@@ -81,10 +81,10 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                           BlocBuilder<ComeOutCubit, ComeOutState>(
                             builder: (context, state) {
                               if (state is ComeOutDatang) {
-                                final data = state.datangModel;
+                                final data = state.datangModel.keterangan;
                                 return Column(
                                   children: [
-                                    data.keterangan == 'null'
+                                    data == 'null'
                                         ? Costumebutton(
                                             title: 'Datang',
                                             ontap: () => Navigator.pushNamed(
@@ -102,7 +102,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                             ontap: () {},
                                           ),
                                     SizedBox(height: 10.h),
-                                    data.keterangan != 'null'
+                                    data != 'null'
                                         ? Costumebutton(
                                             title: 'Kegiatan',
                                             ontap: () {
@@ -118,7 +118,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                             ontap: () {},
                                           ),
                                     SizedBox(height: 10.h),
-                                    data.keterangan != 'null'
+                                    data != 'null'
                                         ? Costumebutton(
                                             title: 'Kendala',
                                             ontap: () {
@@ -137,7 +137,7 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                             ontap: () {},
                                           ),
                                     SizedBox(height: 10.h),
-                                    data.keterangan != 'null'
+                                    data != 'null'
                                         ? Costumebutton(
                                             title: 'Pulang',
                                             ontap: () {
