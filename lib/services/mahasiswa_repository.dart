@@ -153,8 +153,9 @@ class MahasiswaRepository {
 
   Future<void> saveKegiatan(KegiatanModel kegiatanModel) async {
     List<KegiatanModel> existingHistory = await getKegiatan();
-    int initialIndex =
-        existingHistory.indexWhere((k) => k.id == kegiatanModel.id);
+    int initialIndex = existingHistory.indexWhere(
+      (k) => k.id == kegiatanModel.id,
+    );
 
     if (initialIndex != -1) {
       existingHistory.removeAt(initialIndex);
@@ -164,7 +165,10 @@ class MahasiswaRepository {
       initialIndex = existingHistory.length - 1;
     }
 
-    final encodedHistory = json.encode(existingHistory);
+    final encodedHistory = json.encode(
+      existingHistory.map((kegiatan) => kegiatan.toJson()).toList(),
+    );
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.remove(_kegiatanKey);
     await sharedPreferences.setString(_kegiatanKey, encodedHistory);
   }

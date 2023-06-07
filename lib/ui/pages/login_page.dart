@@ -27,6 +27,7 @@ class Loginpage extends StatelessWidget {
                 'title': 'Datang',
                 'bg': 'bg_scan_1.svg',
                 'card': 'bg_scan_In.svg',
+                'type': true,
               },
             );
           }

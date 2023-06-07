@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 
 class TimeCubit extends Cubit<List<String>> {
   TimeCubit() : super([]);
@@ -17,6 +18,11 @@ class TimeCubit extends Cubit<List<String>> {
     } else {
       updatedTime[index] = timePick;
     }
+
+    if (kDebugMode) {
+      print(updatedTime);
+    }
+
     emit(updatedTime);
   }
 
@@ -24,5 +30,9 @@ class TimeCubit extends Cubit<List<String>> {
     List<String> updatedTime = List.from(state);
     updatedTime.add('');
     emit(updatedTime);
+  }
+
+  void initial() {
+    emit([]);
   }
 }

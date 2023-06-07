@@ -25,7 +25,6 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
     super.initState();
     _addTextField();
     context.read<TimeCubit>().addnew();
-    context.read<MahasiswaCubit>().getKegiatan();
   }
 
   @override
@@ -89,7 +88,6 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
         listener: (context, state) {
           if (state is MahasiswaGetkegiatan) {
             if (state.kegiatan.isNotEmpty) {
-              _controllers.clear();
               for (var i = 0; i < state.kegiatan.length; i++) {
                 final data = state.kegiatan[i];
                 _controllers.add(TextEditingController(text: data.deskripsi));

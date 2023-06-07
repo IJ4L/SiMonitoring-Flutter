@@ -65,6 +65,7 @@ class Dialoginfo extends StatelessWidget {
                                   'title': 'Datang',
                                   'bg': 'bg_scan_1.svg',
                                   'card': 'bg_scan_out.svg',
+                                  'type': false,
                                 },
                               );
                       }

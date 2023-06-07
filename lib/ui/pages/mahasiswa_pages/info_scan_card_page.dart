@@ -11,6 +11,7 @@ class InfoScan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final comeOutCubit = context.read<ComeOutCubit>();
     final Map<String, dynamic> item =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
@@ -20,11 +21,16 @@ class InfoScan extends StatelessWidget {
           if (state is ComeOutDatang) {
             Navigator.pushNamed(context, '/home-mahasiswa');
           }
+          if (state is ComeOutPulang) {
+            Navigator.pushNamed(context, '/login');
+          }
         },
         child: LayoutBuilder(
           builder: (context, constraints) {
             return CustomRefreshIndicator(
-              onRefresh: () => context.read<ComeOutCubit>().checkDatang(),
+              onRefresh: () => item['type'] == true
+                  ? comeOutCubit.checkDatang()
+                  : comeOutCubit.checkPulang(),
               builder: MaterialIndicatorDelegate(
                 builder: (context, controller) {
                   return const Icon(
