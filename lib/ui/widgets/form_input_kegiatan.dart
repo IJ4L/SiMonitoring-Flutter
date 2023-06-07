@@ -13,11 +13,13 @@ class FormInputKegiatan extends StatefulWidget {
     required this.title,
     required this.controller,
     required this.index,
+    required this.formKey,
   }) : super(key: key);
 
   final int index;
   final String title;
   final TextEditingController controller;
+  final GlobalKey<FormState> formKey;
 
   @override
   State<FormInputKegiatan> createState() => _FormInputKegiatanState();
@@ -83,28 +85,48 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
             ],
           ),
           SizedBox(height: 16.h),
-          TextFormField(
-            controller: widget.controller,
-            maxLines: 7,
-            cursorColor: kBlackColor,
-            decoration: InputDecoration(
-              hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
-              hintStyle: TextStyle(
-                color: kGreyColor.withOpacity(0.4),
-                fontStyle: FontStyle.italic,
-                fontSize: 12.sp,
-              ),
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16.r),
-                borderSide: const BorderSide(color: kTextInfoColor),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16.r),
-                borderSide: const BorderSide(
-                  color: kTextInfoColor,
+          Form(
+            key: widget.formKey,
+            child: TextFormField(
+              controller: widget.controller,
+              maxLines: 7,
+              cursorColor: kBlackColor,
+              decoration: InputDecoration(
+                hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
+                hintStyle: TextStyle(
+                  color: kGreyColor.withOpacity(0.4),
+                  fontStyle: FontStyle.italic,
+                  fontSize: 12.sp,
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: const BorderSide(color: kTextInfoColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: const BorderSide(color: kTextInfoColor),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: const BorderSide(color: Colors.red),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: const BorderSide(color: Colors.red),
                 ),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Deskripsikan Rencana Kegiatanmu Hari Ini';
+                }
+
+                if (context.read<TimeCubit>().state[widget.index] == '') {
+                  return 'Masukkan Jam Kegiatan';
+                }
+
+                return null;
+              },
             ),
           ),
         ],

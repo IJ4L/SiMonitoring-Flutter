@@ -10,7 +10,6 @@ class MahasiswaRepository {
   final http.Client client;
   final SharedPreferences sharedPreferences;
   final String _userTokenKey = 'user_token';
-  final String _kegiatanKey = 'kegiatan';
 
   MahasiswaRepository({required this.client, required this.sharedPreferences});
 
@@ -116,10 +115,10 @@ class MahasiswaRepository {
     }
   }
 
-  Future<Either<String, void>> upKegiatan() async {
+  Future<Either<String, void>> upKegiatan(String userId) async {
     try {
       final token = await getUserToken();
-      final listKegiatan = await getKegiatan();
+      final listKegiatan = await getKegiatan(userId);
 
       for (var kegiatan in listKegiatan) {
         var response = await client.post(
@@ -136,7 +135,7 @@ class MahasiswaRepository {
         );
 
         if (response.statusCode == 200) {
-          await deleteAllKegiatan();
+          await deleteAllKegiatan(userId);
           return const Right(null);
         }
       }
@@ -151,8 +150,8 @@ class MahasiswaRepository {
     return sharedPreferences.getString(_userTokenKey) ?? '';
   }
 
-  Future<void> saveKegiatan(KegiatanModel kegiatanModel) async {
-    final result = sharedPreferences.getString(_kegiatanKey);
+  Future<void> saveKegiatan(KegiatanModel kegiatanModel, String userId) async {
+    final result = sharedPreferences.getString(userId);
     List<KegiatanModel> existingHistory = [];
     if (result != null) {
       final decodedHistory = json.decode(result);
@@ -169,13 +168,12 @@ class MahasiswaRepository {
       existingHistory.add(kegiatanModel);
     }
 
-    // Step 3: Save the updated data back to SharedPreferences
     final encodedHistory = json.encode(existingHistory);
-    await sharedPreferences.setString(_kegiatanKey, encodedHistory);
+    await sharedPreferences.setString(userId, encodedHistory);
   }
 
-  Future<List<KegiatanModel>> getKegiatan() async {
-    final result = sharedPreferences.getString(_kegiatanKey);
+  Future<List<KegiatanModel>> getKegiatan(String userId) async {
+    final result = sharedPreferences.getString(userId);
     final data = jsonDecode(result ?? '[]');
     if (data is List) {
       return data.map((e) => KegiatanModel.fromJson(e)).toList();
@@ -183,7 +181,7 @@ class MahasiswaRepository {
     return [];
   }
 
-  Future<void> deleteAllKegiatan() async {
-    await sharedPreferences.remove(_kegiatanKey);
+  Future<void> deleteAllKegiatan(String userId) async {
+    await sharedPreferences.remove(userId);
   }
 }

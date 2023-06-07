@@ -12,6 +12,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit(this.authRepository) : super(AuthInitial());
 
+  String mhsId = '';
+
   Future<void> login(String username, String password) async {
     emit(AuthLoading());
     final result = await authRepository.login(username, password);
@@ -32,7 +34,10 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepository.getDataMahasiswa();
     result.fold(
       (failed) => emit(AuthFailed(failed)),
-      (success) => emit(AuthMahsiswa(success)),
+      (success) {
+        mhsId = success.nim;
+        emit(AuthMahsiswa(success));
+      },
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
@@ -18,6 +19,7 @@ class CameraPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mhsCubit = context.read<MahasiswaCubit>();
     final Map<String, dynamic> type =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return BlocProvider<CameraCubit>(
@@ -81,31 +83,41 @@ class CameraPage extends StatelessWidget {
                         horizontal: 20.w,
                         vertical: 30.h,
                       ),
-                      child: Costumebutton(
-                        title: 'Kirim Foto',
-                        colorTitle: kWhiteColor,
-                        colorButton: kPrimaryColor,
-                        ontap: () {
-                          type['inOut'] == true
-                              ? {
-                                  context
-                                      .read<MahasiswaCubit>()
-                                      .datang(state.imagePath),
-                                  context.read<ComeOutCubit>().checkDatang(),
-                                }
-                              : context
-                                  .read<MahasiswaCubit>()
-                                  .upFotoKegiatan(state.imagePath);
-                          showDialog<void>(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (BuildContext context) {
-                              return Dialoginfo(
-                                title: 'Foto Berhasil di kirim',
-                                pageTo: type['inOut'],
-                              );
-                            },
-                          );
+                      child: BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, stateMhs) {
+                          if (stateMhs is AuthMahsiswa) {
+                            return Costumebutton(
+                              title: 'Kirim Foto',
+                              colorTitle: kWhiteColor,
+                              colorButton: kPrimaryColor,
+                              ontap: () {
+                                type['inOut'] == true
+                                    ? {
+                                        mhsCubit.datang(state.imagePath),
+                                        context
+                                            .read<ComeOutCubit>()
+                                            .checkDatang(),
+                                      }
+                                    : {
+                                        mhsCubit.upFotoKegiatan(
+                                          state.imagePath,
+                                          stateMhs.mahasiswaModel.nim,
+                                        )
+                                      };
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
+                                    return Dialoginfo(
+                                      title: 'Foto Berhasil di kirim',
+                                      pageTo: type['inOut'],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          }
+                          return Container();
                         },
                       ),
                     ),

@@ -19,12 +19,12 @@ class MahasiswaCubit extends Cubit<MahasiswaState> {
     result.fold((error) => emit(MahasiswaFailure(error)), (success) => null);
   }
 
-  Future<void> saveKegiatan(KegiatanModel newKegiatan) async {
-    await mahasiswaRepository.saveKegiatan(newKegiatan);
+  Future<void> saveKegiatan(KegiatanModel newKegiatan, String userId) async {
+    await mahasiswaRepository.saveKegiatan(newKegiatan, userId);
   }
 
-  Future<void> getKegiatan() async {
-    final result = await mahasiswaRepository.getKegiatan();
+  Future<void> getKegiatan(String userId) async {
+    final result = await mahasiswaRepository.getKegiatan(userId);
     emit(MahasiswaGetkegiatan(result));
   }
 
@@ -41,9 +41,9 @@ class MahasiswaCubit extends Cubit<MahasiswaState> {
     );
   }
 
-  Future<void> upFotoKegiatan(String imagePath) async {
+  Future<void> upFotoKegiatan(String imagePath, String userId) async {
     await mahasiswaRepository.upFoto(imagePath);
-    await mahasiswaRepository.upKegiatan();
+    await mahasiswaRepository.upKegiatan(userId);
   }
 
   @override

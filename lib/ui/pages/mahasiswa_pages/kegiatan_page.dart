@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/time_cubit.dart';
 import 'package:simor/models/kegiatan_model.dart';
@@ -19,12 +20,14 @@ class Kegiatanmahasiswa extends StatefulWidget {
 
 class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
   final List<TextEditingController> _controllers = [];
+  final List<GlobalKey<FormState>> _widgetKeys = [];
 
   @override
   void initState() {
     super.initState();
+    _addKeys();
     _addTextField();
-    context.read<MahasiswaCubit>().getKegiatan();
+    context.read<MahasiswaCubit>().getKegiatan(context.read<AuthCubit>().mhsId);
     context.read<TimeCubit>().addnew();
   }
 
@@ -33,6 +36,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
     for (var controller in _controllers) {
       controller.dispose();
     }
+
     super.dispose();
   }
 
@@ -41,10 +45,17 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
     setState(() {});
   }
 
+  void _addKeys() {
+    _widgetKeys.add(GlobalKey<FormState>());
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    final timeCubit = context.read<TimeCubit>();
     return Scaffold(
       backgroundColor: kWhiteColor,
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(130.h),
         child: Container(
@@ -61,12 +72,13 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
+                  onTap: () async {
+                    await Navigator.pushNamedAndRemoveUntil(
                       context,
                       '/home-mahasiswa',
                       (route) => false,
                     );
+                    timeCubit.initial();
                   },
                   child: const Icon(
                     Icons.arrow_back_outlined,
@@ -90,10 +102,12 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
           if (state is MahasiswaGetkegiatan) {
             if (state.kegiatan.isNotEmpty) {
               _controllers.clear();
+              _widgetKeys.clear();
               for (var i = 0; i < state.kegiatan.length; i++) {
                 final data = state.kegiatan[i];
                 _controllers.add(TextEditingController(text: data.deskripsi));
                 context.read<TimeCubit>().addTime(data.jam, i);
+                _widgetKeys.add(GlobalKey<FormState>());
               }
             }
           }
@@ -105,7 +119,8 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                 builder: (context, state) {
                   if (state is MahasiswaGetkegiatan) {
                     return Container(
-                      height: 160.h * _controllers.length,
+                      height: 160.h * _controllers.length +
+                          MediaQuery.of(context).viewInsets.bottom,
                       width: double.infinity,
                       margin: EdgeInsets.only(top: 12.h),
                       child: ListView.separated(
@@ -116,6 +131,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                             controller: _controllers[index],
                             title: 'Deskripsi Kegiatan:',
                             index: index,
+                            formKey: _widgetKeys[index],
                           );
                         },
                         separatorBuilder: (_, index) => SizedBox(height: 12.h),
@@ -138,6 +154,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                       colorBorder: kSecondColor,
                       ontap: () {
                         _addTextField();
+                        _addKeys();
                         context.read<TimeCubit>().addnew();
                       },
                     ),
@@ -147,24 +164,35 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                       icon: "assets/icons/memory.svg",
                       colorBorder: kWhiteColor,
                       ontap: () {
-                        for (var i = 0; i < _controllers.length; i++) {
-                          context.read<MahasiswaCubit>().saveKegiatan(
-                                KegiatanModel(
-                                  id: i.toString(),
-                                  jam: context.read<TimeCubit>().state[i],
-                                  deskripsi: _controllers[i].text,
-                                ),
-                              );
+                        bool isValid = true;
+                        for (var i = 0; i < _widgetKeys.length; i++) {
+                          if (!_widgetKeys[i].currentState!.validate()) {
+                            isValid = false;
+                            break;
+                          }
                         }
-                        showDialog<void>(
-                          context: context,
-                          barrierDismissible: true,
-                          builder: (BuildContext context) {
-                            return const Dialoginfo(
-                              title: 'Rencana kegiatan\nberhasil di simpan',
-                            );
-                          },
-                        );
+
+                        if (isValid == true) {
+                          for (var i = 0; i < _controllers.length; i++) {
+                            context.read<MahasiswaCubit>().saveKegiatan(
+                                  KegiatanModel(
+                                    id: i.toString(),
+                                    jam: context.read<TimeCubit>().state[i],
+                                    deskripsi: _controllers[i].text,
+                                  ),
+                                  context.read<AuthCubit>().mhsId,
+                                );
+                          }
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) {
+                              return const Dialoginfo(
+                                title: 'Rencana kegiatan\nberhasil di simpan',
+                              );
+                            },
+                          );
+                        }
                       },
                     )
                   ],

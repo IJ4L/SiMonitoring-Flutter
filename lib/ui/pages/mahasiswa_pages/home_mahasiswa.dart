@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
+import 'package:simor/cubit/time_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
@@ -106,6 +107,16 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                         ? Costumebutton(
                                             title: 'Kegiatan',
                                             ontap: () {
+                                              context
+                                                  .read<TimeCubit>()
+                                                  .initial();
+                                              context
+                                                  .read<MahasiswaCubit>()
+                                                  .getKegiatan(
+                                                    context
+                                                        .read<AuthCubit>()
+                                                        .mhsId,
+                                                  );
                                               Navigator.pushNamed(
                                                 context,
                                                 '/kegiatan-mahasiswa',
