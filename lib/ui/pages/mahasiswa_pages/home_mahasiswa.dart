@@ -106,9 +106,6 @@ class _HomemahasiswaState extends State<Homemahasiswa> {
                                         ? Costumebutton(
                                             title: 'Kegiatan',
                                             ontap: () {
-                                              context
-                                                  .read<MahasiswaCubit>()
-                                                  .getKegiatan();
                                               Navigator.pushNamed(
                                                 context,
                                                 '/kegiatan-mahasiswa',

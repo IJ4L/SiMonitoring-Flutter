@@ -152,36 +152,33 @@ class MahasiswaRepository {
   }
 
   Future<void> saveKegiatan(KegiatanModel kegiatanModel) async {
-    List<KegiatanModel> existingHistory = await getKegiatan();
-    int initialIndex = existingHistory.indexWhere(
-      (k) => k.id == kegiatanModel.id,
-    );
-
-    if (initialIndex != -1) {
-      existingHistory.removeAt(initialIndex);
-      existingHistory.insert(initialIndex, kegiatanModel);
-    } else {
-      existingHistory.add(kegiatanModel);
-      initialIndex = existingHistory.length - 1;
+    final result = sharedPreferences.getString(_kegiatanKey);
+    List<KegiatanModel> existingHistory = [];
+    if (result != null) {
+      final decodedHistory = json.decode(result);
+      existingHistory = List<KegiatanModel>.from(
+        decodedHistory.map((item) => KegiatanModel.fromJson(item)),
+      );
     }
 
-    final encodedHistory = json.encode(
-      existingHistory.map((kegiatan) => kegiatan.toJson()).toList(),
-    );
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.remove(_kegiatanKey);
+    final existingIndex =
+        existingHistory.indexWhere((k) => k.id == kegiatanModel.id);
+    if (existingIndex != -1) {
+      existingHistory[existingIndex] = kegiatanModel;
+    } else {
+      existingHistory.add(kegiatanModel);
+    }
+
+    // Step 3: Save the updated data back to SharedPreferences
+    final encodedHistory = json.encode(existingHistory);
     await sharedPreferences.setString(_kegiatanKey, encodedHistory);
   }
 
   Future<List<KegiatanModel>> getKegiatan() async {
     final result = sharedPreferences.getString(_kegiatanKey);
-    if (result != null) {
-      final decodedHistory = json.decode(result);
-      if (decodedHistory is List) {
-        return List<KegiatanModel>.from(
-          decodedHistory.map((item) => KegiatanModel.fromJson(item)),
-        );
-      }
+    final data = jsonDecode(result ?? '[]');
+    if (data is List) {
+      return data.map((e) => KegiatanModel.fromJson(e)).toList();
     }
     return [];
   }
