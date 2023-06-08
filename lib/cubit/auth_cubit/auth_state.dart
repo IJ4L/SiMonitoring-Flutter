@@ -32,7 +32,7 @@ class AuthDosen extends AuthState {
 }
 
 class AuthPembimbing extends AuthState {
-  final DosenPembimbinfModel pembimbing;
+  final PembimbingModel pembimbing;
 
   const AuthPembimbing(this.pembimbing);
 

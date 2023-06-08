@@ -89,7 +89,7 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
             key: widget.formKey,
             child: TextFormField(
               controller: widget.controller,
-              maxLines: 7,
+              maxLines: 6,
               cursorColor: kBlackColor,
               decoration: InputDecoration(
                 hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',

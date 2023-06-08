@@ -11,7 +11,6 @@ import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
 import '../../../cubit/camera_cubit/camera_cubit.dart';
-import '../../../cubit/come_out_cubit/come_out_cubit.dart';
 import '../../widgets/costume_dialog.dart';
 
 class CameraPage extends StatelessWidget {
@@ -92,12 +91,7 @@ class CameraPage extends StatelessWidget {
                               colorButton: kPrimaryColor,
                               ontap: () {
                                 type['inOut'] == true
-                                    ? {
-                                        mhsCubit.datang(state.imagePath),
-                                        context
-                                            .read<ComeOutCubit>()
-                                            .checkDatang(),
-                                      }
+                                    ? mhsCubit.datang(state.imagePath)
                                     : {
                                         mhsCubit.upFotoKegiatan(
                                           state.imagePath,

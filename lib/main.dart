@@ -8,9 +8,11 @@ import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
+import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/cubit/time_cubit.dart';
 import 'package:simor/services/auth_repository.dart';
 import 'package:simor/services/mahasiswa_repository.dart';
+import 'package:simor/services/pebimbing_repository.dart';
 import 'package:simor/services/status_repository.dart';
 import 'package:simor/ui/pages/dosen_pages/akhir_ppl_page.dart';
 import 'package:simor/ui/pages/dosen_pages/home_dosen_page.dart';
@@ -23,6 +25,7 @@ import 'package:simor/ui/pages/mahasiswa_pages/kendala_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/pages/pembimbing_pages/choice_scan.dart';
 import 'package:simor/ui/pages/pembimbing_pages/home_pembimbing.dart';
+import 'package:simor/ui/pages/pembimbing_pages/scan_pembimbing.dart';
 import 'package:simor/ui/pages/scan_card_page.dart';
 import 'package:simor/ui/pages/splash_screen.dart';
 
@@ -70,7 +73,15 @@ class MyApp extends StatelessWidget {
                 sharedPreferences: prefs,
               ),
             ),
-          )
+          ),
+          BlocProvider(
+            create: (context) => PembimbingCubit(
+              PembimbingRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
         ],
         child: MaterialApp(
           title: 'SiMonitoring',
@@ -88,6 +99,7 @@ class MyApp extends StatelessWidget {
             '/kendala-mahasiswa': (context) => const KendalaMahasiswa(),
             '/home-pembimbing': (context) => const Homepembimbing(),
             '/choice-scan': (context) => const ChoiceScan(),
+            '/scan-pembimbing': (context) => const ScanPembimbing(),
             '/home-dosen': (context) => const HomeDosenPage(),
             '/lokasi-ppl': (context) => const LokasiPplPage(),
             '/akhir-ppl': (context) => const AkhirPplPage(),

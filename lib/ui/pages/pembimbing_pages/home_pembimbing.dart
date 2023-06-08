@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
+import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/utils/date_formatter.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
@@ -42,75 +45,92 @@ class Homepembimbing extends StatelessWidget {
         padding: EdgeInsets.all(18.r),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 64.h,
-                  height: 64.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(64.h),
-                    border: Border.all(color: kBlackColor, width: 2),
-                  ),
-                ),
-                SizedBox(width: 22.h),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Makassar Digital Valley',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
+            BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                if (state is AuthPembimbing) {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 64.h,
+                            height: 64.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(64.h),
+                              border: Border.all(color: kBlackColor, width: 2),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  state.pembimbing.lokasi.gambar,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 22.h),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.pembimbing.lokasi.nama,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textScaleFactor: 1.0,
+                              ),
+                              SizedBox(height: 8.h),
+                              SizedBox(
+                                width: 220.w,
+                                child: Text(
+                                  state.pembimbing.lokasi.alamat,
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  textScaleFactor: 1.0,
+                                  maxLines: 4,
+                                ),
+                              ),
+                              Container(
+                                height: 0.4.h,
+                                width: 180.w,
+                                margin: EdgeInsets.only(top: 10.h),
+                                decoration: BoxDecoration(
+                                  color: kBlackColor.withOpacity(0.1),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      textScaleFactor: 1.0,
-                    ),
-                    SizedBox(height: 8.h),
-                    SizedBox(
-                      width: 220.w,
-                      child: Text(
-                        'Jl. A. P. Pettarani No.13, Sinrijala, Kec. Panakkukang, Kota Makassar',
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        textScaleFactor: 1.0,
-                        maxLines: 4,
+                      SizedBox(height: 22.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          MajorMaker(
+                            title: 'Dosen Pembimbing',
+                            value: state.pembimbing.namaDosenPembimbing,
+                          ),
+                          Container(
+                            height: 24.h,
+                            width: 0.4.w,
+                            decoration: BoxDecoration(
+                              color: kBlackColor.withOpacity(0.1),
+                            ),
+                          ),
+                          MajorMaker(
+                            title: 'Pembimbing Lapanagan',
+                            value: state.pembimbing.namaPembimbingLapangan,
+                          ),
+                        ],
                       ),
-                    ),
-                    Container(
-                      height: 0.4.h,
-                      width: 180.w,
-                      margin: EdgeInsets.only(top: 10.h),
-                      decoration: BoxDecoration(
-                        color: kBlackColor.withOpacity(0.1),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            SizedBox(height: 22.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const MajorMaker(
-                  title: 'Dosen Pembimbing',
-                  value: 'Reza Maulana',
-                ),
-                Container(
-                  height: 24.h,
-                  width: 0.4.w,
-                  decoration: BoxDecoration(
-                    color: kBlackColor.withOpacity(0.1),
-                  ),
-                ),
-                const MajorMaker(
-                  title: 'Pembimbing Lapanagan',
-                  value: 'Rini Apriliani',
-                ),
-              ],
+                    ],
+                  );
+                }
+                return Container();
+              },
             ),
             Container(
               height: 40.h,
@@ -131,13 +151,25 @@ class Homepembimbing extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: ListView.separated(
-                padding: EdgeInsets.zero,
-                itemBuilder: (context, index) => const CardMahasiswa(),
-                separatorBuilder: (_, index) => const SizedBox(height: 0),
-                itemCount: 6,
-              ),
+            BlocBuilder<PembimbingCubit, PembimbingState>(
+              builder: (context, state) {
+                if (state is PembimbingLoaded) {
+                  return Expanded(
+                    child: ListView.separated(
+                      padding: EdgeInsets.only(top: 6.h),
+                      itemBuilder: (context, index) => CardMahasiswa(
+                        nama: state.pembimbing[index].nama,
+                        nim: state.pembimbing[index].nim,
+                        datang: state.pembimbing[index].keteranganDatang,
+                        pulang: state.pembimbing[index].keteranganPulang,
+                      ),
+                      separatorBuilder: (_, index) => const SizedBox(height: 0),
+                      itemCount: state.pembimbing.length,
+                    ),
+                  );
+                }
+                return Container();
+              },
             ),
           ],
         ),
@@ -174,7 +206,14 @@ class Homepembimbing extends StatelessWidget {
 class CardMahasiswa extends StatelessWidget {
   const CardMahasiswa({
     super.key,
+    required this.nama,
+    required this.nim,
+    required this.datang,
+    required this.pulang,
   });
+
+  final String nama, nim;
+  final String datang, pulang;
 
   @override
   Widget build(BuildContext context) {
@@ -194,17 +233,21 @@ class CardMahasiswa extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Ahmad Ilham',
-                    style: TextStyle(
-                      fontWeight: medium,
-                      fontSize: 18.sp,
+                  SizedBox(
+                    width: 200.w,
+                    child: Text(
+                      nama,
+                      style: TextStyle(
+                        fontWeight: medium,
+                        fontSize: 18.sp,
+                      ),
+                      textScaleFactor: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textScaleFactor: 1,
                   ),
                   SizedBox(height: 6.h),
                   Text(
-                    '60900121070',
+                    nim,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: light,
@@ -215,19 +258,33 @@ class CardMahasiswa extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              SvgPicture.asset(
-                "assets/icons/check_box_on.svg",
-                width: 28.r,
-                height: 28.r,
-                fit: BoxFit.fill,
-              ),
+              datang == 'hadir'
+                  ? SvgPicture.asset(
+                      "assets/icons/check_box_on.svg",
+                      width: 28.r,
+                      height: 28.r,
+                      fit: BoxFit.fill,
+                    )
+                  : SvgPicture.asset(
+                      "assets/icons/check_box_off.svg",
+                      width: 28.r,
+                      height: 28.r,
+                      fit: BoxFit.fill,
+                    ),
               SizedBox(width: 6.h),
-              SvgPicture.asset(
-                "assets/icons/check_box_off.svg",
-                width: 28.r,
-                height: 28.r,
-                fit: BoxFit.fill,
-              ),
+              pulang == 'hadir'
+                  ? SvgPicture.asset(
+                      "assets/icons/check_box_on.svg",
+                      width: 28.r,
+                      height: 28.r,
+                      fit: BoxFit.fill,
+                    )
+                  : SvgPicture.asset(
+                      "assets/icons/check_box_off.svg",
+                      width: 28.r,
+                      height: 28.r,
+                      fit: BoxFit.fill,
+                    ),
             ],
           ),
           SizedBox(height: 8.h),

@@ -138,12 +138,6 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                         readOnly: true,
                         style: TextStyle(color: kGreyColor.withOpacity(0.6)),
                         decoration: InputDecoration(
-                          hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
-                          hintStyle: TextStyle(
-                            color: kGreyColor.withOpacity(0.4),
-                            fontStyle: FontStyle.italic,
-                            fontSize: 12.sp,
-                          ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16.r),

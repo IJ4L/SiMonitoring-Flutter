@@ -105,7 +105,7 @@ class ButtonChoice extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
         context,
-        '/scan-card',
+        '/scan-pembimbing',
         arguments: {
           'bg': bg,
           'card': card,

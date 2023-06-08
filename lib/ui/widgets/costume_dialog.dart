@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../cubit/come_out_cubit/come_out_cubit.dart';
 import '../../shared/themes.dart';
 import 'costume_button.dart';
 
@@ -53,11 +55,14 @@ class Dialoginfo extends StatelessWidget {
                 ontap: type
                     ? () {
                         pageTo
-                            ? Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/home-mahasiswa',
-                                (route) => false,
-                              )
+                            ? {
+                                context.read<ComeOutCubit>().checkDatang(),
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/home-mahasiswa',
+                                  (route) => false,
+                                )
+                              }
                             : Navigator.pushNamed(
                                 context,
                                 '/info-scan',

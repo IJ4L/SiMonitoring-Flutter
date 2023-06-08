@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:simor/models/dosen_pembimbing_model.dart';
 import 'package:simor/models/mahasiswa_model.dart';
+import 'package:simor/models/pembimbing_model.dart';
 
 class AuthRepository {
   final http.Client client;
@@ -58,7 +58,7 @@ class AuthRepository {
     }
   }
 
-  Future<Either<String, DosenPembimbinfModel>> getDataDosenPembimbing() async {
+  Future<Either<String, PembimbingModel>> getDataPembimbing() async {
     try {
       final token = await getUserToken();
 
@@ -70,7 +70,7 @@ class AuthRepository {
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        return Right(DosenPembimbinfModel.fromJson(data['data']));
+        return Right(PembimbingModel.fromJson(data['data']));
       }
 
       return Left(response.statusCode.toString());

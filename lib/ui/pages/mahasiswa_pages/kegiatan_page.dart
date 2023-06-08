@@ -55,7 +55,6 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
     final timeCubit = context.read<TimeCubit>();
     return Scaffold(
       backgroundColor: kWhiteColor,
-      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(130.h),
         child: Container(
@@ -119,8 +118,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                 builder: (context, state) {
                   if (state is MahasiswaGetkegiatan) {
                     return Container(
-                      height: 160.h * _controllers.length +
-                          MediaQuery.of(context).viewInsets.bottom,
+                      height: 150.h * _controllers.length,
                       width: double.infinity,
                       margin: EdgeInsets.only(top: 12.h),
                       child: ListView.separated(
