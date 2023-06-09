@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 import 'package:simor/ui/widgets/date_picker.dart';
 
-class HomeDosenPage extends StatelessWidget {
+class HomeDosenPage extends StatefulWidget {
   const HomeDosenPage({super.key});
+
+  @override
+  State<HomeDosenPage> createState() => _HomeDosenPageState();
+}
+
+class _HomeDosenPageState extends State<HomeDosenPage> {
+  final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,43 +29,54 @@ class HomeDosenPage extends StatelessWidget {
                 'assets/images/img_appbar_dosen.svg',
                 width: MediaQuery.of(context).size.width,
               ),
-              Positioned(
-                top: 50.h,
-                left: 14.w,
-                right: 14.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Welcome',
-                          style: whiteTextStyle.copyWith(
-                            fontWeight: light,
-                            fontSize: 14.sp,
+              BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthDosen) {
+                    return Positioned(
+                      top: 50.h,
+                      left: 14.w,
+                      right: 14.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome',
+                                style: whiteTextStyle.copyWith(
+                                  fontWeight: light,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                              SizedBox(height: 4.h),
+                              Text(
+                                state.dosenModel.nama,
+                                style: whiteTextStyle.copyWith(
+                                  fontWeight: semiBold,
+                                  fontSize: 20.sp,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          'Reza Maulana',
-                          style: whiteTextStyle.copyWith(
-                            fontWeight: semiBold,
-                            fontSize: 20.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 40.r,
-                      width: 40.r,
-                      decoration: BoxDecoration(
-                        color: kWhiteColor,
-                        borderRadius: BorderRadius.circular(10.r),
+                          Container(
+                            height: 40.r,
+                            width: 40.r,
+                            decoration: BoxDecoration(
+                              color: kWhiteColor,
+                              borderRadius: BorderRadius.circular(10.r),
+                              image: DecorationImage(
+                                image: NetworkImage(state.dosenModel.gambar),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
+                    );
+                  }
+                  return Container();
+                },
               ),
             ],
           ),
@@ -75,7 +95,7 @@ class HomeDosenPage extends StatelessWidget {
               ],
             ),
           ),
-          const DatePicker(),
+          DatePicker(scrollController: scrollController),
           GestureDetector(
             onTap: () => showDialog<void>(
               context: context,

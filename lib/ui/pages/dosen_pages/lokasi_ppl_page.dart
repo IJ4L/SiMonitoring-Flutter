@@ -11,6 +11,7 @@ class LokasiPplPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
     return Scaffold(
       body: Column(
         children: [
@@ -64,7 +65,7 @@ class LokasiPplPage extends StatelessWidget {
               ],
             ),
           ),
-          const DatePicker(),
+          DatePicker(scrollController: scrollController),
           Container(
             width: double.infinity,
             margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
