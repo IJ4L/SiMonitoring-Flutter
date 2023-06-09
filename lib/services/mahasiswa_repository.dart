@@ -13,7 +13,7 @@ class MahasiswaRepository {
 
   MahasiswaRepository({required this.client, required this.sharedPreferences});
 
-  final baseUrl = 'http://192.168.1.14:8000/api';
+  final baseUrl = 'http://192.168.177.197:8000/api';
 
   Future<Either<String, void>> datang(String imagePath) async {
     try {

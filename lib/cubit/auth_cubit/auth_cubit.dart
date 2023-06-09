@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:simor/models/dosen_pembimbing_model.dart';
+import 'package:simor/models/dosen_model.dart';
 import 'package:simor/models/mahasiswa_model.dart';
 import 'package:simor/models/pembimbing_model.dart';
 import 'package:simor/services/auth_repository.dart';
@@ -42,21 +42,21 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> getDataDosen() async {
-    // emit(AuthLoading());
-    // final result = await authRepository.getDataDosenPembimbing();
-    // result.fold(
-    //   (failed) => emit(AuthFailed(failed)),
-    //   (success) => emit(AuthDosen(success)),
-    // );
-  }
-
   Future<void> getDataPembimbing() async {
     emit(AuthLoading());
     final result = await authRepository.getDataPembimbing();
     result.fold(
       (failed) => emit(AuthFailed(failed)),
       (success) => emit(AuthPembimbing(success)),
+    );
+  }
+
+  Future<void> getDataDosen() async {
+    emit(AuthLoading());
+    final result = await authRepository.getDataDosen();
+    result.fold(
+      (failed) => emit(AuthFailed(failed)),
+      (success) => emit(AuthDosen(success)),
     );
   }
 

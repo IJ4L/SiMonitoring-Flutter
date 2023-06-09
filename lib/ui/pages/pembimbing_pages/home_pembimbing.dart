@@ -8,8 +8,21 @@ import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/utils/date_formatter.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
-class Homepembimbing extends StatelessWidget {
+import '../../../cubit/loading_button_cubit.dart';
+
+class Homepembimbing extends StatefulWidget {
   const Homepembimbing({super.key});
+
+  @override
+  State<Homepembimbing> createState() => _HomepembimbingState();
+}
+
+class _HomepembimbingState extends State<Homepembimbing> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<LodingButtonCubit>().toggleInit();
+  }
 
   @override
   Widget build(BuildContext context) {

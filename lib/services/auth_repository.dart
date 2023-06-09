@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:simor/models/dosen_model.dart';
 import 'package:simor/models/mahasiswa_model.dart';
 import 'package:simor/models/pembimbing_model.dart';
 
@@ -13,7 +14,7 @@ class AuthRepository {
 
   AuthRepository({required this.client, required this.sharedPreferences});
 
-  final baseUrl = 'http://192.168.1.14:8000/api';
+  final baseUrl = 'http://192.168.177.197:8000/api';
 
   Future<Either<String, void>> login(String username, String password) async {
     try {
@@ -31,7 +32,7 @@ class AuthRepository {
         return const Right(null);
       }
 
-      return Left(response.statusCode.toString());
+      return const Left('Username Tidak ditemukan');
     } catch (e) {
       return Left(e.toString());
     }
@@ -71,6 +72,29 @@ class AuthRepository {
 
       if (response.statusCode == 200) {
         return Right(PembimbingModel.fromJson(data['data']));
+      }
+
+      return Left(response.statusCode.toString());
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, DosenModel>> getDataDosen() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('$baseUrl/me'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      final data = jsonDecode(response.body);
+
+      print(data);
+
+      if (response.statusCode == 200) {
+        return Right(DosenModel.fromJson(data['data']));
       }
 
       return Left(response.statusCode.toString());

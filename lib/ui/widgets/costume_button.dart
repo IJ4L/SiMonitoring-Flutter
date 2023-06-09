@@ -8,7 +8,7 @@ class Costumebutton extends StatelessWidget {
     required this.title,
     this.colorTitle = kWhiteColor,
     this.colorButton = kPrimaryColor,
-    this.progres = false,
+    this.progres = true,
     required this.ontap,
   });
 

@@ -23,12 +23,12 @@ class AuthMahsiswa extends AuthState {
 }
 
 class AuthDosen extends AuthState {
-  final DosenPembimbinfModel dosenModle;
+  final DosenModel dosenModel;
 
-  const AuthDosen(this.dosenModle);
+  const AuthDosen(this.dosenModel);
 
   @override
-  List<Object> get props => [dosenModle];
+  List<Object> get props => [dosenModel];
 }
 
 class AuthPembimbing extends AuthState {

@@ -28,9 +28,18 @@ class PembimbingCubit extends Cubit<PembimbingState> {
     );
   }
 
-  Future<void> konfirmasiMahasiswa(String nim) async {
+  Future<void> konfirmasiDatang(String nim) async {
     emit(PembimbingLoading());
-    final result = await pembimbingRepository.konfirmasiAbsensi(nim);
+    final result = await pembimbingRepository.konfirmasiDatang(nim);
+    result.fold(
+      (erorr) => emit(PembimbingFailure(erorr)),
+      (succes) => null,
+    );
+  }
+
+  Future<void> konfirmasiPulang(String nim) async {
+    emit(PembimbingLoading());
+    final result = await pembimbingRepository.konfirmasiPulang(nim);
     result.fold(
       (erorr) => emit(PembimbingFailure(erorr)),
       (succes) => null,

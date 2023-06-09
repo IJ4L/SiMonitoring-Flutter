@@ -11,7 +11,7 @@ class PembimbingRepository {
   final String _userTokenKey = 'user_token';
   PembimbingRepository({required this.sharedPreferences, required this.client});
 
-  final baseUrl = 'http://192.168.1.14:8000/api';
+  final baseUrl = 'http://192.168.177.197:8000/api';
 
   Future<Either<String, List<CekMhs>>> getMhs() async {
     try {
@@ -73,12 +73,37 @@ class PembimbingRepository {
     }
   }
 
-  Future<Either<String, void>> konfirmasiAbsensi(String nim) async {
+  Future<Either<String, void>> konfirmasiDatang(String nim) async {
     try {
       final token = await getUserToken();
 
       final response = await client.post(
-        Uri.parse('$baseUrl/pembimbing-lapangan/konfirmasi-absensi'),
+        Uri.parse('$baseUrl/pembimbing-lapangan/konfirmasi_presensi_datang'),
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer $token',
+        },
+        body: {'nim': nim},
+      );
+
+      if (response.statusCode == 200) {
+        return const Right(null);
+      }
+
+      return Left(
+        'Gagal Konfimasi absensi mahasiswa. Status code: ${response.statusCode}',
+      );
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, void>> konfirmasiPulang(String nim) async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.post(
+        Uri.parse('$baseUrl/pembimbing-lapangan/konfirmasi_presensi_pulang'),
         headers: {
           'accept': 'application/json',
           'authorization': 'Bearer $token',

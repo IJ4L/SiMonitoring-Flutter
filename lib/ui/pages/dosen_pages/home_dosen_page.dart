@@ -158,7 +158,12 @@ class HomeDosenPage extends StatelessWidget {
                 return cardPpl(context);
               },
               separatorBuilder: (_, index) => SizedBox(height: 12.h),
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              padding: EdgeInsets.only(
+                right: 16.w,
+                left: 16.w,
+                bottom: 16.h,
+                top: 4.h,
+              ),
               itemCount: 7,
             ),
           )

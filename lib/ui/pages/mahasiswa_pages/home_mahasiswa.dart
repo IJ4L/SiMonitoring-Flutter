@@ -10,14 +10,9 @@ import 'package:simor/ui/widgets/costume_button.dart';
 
 import '../../widgets/costume_card.dart';
 
-class Homemahasiswa extends StatefulWidget {
+class Homemahasiswa extends StatelessWidget {
   const Homemahasiswa({super.key});
 
-  @override
-  State<Homemahasiswa> createState() => _HomemahasiswaState();
-}
-
-class _HomemahasiswaState extends State<Homemahasiswa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

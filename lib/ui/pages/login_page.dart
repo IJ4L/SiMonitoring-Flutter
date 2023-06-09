@@ -7,7 +7,6 @@ import 'package:simor/shared/themes.dart';
 import '../../cubit/auth_cubit/auth_cubit.dart';
 import '../../cubit/loading_button_cubit.dart';
 import '../../cubit/obscure_text_cubit.dart';
-import '../widgets/costume_button.dart';
 import '../widgets/form_input_with_title.dart';
 
 class Loginpage extends StatelessWidget {
@@ -17,10 +16,12 @@ class Loginpage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController usernameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    final authCUbit = context.read<AuthCubit>();
     return Scaffold(
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthMahsiswa) {
+            context.read<LodingButtonCubit>().toggleInit();
             Navigator.pushNamed(
               context,
               '/info-scan',
@@ -34,7 +35,14 @@ class Loginpage extends StatelessWidget {
           }
           if (state is AuthPembimbing) {
             context.read<PembimbingCubit>().getMahasiswa();
-            Navigator.pushNamed(context, '/home-pembimbing');
+            context.read<LodingButtonCubit>().toggleInit();
+            Navigator.pushReplacementNamed(context, '/home-pembimbing');
+          }
+          if (state is AuthDosen) {
+            Navigator.pushReplacementNamed(context, '/home-dosen');
+          }
+          if (state is AuthFailed) {
+            context.read<LodingButtonCubit>().toggleInit();
           }
         },
         child: GestureDetector(
@@ -82,7 +90,7 @@ class Loginpage extends StatelessWidget {
                         ),
                         SizedBox(height: 48.h),
                         TextfieldMaker(
-                          title: 'Nim',
+                          title: 'Username',
                           showIcon: false,
                           controller: usernameController,
                         ),
@@ -101,29 +109,64 @@ class Loginpage extends StatelessWidget {
                           },
                         ),
                         SizedBox(height: 32.h),
-                        BlocBuilder<LodingButtonCubit, bool>(
-                          builder: (context, state) {
-                            final authCubit = context.read<AuthCubit>();
-                            return Costumebutton(
-                              title: 'Login',
-                              colorTitle: const Color(0xff2A55C9),
-                              colorButton: Colors.white,
-                              progres: state,
-                              ontap: () async {
-                                await authCubit.login(
+                        Container(
+                          decoration: BoxDecoration(
+                            color: kWhiteColor,
+                            borderRadius: BorderRadius.circular(8.w),
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () async {
+                                context
+                                    .read<LodingButtonCubit>()
+                                    .toggleLoading();
+                                await authCUbit.login(
                                   usernameController.text,
                                   passwordController.text,
                                 );
-                                final role = await authCubit.getRole();
+                                final role = await authCUbit.getRole();
                                 if (role == 'mahasiswa') {
-                                  authCubit.getDataMahasiswa();
+                                  authCUbit.getDataMahasiswa();
                                 }
                                 if (role == 'pembimbing_lapangan') {
-                                  authCubit.getDataPembimbing();
+                                  authCUbit.getDataPembimbing();
+                                }
+                                if (role == 'dosen_pembimbing') {
+                                  authCUbit.getDataDosen();
                                 }
                               },
-                            );
-                          },
+                              borderRadius: BorderRadius.circular(8.w),
+                              child: SizedBox(
+                                height: 40.h,
+                                width: double.infinity,
+                                child: BlocBuilder<LodingButtonCubit, bool>(
+                                  builder: (context, state) {
+                                    return Center(
+                                      child: state
+                                          ? SizedBox(
+                                              height: 16.r,
+                                              width: 16.r,
+                                              child: CircularProgressIndicator(
+                                                color: kPrimaryColor,
+                                                strokeWidth: 3.r,
+                                              ),
+                                            )
+                                          : Text(
+                                              'Login',
+                                              style: TextStyle(
+                                                color: kPrimaryColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14.sp,
+                                              ),
+                                              textScaleFactor: 1,
+                                            ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
                         )
                       ],
                     ),
