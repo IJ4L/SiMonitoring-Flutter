@@ -36,7 +36,6 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
     for (var controller in _controllers) {
       controller.dispose();
     }
-
     super.dispose();
   }
 
@@ -48,6 +47,11 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
   void _addKeys() {
     _widgetKeys.add(GlobalKey<FormState>());
     setState(() {});
+  }
+
+  bool isKeyboardActive() {
+    final currentFocus = FocusScope.of(context);
+    return currentFocus.hasFocus;
   }
 
   @override
@@ -120,7 +124,8 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                     return Container(
                       height: 150.h * _controllers.length,
                       width: double.infinity,
-                      margin: EdgeInsets.only(top: 12.h),
+                      margin: EdgeInsets.only(
+                          top: 12.h, bottom: isKeyboardActive() ? 0 : 200.h),
                       child: ListView.separated(
                         padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/shared/themes.dart';
 
-import '../../widgets/dialog_absen_widget.dart';
-
 class ChoiceScan extends StatelessWidget {
   const ChoiceScan({super.key});
 
@@ -50,19 +48,17 @@ class ChoiceScan extends StatelessWidget {
                       textScaleFactor: 1,
                     ),
                     SizedBox(height: 34.h),
-                    ButtonChoice(
+                    const ButtonChoice(
                       title: 'Datang',
                       bg: 'bg_scan_2.svg',
                       card: 'bg_presensi_in.svg',
-                      tap: () => dialogAbsen(context, 'Datang'),
                     ),
                     SizedBox(height: 16.h),
-                    ButtonChoice(
+                    const ButtonChoice(
                       title: 'Pulang',
                       bg: 'bg_scan_2.svg',
                       card: 'bg_presensi_out.svg',
                       status: 'Pulang',
-                      tap: () => dialogAbsen(context, 'Pulang'),
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -92,44 +88,52 @@ class ButtonChoice extends StatelessWidget {
     required this.bg,
     required this.card,
     this.status = 'Datang',
-    required this.tap,
   });
 
   final String title;
   final String bg, card;
   final String status;
-  final Function() tap;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(
-        context,
-        '/scan-pembimbing',
-        arguments: {
-          'bg': bg,
-          'card': card,
-          'status': status,
-          'tap': tap,
-          'height': 44.h,
-          'typePage': false,
-        },
-      ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 70.w),
       child: Container(
-        height: 50.h,
-        width: 170.w,
         decoration: BoxDecoration(
           color: kWhiteColor,
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(8.w),
         ),
-        child: Center(
-          child: Text(
-            title,
-            style: blueTextStyle.copyWith(
-              fontSize: 14.sp,
-              fontWeight: semiBold,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => Navigator.pushNamed(
+              context,
+              '/scan-pembimbing',
+              arguments: {
+                'bg': bg,
+                'card': card,
+                'status': status,
+                'height': 44.h,
+                'typePage': false,
+                'title': title,
+              },
             ),
-            textScaleFactor: 1,
+            borderRadius: BorderRadius.circular(8.w),
+            child: SizedBox(
+              height: 40.h,
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.sp,
+                  ),
+                  textScaleFactor: 1,
+                ),
+              ),
+            ),
           ),
         ),
       ),
