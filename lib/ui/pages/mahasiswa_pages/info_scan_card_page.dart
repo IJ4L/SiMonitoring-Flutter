@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:simor/ui/widgets/costume_dialog.dart';
 
 class InfoScan extends StatelessWidget {
   const InfoScan({super.key});
@@ -22,7 +23,20 @@ class InfoScan extends StatelessWidget {
             Navigator.pushNamed(context, '/home-mahasiswa');
           }
           if (state is ComeOutPulang) {
-            Navigator.pushNamed(context, '/login');
+            showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                Future.delayed(const Duration(seconds: 3), () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/login', (route) => false);
+                }).timeout(const Duration(seconds: 3));
+                return const Dialoginfo(
+                  title:
+                      '''Rencana Kegiatan,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!''',
+                  height: 350,
+                );
+              },
+            );
           }
         },
         child: LayoutBuilder(

@@ -9,13 +9,33 @@ import '../../cubit/loading_button_cubit.dart';
 import '../../cubit/obscure_text_cubit.dart';
 import '../widgets/form_input_with_title.dart';
 
-class Loginpage extends StatelessWidget {
+class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
 
   @override
+  State<Loginpage> createState() => _LoginpageState();
+}
+
+class _LoginpageState extends State<Loginpage> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    usernameController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextEditingController usernameController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
     final authCUbit = context.read<AuthCubit>();
     return Scaffold(
       body: BlocListener<AuthCubit, AuthState>(
@@ -47,7 +67,7 @@ class Loginpage extends StatelessWidget {
         },
         child: GestureDetector(
           onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
+            // FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Stack(
             children: [
