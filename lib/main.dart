@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
+      rebuildFactor: RebuildFactors.all,
       builder: (context, child) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => LodingButtonCubit()),

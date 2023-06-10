@@ -124,8 +124,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                     return Container(
                       height: 150.h * _controllers.length,
                       width: double.infinity,
-                      margin: EdgeInsets.only(
-                          top: 12.h, bottom: isKeyboardActive() ? 0 : 200.h),
+                      margin: EdgeInsets.only(top: 12.h),
                       child: ListView.separated(
                         padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
@@ -137,16 +136,16 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                             formKey: _widgetKeys[index],
                           );
                         },
-                        separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                        separatorBuilder: (_, index) => SizedBox(height: 16.h),
                         itemCount: _controllers.length,
                       ),
                     );
                   }
-                  return Container();
+                  return const SizedBox();
                 },
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -174,7 +173,6 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                             break;
                           }
                         }
-
                         if (isValid == true) {
                           for (var i = 0; i < _controllers.length; i++) {
                             context.read<MahasiswaCubit>().saveKegiatan(

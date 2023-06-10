@@ -5,13 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/models/cek_mahasiswa.dart';
 
+import '../config/core.dart';
+
 class PembimbingRepository {
   final http.Client client;
   final SharedPreferences sharedPreferences;
   final String _userTokenKey = 'user_token';
   PembimbingRepository({required this.sharedPreferences, required this.client});
-
-  final baseUrl = 'http://192.168.177.197:8000/api';
 
   Future<Either<String, List<CekMhs>>> getMhs() async {
     try {

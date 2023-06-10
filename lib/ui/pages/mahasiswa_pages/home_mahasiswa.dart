@@ -181,13 +181,14 @@ class Homemahasiswa extends StatelessWidget {
                       return Container(
                         width: 139.r,
                         height: 139.r,
-                        padding: const EdgeInsets.all(5),
+                        padding: EdgeInsets.all(6.r),
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(data.gambar),
-                            fit: BoxFit.cover,
-                          ),
+                          color: kWhiteColor,
                           borderRadius: BorderRadius.circular(139.r / 2),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(139.r / 2),
+                          child: Image.network(data.gambar),
                         ),
                       );
                     }

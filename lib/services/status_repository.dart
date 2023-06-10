@@ -5,14 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/models/datang_model.dart';
 
+import '../config/core.dart';
+
 class StatusRepository {
   final http.Client client;
   final SharedPreferences sharedPreferences;
   final String _userTokenKey = 'user_token';
 
   StatusRepository({required this.client, required this.sharedPreferences});
-
-  final baseUrl = 'http://192.168.177.197:8000/api';
 
   Future<Either<String, DatangModel>> checkDatang() async {
     try {

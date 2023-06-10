@@ -7,14 +7,14 @@ import 'package:simor/models/dosen_model.dart';
 import 'package:simor/models/mahasiswa_model.dart';
 import 'package:simor/models/pembimbing_model.dart';
 
+import '../config/core.dart';
+
 class AuthRepository {
   final http.Client client;
   final SharedPreferences sharedPreferences;
   final String _userTokenKey = 'user_token';
 
   AuthRepository({required this.client, required this.sharedPreferences});
-
-  final baseUrl = 'http://192.168.177.197:8000/api';
 
   Future<Either<String, void>> login(String username, String password) async {
     try {

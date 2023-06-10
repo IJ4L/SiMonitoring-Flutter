@@ -6,14 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/models/kegiatan_model.dart';
 import 'package:simor/models/kendala_model.dart';
 
+import '../config/core.dart';
+
 class MahasiswaRepository {
   final http.Client client;
   final SharedPreferences sharedPreferences;
   final String _userTokenKey = 'user_token';
 
   MahasiswaRepository({required this.client, required this.sharedPreferences});
-
-  final baseUrl = 'http://192.168.177.197:8000/api';
 
   Future<Either<String, void>> datang(String imagePath) async {
     try {
