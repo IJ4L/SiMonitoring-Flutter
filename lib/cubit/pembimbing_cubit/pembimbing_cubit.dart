@@ -15,7 +15,9 @@ class PembimbingCubit extends Cubit<PembimbingState> {
     final result = await pembimbingRepository.getMhs();
     result.fold(
       (erorr) => emit(PembimbingFailure(erorr)),
-      (success) => emit(PembimbingLoaded(success)),
+      (success) {
+        emit(PembimbingLoaded(success));
+      },
     );
   }
 

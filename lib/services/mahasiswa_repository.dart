@@ -78,7 +78,8 @@ class MahasiswaRepository {
       );
 
       final data = jsonDecode(response.body);
-      if (response.statusCode == 200) {
+
+      if (data['data'][0].toString() != 'null') {
         return Right(KendalaModel.fromJson(data['data'][0]));
       }
 

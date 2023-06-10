@@ -37,8 +37,8 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
             children: [
               Text(
                 widget.title,
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                   color: kTextInfoColor,
                 ),
@@ -120,11 +120,9 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
                 if (value == null || value.isEmpty) {
                   return 'Deskripsikan Rencana Kegiatanmu Hari Ini';
                 }
-
                 if (context.read<TimeCubit>().state[widget.index] == '') {
                   return 'Masukkan Jam Kegiatan';
                 }
-
                 return null;
               },
             ),

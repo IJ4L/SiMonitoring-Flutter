@@ -57,8 +57,10 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
   @override
   Widget build(BuildContext context) {
     final timeCubit = context.read<TimeCubit>();
+    final authCubit = context.read<AuthCubit>();
     return Scaffold(
       backgroundColor: kWhiteColor,
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(130.h),
         child: Container(
@@ -90,9 +92,9 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                 ),
                 Image.asset(
                   "assets/images/logo.png",
-                  height: 55.h,
-                  width: 202.w,
-                  fit: BoxFit.fill,
+                  height: 40.h,
+                  width: 180.w,
+                  fit: BoxFit.cover,
                 ),
                 const SizedBox(),
               ],
@@ -109,8 +111,8 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
               for (var i = 0; i < state.kegiatan.length; i++) {
                 final data = state.kegiatan[i];
                 _controllers.add(TextEditingController(text: data.deskripsi));
-                context.read<TimeCubit>().addTime(data.jam, i);
                 _widgetKeys.add(GlobalKey<FormState>());
+                timeCubit.addTime(data.jam, i);
               }
             }
           }
@@ -121,8 +123,9 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
               BlocBuilder<MahasiswaCubit, MahasiswaState>(
                 builder: (context, state) {
                   if (state is MahasiswaGetkegiatan) {
+                    final constraint = MediaQuery.of(context).size.height;
                     return Container(
-                      height: 150.h * _controllers.length,
+                      height: (constraint * 0.152.h) * _controllers.length,
                       width: double.infinity,
                       margin: EdgeInsets.only(top: 12.h),
                       child: ListView.separated(
@@ -131,9 +134,9 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                         itemBuilder: (context, index) {
                           return FormInputKegiatan(
                             controller: _controllers[index],
+                            formKey: _widgetKeys[index],
                             title: 'Deskripsi Kegiatan:',
                             index: index,
-                            formKey: _widgetKeys[index],
                           );
                         },
                         separatorBuilder: (_, index) => SizedBox(height: 16.h),
@@ -157,7 +160,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                       ontap: () {
                         _addTextField();
                         _addKeys();
-                        context.read<TimeCubit>().addnew();
+                        timeCubit.addnew();
                       },
                     ),
                     SizedBox(width: 16.h),
@@ -167,29 +170,29 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                       colorBorder: kWhiteColor,
                       ontap: () {
                         bool isValid = true;
-                        for (var i = 0; i < _widgetKeys.length; i++) {
-                          if (!_widgetKeys[i].currentState!.validate()) {
+                        for (var key in _widgetKeys) {
+                          if (!key.currentState!.validate()) {
                             isValid = false;
-                            break;
+                            continue;
                           }
                         }
-                        if (isValid == true) {
-                          for (var i = 0; i < _controllers.length; i++) {
+                        if (isValid) {
+                          _controllers.asMap().forEach((index, controller) {
                             context.read<MahasiswaCubit>().saveKegiatan(
                                   KegiatanModel(
-                                    id: i.toString(),
-                                    jam: context.read<TimeCubit>().state[i],
-                                    deskripsi: _controllers[i].text,
+                                    id: index.toString(),
+                                    jam: timeCubit.state[index],
+                                    deskripsi: controller.text,
                                   ),
-                                  context.read<AuthCubit>().mhsId,
+                                  authCubit.mhsId,
                                 );
-                          }
+                          });
                           showDialog<void>(
                             context: context,
                             barrierDismissible: true,
                             builder: (BuildContext context) {
                               return const Dialoginfo(
-                                title: 'Rencana kegiatan\nberhasil di simpan',
+                                title: 'Rencana kegiatan\nberhasil disimpan',
                               );
                             },
                           );

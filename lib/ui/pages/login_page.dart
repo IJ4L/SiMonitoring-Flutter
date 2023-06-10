@@ -19,6 +19,8 @@ class Loginpage extends StatefulWidget {
 class _LoginpageState extends State<Loginpage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> key1 = GlobalKey<FormState>();
+  final GlobalKey<FormState> key2 = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -37,11 +39,14 @@ class _LoginpageState extends State<Loginpage> {
   @override
   Widget build(BuildContext context) {
     final authCUbit = context.read<AuthCubit>();
+    final pembimbingCubit = context.read<PembimbingCubit>();
+    final loadingCubit = context.read<LodingButtonCubit>();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthMahsiswa) {
-            context.read<LodingButtonCubit>().toggleInit();
+            loadingCubit.toggleInit();
             Navigator.pushNamed(
               context,
               '/info-scan',
@@ -54,21 +59,19 @@ class _LoginpageState extends State<Loginpage> {
             );
           }
           if (state is AuthPembimbing) {
-            context.read<PembimbingCubit>().getMahasiswa();
-            context.read<LodingButtonCubit>().toggleInit();
+            pembimbingCubit.getMahasiswa();
+            loadingCubit.toggleInit();
             Navigator.pushReplacementNamed(context, '/home-pembimbing');
           }
           if (state is AuthDosen) {
             Navigator.pushReplacementNamed(context, '/home-dosen');
           }
           if (state is AuthFailed) {
-            context.read<LodingButtonCubit>().toggleInit();
+            loadingCubit.toggleInit();
           }
         },
         child: GestureDetector(
-          onTap: () {
-            // FocusManager.instance.primaryFocus?.unfocus();
-          },
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Stack(
             children: [
               Image.asset(
@@ -86,9 +89,9 @@ class _LoginpageState extends State<Loginpage> {
                         SizedBox(height: 16.h),
                         Image.asset(
                           "assets/images/logo.png",
-                          height: 54.h,
-                          width: 197.w,
-                          fit: BoxFit.fill,
+                          height: 40.h,
+                          width: 180.w,
+                          fit: BoxFit.cover,
                         ),
                         SizedBox(height: 56.h),
                         Text(
@@ -113,6 +116,7 @@ class _LoginpageState extends State<Loginpage> {
                           title: 'Username',
                           showIcon: false,
                           controller: usernameController,
+                          form: key1,
                         ),
                         SizedBox(height: 16.h),
                         BlocBuilder<ObscureTextCubit, bool>(
@@ -121,73 +125,79 @@ class _LoginpageState extends State<Loginpage> {
                               title: 'Password',
                               obscure: state,
                               showIcon: true,
-                              icon: state
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
                               controller: passwordController,
+                              form: key2,
+                              icon: state
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                             );
                           },
                         ),
-                        SizedBox(height: 32.h),
+                        SizedBox(height: 28.h),
                         Container(
                           decoration: BoxDecoration(
                             color: kWhiteColor,
                             borderRadius: BorderRadius.circular(8.w),
                           ),
                           child: Material(
-                            color: Colors.transparent,
+                            color: kTransparantColor,
                             child: InkWell(
+                              borderRadius: BorderRadius.circular(8.w),
                               onTap: () async {
-                                context
-                                    .read<LodingButtonCubit>()
-                                    .toggleLoading();
-                                await authCUbit.login(
-                                  usernameController.text,
-                                  passwordController.text,
-                                );
-                                final role = await authCUbit.getRole();
-                                if (role == 'mahasiswa') {
-                                  authCUbit.getDataMahasiswa();
-                                }
-                                if (role == 'pembimbing_lapangan') {
-                                  authCUbit.getDataPembimbing();
-                                }
-                                if (role == 'dosen_pembimbing') {
-                                  authCUbit.getDataDosen();
+                                final formOne = key1.currentState!.validate();
+                                final formTwo = key2.currentState!.validate();
+                                if (formOne && formTwo) {
+                                  loadingCubit.toggleLoading();
+                                  await authCUbit.login(
+                                    usernameController.text,
+                                    passwordController.text,
+                                  );
+                                  final role = await authCUbit.getRole();
+                                  if (role == 'mahasiswa') {
+                                    authCUbit.getDataMahasiswa();
+                                  }
+                                  if (role == 'pembimbing_lapangan') {
+                                    authCUbit.getDataPembimbing();
+                                  }
+                                  if (role == 'dosen_pembimbing') {
+                                    authCUbit.getDataDosen();
+                                  }
                                 }
                               },
-                              borderRadius: BorderRadius.circular(8.w),
                               child: SizedBox(
                                 height: 40.h,
                                 width: double.infinity,
                                 child: BlocBuilder<LodingButtonCubit, bool>(
-                                  builder: (context, state) {
+                                  builder: (_, state) {
+                                    if (state) {
+                                      return Center(
+                                        child: SizedBox(
+                                          height: 14.r,
+                                          width: 14.r,
+                                          child: CircularProgressIndicator(
+                                            color: kPrimaryColor,
+                                            strokeWidth: 2.5.r,
+                                          ),
+                                        ),
+                                      );
+                                    }
                                     return Center(
-                                      child: state
-                                          ? SizedBox(
-                                              height: 16.r,
-                                              width: 16.r,
-                                              child: CircularProgressIndicator(
-                                                color: kPrimaryColor,
-                                                strokeWidth: 3.r,
-                                              ),
-                                            )
-                                          : Text(
-                                              'Login',
-                                              style: TextStyle(
-                                                color: kPrimaryColor,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 14.sp,
-                                              ),
-                                              textScaleFactor: 1,
-                                            ),
+                                      child: Text(
+                                        'Login',
+                                        style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12.sp,
+                                        ),
+                                        textScaleFactor: 1,
+                                      ),
                                     );
                                   },
                                 ),
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

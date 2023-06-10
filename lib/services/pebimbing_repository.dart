@@ -31,15 +31,15 @@ class PembimbingRepository {
         List<CekMhs> cleanDataList = [];
 
         for (var i = 0; i < mhs.length; i++) {
-          if (i < mhs[i]['datang'].length) {
+          if (mhs[i]['datang'].length != 0) {
             String keteranganDatang = '';
-            if (mhs[i]['datang'][i]['keterangan'] == 'hadir') {
+            if (mhs[i]['datang'][0]['keterangan'] == 'hadir') {
               keteranganDatang = 'hadir';
             }
 
             String keteranganPulang = '';
-            if (i < mhs[i]['pulang'].length &&
-                mhs[i]['pulang'][i]['keterangan'] == 'hadir') {
+            if (mhs[i]['pulang'].length != 0 &&
+                mhs[i]['pulang'][0]['keterangan'] == 'hadir') {
               keteranganPulang = 'hadir';
             }
 

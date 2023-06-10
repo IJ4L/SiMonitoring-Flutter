@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
-import 'package:simor/ui/widgets/date_picker.dart';
 
 class HomeDosenPage extends StatefulWidget {
   const HomeDosenPage({super.key});
@@ -80,22 +79,6 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(top: 14.h, left: 16.w, right: 16.w),
-            child: Row(
-              children: [
-                const Spacer(),
-                Text(
-                  'Juni',
-                  style: blackTextStyle.copyWith(fontSize: 16.sp),
-                  textScaleFactor: 1,
-                ),
-                SizedBox(width: 8.w),
-                const Icon(Icons.keyboard_arrow_down_outlined)
-              ],
-            ),
-          ),
-          DatePicker(scrollController: scrollController),
           GestureDetector(
             onTap: () => showDialog<void>(
               context: context,
@@ -255,14 +238,16 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                 ),
                 Row(
                   children: [
-                    const Text(
+                    Text(
                       'Presentase Kehadiran:',
+                      style: blackTextStyle.copyWith(fontSize: 12.sp),
                       textScaleFactor: 1,
                     ),
                     Container(
                       height: 16.h,
                       width: 32.w,
                       margin: EdgeInsets.only(left: 9.w),
+                      padding: EdgeInsets.all(1.r),
                       decoration: BoxDecoration(
                         color: kSecondColor.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(4.r),
@@ -272,6 +257,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                           '80 %',
                           style: orangeTextStyle.copyWith(
                             fontWeight: semiBold,
+                            fontSize: 10.sp,
                           ),
                         ),
                       ),
@@ -320,7 +306,10 @@ class CardKendala extends StatelessWidget {
             children: [
               Text(
                 'Info Kendala',
-                style: yellowTextStyle.copyWith(fontWeight: semiBold),
+                style: yellowTextStyle.copyWith(
+                  fontWeight: semiBold,
+                  fontSize: 12.sp,
+                ),
                 textScaleFactor: 1,
               ),
               SizedBox(height: 6.h),
@@ -328,7 +317,10 @@ class CardKendala extends StatelessWidget {
                 width: 220.w,
                 child: Text(
                   'Jl. A. P. Pettarani No.13, Sinrijala, Kec. Panakkukang, Kota Makassar',
-                  style: yellowTextStyle.copyWith(fontWeight: regular),
+                  style: yellowTextStyle.copyWith(
+                    fontWeight: regular,
+                    fontSize: 12.sp,
+                  ),
                   textScaleFactor: 1,
                   overflow: fade ? TextOverflow.fade : TextOverflow.ellipsis,
                 ),

@@ -60,12 +60,18 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => DateFilterCubit()),
           BlocProvider(
             create: (context) => AuthCubit(
-              AuthRepository(client: http.Client(), sharedPreferences: prefs),
+              AuthRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
             ),
           ),
           BlocProvider(
             create: (context) => ComeOutCubit(
-              StatusRepository(client: http.Client(), sharedPreferences: prefs),
+              StatusRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
             ),
           ),
           BlocProvider(

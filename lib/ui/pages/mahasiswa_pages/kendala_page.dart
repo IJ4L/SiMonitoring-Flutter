@@ -16,12 +16,19 @@ class KendalaMahasiswa extends StatefulWidget {
 
 class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
   @override
+  void initState() {
+    super.initState();
+    context.read<MahasiswaCubit>().cekKendala();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final kendalaCubit = context.read<MahasiswaCubit>();
-    TextEditingController kendalaController = TextEditingController();
-    final fromkey = GlobalKey<FormState>();
+    TextEditingController kendalaC = TextEditingController();
+    final keyForm = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: kWhiteColor,
+      resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(130.h),
         child: Container(
@@ -52,9 +59,9 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                 ),
                 Image.asset(
                   "assets/images/logo.png",
-                  height: 55.h,
-                  width: 202.w,
-                  fit: BoxFit.fill,
+                  height: 40.h,
+                  width: 180.w,
+                  fit: BoxFit.cover,
                 ),
                 const SizedBox(),
               ],
@@ -64,7 +71,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(right: 20, left: 20.w, top: 20.h),
+          padding: EdgeInsets.only(right: 20.w, left: 20.w, top: 20.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -74,7 +81,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                   Text(
                     'Kendala:',
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
                       color: kTextInfoColor,
                     ),
@@ -83,13 +90,13 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                   BlocBuilder<MahasiswaCubit, MahasiswaState>(
                     builder: (context, state) {
                       if (state is MahasiswaGetKendala) {
+                        final data = state.kendala;
+                        final isAccepted = data.status != 0;
                         return Container(
                           height: 16.h,
                           padding: EdgeInsets.symmetric(horizontal: 8.w),
                           decoration: BoxDecoration(
-                            color: state.kendala.status != 0
-                                ? Colors.green
-                                : kSecondColor,
+                            color: isAccepted ? kGreenColor : kSecondColor,
                             borderRadius: BorderRadius.circular(4.w),
                           ),
                           child: Row(
@@ -103,15 +110,10 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                                 fit: BoxFit.fill,
                               ),
                               SizedBox(width: 8.w),
-                              state.kendala.status != 0
-                                  ? Text(
-                                      'Diterima',
-                                      style: whiteTextStyle,
-                                    )
-                                  : Text(
-                                      'Belum di terima',
-                                      style: whiteTextStyle,
-                                    )
+                              Text(
+                                isAccepted ? 'Diterima' : 'Belum diterima',
+                                style: whiteTextStyle,
+                              ),
                             ],
                           ),
                         );
@@ -124,7 +126,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
               BlocConsumer<MahasiswaCubit, MahasiswaState>(
                 listener: (context, state) {
                   if (state is MahasiswaGetKendala) {
-                    kendalaController.text = state.kendala.deskripsi;
+                    kendalaC.text = state.kendala.deskripsi;
                   }
                 },
                 builder: (context, state) {
@@ -132,7 +134,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       child: TextFormField(
-                        controller: kendalaController,
+                        controller: kendalaC,
                         maxLines: 7,
                         cursorColor: kBlackColor,
                         readOnly: true,
@@ -156,16 +158,17 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                     );
                   }
                   return Form(
-                    key: fromkey,
+                    key: keyForm,
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       child: TextFormField(
-                        controller: kendalaController,
-                        maxLines: 7,
+                        controller: kendalaC,
                         cursorColor: kBlackColor,
                         style: const TextStyle(color: kBlackColor),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 7,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Silahkan Mengisi From Kendala!';
                           }
                           return null;
@@ -210,12 +213,10 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                   const SizedBox(),
                   BlocBuilder<MahasiswaCubit, MahasiswaState>(
                     builder: (context, state) {
-                      if (state is MahasiswaGetKendala) {
-                        return Container();
-                      }
+                      if (state is MahasiswaGetKendala) {}
                       return Container(
                         height: 42.h,
-                        width: MediaQuery.of(context).size.width / 2.2,
+                        width: (MediaQuery.of(context).size.width / 2.2),
                         decoration: BoxDecoration(
                           color: kPrimaryColor,
                           borderRadius: BorderRadius.circular(10.r),
@@ -224,19 +225,15 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
+                            borderRadius: BorderRadius.circular(8.w),
                             onTap: () {
-                              if (fromkey.currentState!.validate()) {
-                                kendalaCubit.kirimKendala(
-                                  kendalaController.text,
-                                );
-                                context.read<MahasiswaCubit>().cekKendala();
+                              if (keyForm.currentState!.validate()) {
+                                kendalaCubit.kirimKendala(kendalaC.text);
+                                kendalaCubit.cekKendala();
                                 showDialog<void>(
                                   context: context,
                                   barrierDismissible: true,
                                   builder: (BuildContext context) {
-                                    kendalaCubit.kirimKendala(
-                                      kendalaController.text,
-                                    );
                                     return const Dialoginfo(
                                       title:
                                           'Kendala kegiatan\nberhasil di simpan',
@@ -245,7 +242,6 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                                 );
                               }
                             },
-                            borderRadius: BorderRadius.circular(8.w),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

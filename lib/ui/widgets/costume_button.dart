@@ -30,7 +30,7 @@ class Costumebutton extends StatelessWidget {
           onTap: ontap,
           borderRadius: BorderRadius.circular(8.w),
           child: SizedBox(
-            height: 40.h,
+            height: 44.h,
             width: double.infinity,
             child: Center(
               child: Text(
@@ -38,7 +38,7 @@ class Costumebutton extends StatelessWidget {
                 style: TextStyle(
                   color: colorTitle,
                   fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                 ),
                 textScaleFactor: 1,
               ),

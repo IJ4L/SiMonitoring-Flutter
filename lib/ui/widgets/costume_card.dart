@@ -16,7 +16,7 @@ class Infoprofile extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 14.h),
       child: Container(
-        height: 62.h,
+        height: 65.h,
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         decoration: BoxDecoration(
@@ -27,6 +27,7 @@ class Infoprofile extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.r),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -38,12 +39,12 @@ class Infoprofile extends StatelessWidget {
               textScaleFactor: 1,
             ),
             SizedBox(
-              height: 6.h,
+              height: 8.h,
             ),
             Text(
               value,
               style: TextStyle(
-                fontSize: 14.sp,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
                 color: kTextInfoColor,
               ),

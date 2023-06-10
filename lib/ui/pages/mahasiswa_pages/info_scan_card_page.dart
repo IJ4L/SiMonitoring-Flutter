@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/shared/themes.dart';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:simor/ui/widgets/costume_dialog.dart';
 
 class InfoScan extends StatelessWidget {
@@ -26,14 +26,20 @@ class InfoScan extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (BuildContext context) {
-                Future.delayed(const Duration(seconds: 3), () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/login', (route) => false);
-                }).timeout(const Duration(seconds: 3));
+                Future.delayed(
+                  const Duration(microseconds: 2500),
+                  () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/login',
+                      (route) => false,
+                    );
+                  },
+                ).timeout(const Duration(seconds: 3));
                 return const Dialoginfo(
+                  height: 350,
                   title:
                       '''Rencana Kegiatan,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!''',
-                  height: 350,
                 );
               },
             );
@@ -41,19 +47,14 @@ class InfoScan extends StatelessWidget {
         },
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return CustomRefreshIndicator(
+            return LiquidPullToRefresh(
+              showChildOpacityTransition: false,
+              backgroundColor: kWhiteColor,
+              color: kPrimaryColor,
+              height: 120.h,
               onRefresh: () => item['type'] == true
                   ? comeOutCubit.checkDatang()
                   : comeOutCubit.checkPulang(),
-              builder: MaterialIndicatorDelegate(
-                builder: (context, controller) {
-                  return const Icon(
-                    Icons.refresh_outlined,
-                    color: Colors.blue,
-                    size: 30,
-                  );
-                },
-              ),
               child: ListView(
                 scrollDirection: Axis.vertical,
                 children: [
@@ -75,15 +76,15 @@ class InfoScan extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: Image.asset(
                                   "assets/images/logo.png",
-                                  height: 54.h,
-                                  width: 197.w,
-                                  fit: BoxFit.fill,
+                                  height: 40.h,
+                                  width: 180.w,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                              SizedBox(height: 36.h),
+                              SizedBox(height: 70.h),
                               SvgPicture.asset(
                                 'assets/images/${item['card']}',
-                                width: 320.w,
+                                width: 300.w,
                                 fit: BoxFit.fill,
                               ),
                               SizedBox(height: 45.h),

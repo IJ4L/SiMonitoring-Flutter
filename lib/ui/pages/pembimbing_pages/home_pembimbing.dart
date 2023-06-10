@@ -61,6 +61,7 @@ class _HomepembimbingState extends State<Homepembimbing> {
             BlocBuilder<AuthCubit, AuthState>(
               builder: (context, state) {
                 if (state is AuthPembimbing) {
+                  final data = state.pembimbing;
                   return Column(
                     children: [
                       Row(
@@ -74,7 +75,7 @@ class _HomepembimbingState extends State<Homepembimbing> {
                               border: Border.all(color: kBlackColor, width: 2),
                               image: DecorationImage(
                                 image: NetworkImage(
-                                  state.pembimbing.lokasi.gambar,
+                                  data.lokasi.gambar,
                                 ),
                                 fit: BoxFit.cover,
                               ),
@@ -86,7 +87,7 @@ class _HomepembimbingState extends State<Homepembimbing> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                state.pembimbing.lokasi.nama,
+                                data.lokasi.nama,
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
@@ -97,7 +98,7 @@ class _HomepembimbingState extends State<Homepembimbing> {
                               SizedBox(
                                 width: 220.w,
                                 child: Text(
-                                  state.pembimbing.lokasi.alamat,
+                                  data.lokasi.alamat,
                                   style: TextStyle(
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.w300,
@@ -124,7 +125,7 @@ class _HomepembimbingState extends State<Homepembimbing> {
                         children: [
                           MajorMaker(
                             title: 'Dosen Pembimbing',
-                            value: state.pembimbing.namaDosenPembimbing,
+                            value: data.namaDosenPembimbing,
                           ),
                           Container(
                             height: 24.h,
@@ -135,7 +136,7 @@ class _HomepembimbingState extends State<Homepembimbing> {
                           ),
                           MajorMaker(
                             title: 'Pembimbing Lapanagan',
-                            value: state.pembimbing.namaPembimbingLapangan,
+                            value: data.namaPembimbingLapangan,
                           ),
                         ],
                       ),
@@ -170,12 +171,15 @@ class _HomepembimbingState extends State<Homepembimbing> {
                   return Expanded(
                     child: ListView.separated(
                       padding: EdgeInsets.only(top: 6.h),
-                      itemBuilder: (context, index) => CardMahasiswa(
-                        nama: state.pembimbing[index].nama,
-                        nim: state.pembimbing[index].nim,
-                        datang: state.pembimbing[index].keteranganDatang,
-                        pulang: state.pembimbing[index].keteranganPulang,
-                      ),
+                      itemBuilder: (context, index) {
+                        final data = state.pembimbing[index];
+                        return CardMahasiswa(
+                          nama: data.nama,
+                          nim: data.nim,
+                          datang: data.keteranganDatang,
+                          pulang: data.keteranganPulang,
+                        );
+                      },
                       separatorBuilder: (_, index) => const SizedBox(height: 0),
                       itemCount: state.pembimbing.length,
                     ),
