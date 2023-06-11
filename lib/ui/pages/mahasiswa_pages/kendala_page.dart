@@ -93,8 +93,8 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                         final data = state.kendala;
                         final isAccepted = data.status != 0;
                         return Container(
-                          height: 16.h,
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          height: 24.h,
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
                           decoration: BoxDecoration(
                             color: isAccepted ? kGreenColor : kSecondColor,
                             borderRadius: BorderRadius.circular(4.w),
@@ -112,7 +112,8 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                               SizedBox(width: 8.w),
                               Text(
                                 isAccepted ? 'Diterima' : 'Belum diterima',
-                                style: whiteTextStyle,
+                                style: whiteTextStyle.copyWith(fontSize: 10.sp),
+                                textScaleFactor: 1,
                               ),
                             ],
                           ),
@@ -130,6 +131,9 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                   }
                 },
                 builder: (context, state) {
+                  if (state is MahasiswaLoading) {
+                    return Container();
+                  }
                   if (state is MahasiswaGetKendala) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 20.h),
@@ -157,6 +161,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                       ),
                     );
                   }
+
                   return Form(
                     key: keyForm,
                     child: Padding(
@@ -195,11 +200,11 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                           ),
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16.r),
-                            borderSide: const BorderSide(color: Colors.red),
+                            borderSide: const BorderSide(color: kRedColor),
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16.r),
-                            borderSide: const BorderSide(color: Colors.red),
+                            borderSide: const BorderSide(color: kRedColor),
                           ),
                         ),
                       ),
@@ -213,17 +218,19 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                   const SizedBox(),
                   BlocBuilder<MahasiswaCubit, MahasiswaState>(
                     builder: (context, state) {
-                      if (state is MahasiswaGetKendala) {}
+                      if (state is MahasiswaGetKendala) {
+                        return Container();
+                      }
                       return Container(
-                        height: 42.h,
-                        width: (MediaQuery.of(context).size.width / 2.2),
+                        height: 40.h,
+                        width: (MediaQuery.of(context).size.width / 2.6),
                         decoration: BoxDecoration(
                           color: kPrimaryColor,
                           borderRadius: BorderRadius.circular(10.r),
                           border: Border.all(color: kPrimaryColor),
                         ),
                         child: Material(
-                          color: Colors.transparent,
+                          color: kTransparantColor,
                           child: InkWell(
                             borderRadius: BorderRadius.circular(8.w),
                             onTap: () {

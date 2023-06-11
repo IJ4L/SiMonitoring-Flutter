@@ -97,7 +97,7 @@ class ButtonChoice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 70.w),
+      padding: EdgeInsets.symmetric(horizontal: 85.w),
       child: Container(
         decoration: BoxDecoration(
           color: kWhiteColor,
@@ -120,14 +120,14 @@ class ButtonChoice extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(8.w),
             child: SizedBox(
-              height: 40.h,
+              height: 50.h,
               width: double.infinity,
               child: Center(
                 child: Text(
                   title,
                   style: TextStyle(
                     color: kPrimaryColor,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: bold,
                     fontSize: 12.sp,
                   ),
                   textScaleFactor: 1,

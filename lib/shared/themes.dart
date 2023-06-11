@@ -10,6 +10,7 @@ const Color kTransparantColor = Colors.transparent;
 const Color kYellowColor = Color(0xffFABA06);
 const Color kDisableColor = Color(0xffb5c4ff);
 const Color kGreenColor = Colors.green;
+const Color kRedColor = Colors.red;
 
 TextStyle blackTextStyle = const TextStyle(color: kBlackColor);
 TextStyle whiteTextStyle = const TextStyle(color: kWhiteColor);

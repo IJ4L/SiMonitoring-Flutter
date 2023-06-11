@@ -45,9 +45,9 @@ class _HomepembimbingState extends State<Homepembimbing> {
               children: [
                 Image.asset(
                   "assets/images/logo.png",
-                  height: 55.h,
-                  width: 202.w,
-                  fit: BoxFit.fill,
+                  height: 40.h,
+                  width: 180.w,
+                  fit: BoxFit.cover,
                 ),
               ],
             ),
@@ -72,11 +72,12 @@ class _HomepembimbingState extends State<Homepembimbing> {
                             height: 64.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(64.h),
-                              border: Border.all(color: kBlackColor, width: 2),
+                              border: Border.all(
+                                color: kPrimaryColor,
+                                width: 2.w,
+                              ),
                               image: DecorationImage(
-                                image: NetworkImage(
-                                  data.lokasi.gambar,
-                                ),
+                                image: NetworkImage(data.lokasi.gambar),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -135,7 +136,7 @@ class _HomepembimbingState extends State<Homepembimbing> {
                             ),
                           ),
                           MajorMaker(
-                            title: 'Pembimbing Lapanagan',
+                            title: 'Pembimbing Lapangan',
                             value: data.namaPembimbingLapangan,
                           ),
                         ],
@@ -158,7 +159,7 @@ class _HomepembimbingState extends State<Homepembimbing> {
                 child: Text(
                   dateFromat(),
                   style: whiteTextStyle.copyWith(
-                    fontSize: 16.sp,
+                    fontSize: 13.sp,
                     fontWeight: medium,
                   ),
                   textScaleFactor: 1,
@@ -169,19 +170,27 @@ class _HomepembimbingState extends State<Homepembimbing> {
               builder: (context, state) {
                 if (state is PembimbingLoaded) {
                   return Expanded(
-                    child: ListView.separated(
-                      padding: EdgeInsets.only(top: 6.h),
-                      itemBuilder: (context, index) {
-                        final data = state.pembimbing[index];
-                        return CardMahasiswa(
-                          nama: data.nama,
-                          nim: data.nim,
-                          datang: data.keteranganDatang,
-                          pulang: data.keteranganPulang,
-                        );
+                    child: NotificationListener(
+                      onNotification: (notification) {
+                        if (notification is OverscrollIndicatorNotification) {
+                          notification.disallowIndicator();
+                        }
+                        return false;
                       },
-                      separatorBuilder: (_, index) => const SizedBox(height: 0),
-                      itemCount: state.pembimbing.length,
+                      child: ListView.separated(
+                        padding: EdgeInsets.only(top: 6.h),
+                        itemBuilder: (context, index) {
+                          final data = state.pembimbing[index];
+                          return CardMahasiswa(
+                            nama: data.nama,
+                            nim: data.nim,
+                            datang: data.keteranganDatang,
+                            pulang: data.keteranganPulang,
+                          );
+                        },
+                        separatorBuilder: (_, index) => const SizedBox(),
+                        itemCount: state.pembimbing.length,
+                      ),
                     ),
                   );
                 }
@@ -195,10 +204,10 @@ class _HomepembimbingState extends State<Homepembimbing> {
         width: 320.w,
         height: 80.h,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: kWhiteColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: kGreyColor.withOpacity(0.5),
               blurRadius: 2,
               blurStyle: BlurStyle.normal,
               spreadRadius: 1,
@@ -256,7 +265,7 @@ class CardMahasiswa extends StatelessWidget {
                       nama,
                       style: TextStyle(
                         fontWeight: medium,
-                        fontSize: 18.sp,
+                        fontSize: 14.sp,
                       ),
                       textScaleFactor: 1,
                       overflow: TextOverflow.ellipsis,
@@ -304,7 +313,7 @@ class CardMahasiswa extends StatelessWidget {
                     ),
             ],
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: 12.h),
           Container(
             height: 1.h,
             width: double.infinity,
@@ -331,14 +340,14 @@ class MajorMaker extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 8.sp),
+          style: blackTextStyle.copyWith(fontSize: 8.sp),
           overflow: TextOverflow.ellipsis,
           textScaleFactor: 1.0,
         ),
         SizedBox(height: 4.h),
         Text(
           value,
-          style: TextStyle(
+          style: blackTextStyle.copyWith(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
           ),

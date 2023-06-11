@@ -89,7 +89,7 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
             key: widget.formKey,
             child: TextFormField(
               controller: widget.controller,
-              maxLines: 6,
+              maxLines: 7,
               cursorColor: kBlackColor,
               decoration: InputDecoration(
                 hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
@@ -109,11 +109,11 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16.r),
-                  borderSide: const BorderSide(color: Colors.red),
+                  borderSide: const BorderSide(color: kRedColor),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16.r),
-                  borderSide: const BorderSide(color: Colors.red),
+                  borderSide: const BorderSide(color: kRedColor),
                 ),
               ),
               validator: (value) {

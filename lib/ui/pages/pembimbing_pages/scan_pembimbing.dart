@@ -9,6 +9,7 @@ import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/ui/widgets/dialog_absen_widget.dart';
 
 import '../../../shared/themes.dart';
+import '../../utils/date_formatter.dart';
 
 class ScanPembimbing extends StatefulWidget {
   const ScanPembimbing({super.key});
@@ -59,6 +60,7 @@ class _ScanPembimbingState extends State<ScanPembimbing> {
 
   @override
   Widget build(BuildContext context) {
+    final pembimbingCubit = context.read<PembimbingCubit>();
     final Map<String, dynamic> item =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
@@ -77,7 +79,7 @@ class _ScanPembimbingState extends State<ScanPembimbing> {
         },
         child: WillPopScope(
           onWillPop: () async {
-            context.read<PembimbingCubit>().getMahasiswa();
+            pembimbingCubit.getMahasiswa();
             return true;
           },
           child: Stack(
@@ -95,16 +97,32 @@ class _ScanPembimbingState extends State<ScanPembimbing> {
                       alignment: Alignment.center,
                       child: Image.asset(
                         "assets/images/logo.png",
-                        height: 54.h,
-                        width: 197.w,
-                        fit: BoxFit.fill,
+                        height: 40.h,
+                        width: 180.w,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    SizedBox(height: 36.h),
-                    SvgPicture.asset(
-                      'assets/images/${item['card']}',
-                      width: 320.w,
-                      fit: BoxFit.fill,
+                    SizedBox(height: 50.h),
+                    Stack(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/${item['card']}',
+                          width: 320.w,
+                          fit: BoxFit.fill,
+                        ),
+                        Positioned(
+                          top: 25.h,
+                          left: 30.w,
+                          child: Text(
+                            dateFromat(),
+                            style: whiteTextStyle.copyWith(
+                              fontSize: 12.sp,
+                              fontWeight: light,
+                            ),
+                            textScaleFactor: 1,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 45.h),
                     Text(

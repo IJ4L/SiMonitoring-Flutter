@@ -26,16 +26,13 @@ class InfoScan extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (BuildContext context) {
-                Future.delayed(
-                  const Duration(microseconds: 2500),
-                  () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/login',
-                      (route) => false,
-                    );
-                  },
-                ).timeout(const Duration(seconds: 3));
+                Future.delayed(const Duration(milliseconds: 2500), () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/login',
+                    (route) => false,
+                  );
+                });
                 return const Dialoginfo(
                   height: 350,
                   title:
@@ -48,10 +45,11 @@ class InfoScan extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return LiquidPullToRefresh(
+              springAnimationDurationInMilliseconds: 450,
               showChildOpacityTransition: false,
               backgroundColor: kWhiteColor,
               color: kPrimaryColor,
-              height: 120.h,
+              height: 90.h,
               onRefresh: () => item['type'] == true
                   ? comeOutCubit.checkDatang()
                   : comeOutCubit.checkPulang(),

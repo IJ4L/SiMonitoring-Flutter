@@ -16,6 +16,7 @@ Future<void> dialogAbsen(
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {
+      final pembimbingCubit = context.read<PembimbingCubit>();
       return AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -116,12 +117,11 @@ Future<void> dialogAbsen(
                       child: InkWell(
                         onTap: () {
                           status == 'Datang'
-                              ? context
-                                  .read<PembimbingCubit>()
-                                  .konfirmasiDatang(nim)
-                              : context
-                                  .read<PembimbingCubit>()
-                                  .konfirmasiPulang(nim);
+                              ? {
+                                  pembimbingCubit.konfirmasiDatang(nim),
+                                  Navigator.pop(context),
+                                }
+                              : pembimbingCubit.konfirmasiPulang(nim);
                         },
                         borderRadius: BorderRadius.circular(8.w),
                         child: SizedBox(

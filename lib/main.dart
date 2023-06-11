@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
+import 'package:simor/cubit/camera_cubit/camera_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/date_index_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
@@ -49,13 +50,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
+      rebuildFactor: RebuildFactors.size,
       minTextAdapt: true,
-      splitScreenMode: true,
-      rebuildFactor: RebuildFactors.all,
       builder: (context, child) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => LodingButtonCubit()),
           BlocProvider(create: (context) => ObscureTextCubit()),
+          BlocProvider(create: (context) => CameraCubit()),
           BlocProvider(create: (context) => TimeCubit()),
           BlocProvider(create: (context) => DateFilterCubit()),
           BlocProvider(

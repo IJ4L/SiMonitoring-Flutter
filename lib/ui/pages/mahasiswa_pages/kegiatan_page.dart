@@ -87,7 +87,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                   },
                   child: const Icon(
                     Icons.arrow_back_outlined,
-                    color: Colors.white,
+                    color: kWhiteColor,
                   ),
                 ),
                 Image.asset(
@@ -125,7 +125,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                   if (state is MahasiswaGetkegiatan) {
                     final constraint = MediaQuery.of(context).size.height;
                     return Container(
-                      height: (constraint * 0.152.h) * _controllers.length,
+                      height: (constraint * 0.16.h) * _controllers.length,
                       width: double.infinity,
                       margin: EdgeInsets.only(top: 12.h),
                       child: ListView.separated(
@@ -192,6 +192,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                             barrierDismissible: true,
                             builder: (BuildContext context) {
                               return const Dialoginfo(
+                                height: 310,
                                 title: 'Rencana kegiatan\nberhasil disimpan',
                               );
                             },
@@ -235,7 +236,7 @@ class ButtonWithIcon extends StatelessWidget {
           border: Border.all(color: colorBorder),
         ),
         child: Material(
-          color: Colors.transparent,
+          color: kTransparantColor,
           child: InkWell(
             onTap: ontap,
             borderRadius: BorderRadius.circular(8.w),
@@ -244,17 +245,17 @@ class ButtonWithIcon extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   icon,
-                  width: 16.r,
-                  height: 16.r,
+                  width: 12.r,
+                  height: 12.r,
                   fit: BoxFit.fill,
                 ),
-                SizedBox(width: 19.w),
+                SizedBox(width: 18.w),
                 Text(
                   title,
-                  style: TextStyle(
+                  style: whiteTextStyle.copyWith(
                     color: colorBorder,
                     fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                   ),
                   textScaleFactor: 1,
                 )

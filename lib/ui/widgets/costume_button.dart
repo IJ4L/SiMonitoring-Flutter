@@ -38,7 +38,7 @@ class Costumebutton extends StatelessWidget {
                 style: TextStyle(
                   color: colorTitle,
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 11.sp,
                 ),
                 textScaleFactor: 1,
               ),
