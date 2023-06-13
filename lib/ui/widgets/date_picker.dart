@@ -42,46 +42,57 @@ class _DatePickerState extends State<DatePicker> {
               height: 45.h,
               width: 250.w,
               margin: EdgeInsets.only(top: 16.h, left: 21.w, right: 21.w),
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                controller: widget.scrollController,
-                itemBuilder: (context, index) {
-                  final day = (index % 7);
-                  return GestureDetector(
-                    onTap: () => context.read<DateFilterCubit>().setDate(index),
-                    child: Container(
-                      height: 45.r,
-                      width: 45.r,
-                      decoration: BoxDecoration(
-                        color: index == state ? kSecondColor : null,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            daysOfWeek[day],
-                            style: blackTextStyle.copyWith(
-                              fontSize: 12.sp,
-                              color: index == state ? kWhiteColor : kBlackColor,
-                            ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            '${index + 1}',
-                            style: blackTextStyle.copyWith(
-                              fontSize: 16.sp,
-                              color: index == state ? kWhiteColor : kBlackColor,
-                              fontWeight: semiBold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+              child: NotificationListener(
+                onNotification: (notification) {
+                  if (notification is OverscrollIndicatorNotification) {
+                    notification.disallowIndicator();
+                  }
+                  return false;
                 },
-                separatorBuilder: (_, index) => SizedBox(width: 6.w),
-                itemCount: 45,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  controller: widget.scrollController,
+                  itemBuilder: (context, index) {
+                    final day = (index % 7);
+                    return GestureDetector(
+                      onTap: () =>
+                          context.read<DateFilterCubit>().setDate(index),
+                      child: Container(
+                        height: 45.r,
+                        width: 45.r,
+                        decoration: BoxDecoration(
+                          color: index == state ? kSecondColor : null,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              daysOfWeek[day],
+                              style: blackTextStyle.copyWith(
+                                fontSize: 12.sp,
+                                color:
+                                    index == state ? kWhiteColor : kBlackColor,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              '${index + 1}',
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16.sp,
+                                color:
+                                    index == state ? kWhiteColor : kBlackColor,
+                                fontWeight: semiBold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (_, index) => SizedBox(width: 6.w),
+                  itemCount: 45,
+                ),
               ),
             );
           },

@@ -47,7 +47,7 @@ class Dialoginfo extends StatelessWidget {
               textAlign: TextAlign.center,
               textScaleFactor: 1,
             ),
-            SizedBox(height: 24.h),
+            SizedBox(height: 20.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 60.w),
               child: Costumebutton(

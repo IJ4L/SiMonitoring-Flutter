@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
+import 'package:simor/cubit/texfield_cubit.dart';
 import 'package:simor/shared/themes.dart';
 
 import '../../widgets/costume_dialog.dart';
@@ -24,11 +25,10 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
   @override
   Widget build(BuildContext context) {
     final kendalaCubit = context.read<MahasiswaCubit>();
+    final textFieldcCubit = context.read<TextfieldCubit>();
     TextEditingController kendalaC = TextEditingController();
-    final keyForm = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: kWhiteColor,
-      resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(130.h),
         child: Container(
@@ -69,115 +69,108 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(right: 20.w, left: 20.w, top: 20.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Kendala:',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: kTextInfoColor,
-                    ),
-                    textScaleFactor: 1,
+      body: Padding(
+        padding: EdgeInsets.only(right: 20.w, left: 20.w, top: 20.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Kendala:',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: kTextInfoColor,
                   ),
-                  BlocBuilder<MahasiswaCubit, MahasiswaState>(
-                    builder: (context, state) {
-                      if (state is MahasiswaGetKendala) {
-                        final data = state.kendala;
-                        final isAccepted = data.status != 0;
-                        return Container(
-                          height: 24.h,
-                          padding: EdgeInsets.symmetric(horizontal: 12.w),
-                          decoration: BoxDecoration(
-                            color: isAccepted ? kGreenColor : kSecondColor,
-                            borderRadius: BorderRadius.circular(4.w),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/clock.svg",
-                                height: 10.r,
-                                width: 10.r,
-                                fit: BoxFit.fill,
-                              ),
-                              SizedBox(width: 8.w),
-                              Text(
-                                isAccepted ? 'Diterima' : 'Belum diterima',
-                                style: whiteTextStyle.copyWith(fontSize: 10.sp),
-                                textScaleFactor: 1,
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      return Container();
-                    },
-                  ),
-                ],
-              ),
-              BlocConsumer<MahasiswaCubit, MahasiswaState>(
-                listener: (context, state) {
-                  if (state is MahasiswaGetKendala) {
-                    kendalaC.text = state.kendala.deskripsi;
-                  }
-                },
-                builder: (context, state) {
-                  if (state is MahasiswaLoading) {
+                  textScaleFactor: 1,
+                ),
+                BlocBuilder<MahasiswaCubit, MahasiswaState>(
+                  builder: (context, state) {
+                    if (state is MahasiswaGetKendala) {
+                      final data = state.kendala;
+                      final isAccepted = data.status != 0;
+                      return Container(
+                        height: 24.h,
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        decoration: BoxDecoration(
+                          color: isAccepted ? kGreenColor : kSecondColor,
+                          borderRadius: BorderRadius.circular(4.w),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/clock.svg",
+                              height: 10.r,
+                              width: 10.r,
+                              fit: BoxFit.fill,
+                            ),
+                            SizedBox(width: 8.w),
+                            Text(
+                              isAccepted ? 'Diterima' : 'Belum diterima',
+                              style: whiteTextStyle.copyWith(fontSize: 10.sp),
+                              textScaleFactor: 1,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                     return Container();
-                  }
-                  if (state is MahasiswaGetKendala) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.h),
-                      child: TextFormField(
-                        controller: kendalaC,
-                        maxLines: 7,
-                        cursorColor: kBlackColor,
-                        readOnly: true,
-                        style: TextStyle(color: kGreyColor.withOpacity(0.6)),
-                        decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16.r),
-                            borderSide: BorderSide(
-                              color: kGreyColor.withOpacity(0.6),
-                            ),
+                  },
+                ),
+              ],
+            ),
+            BlocConsumer<MahasiswaCubit, MahasiswaState>(
+              listener: (context, state) {
+                if (state is MahasiswaGetKendala) {
+                  kendalaC.text = state.kendala.deskripsi;
+                }
+              },
+              builder: (context, state) {
+                if (state is MahasiswaLoading) {
+                  return Container();
+                }
+                if (state is MahasiswaGetKendala) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    child: TextFormField(
+                      controller: kendalaC,
+                      maxLines: 7,
+                      cursorColor: kBlackColor,
+                      readOnly: true,
+                      style: TextStyle(color: kGreyColor.withOpacity(0.6)),
+                      decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                          borderSide: BorderSide(
+                            color: kGreyColor.withOpacity(0.6),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16.r),
-                            borderSide: BorderSide(
-                              color: kGreyColor.withOpacity(0.6),
-                            ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                          borderSide: BorderSide(
+                            color: kGreyColor.withOpacity(0.6),
                           ),
                         ),
                       ),
-                    );
-                  }
-
-                  return Form(
-                    key: keyForm,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.h),
+                    ),
+                  );
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.h),
                       child: TextFormField(
                         controller: kendalaC,
                         cursorColor: kBlackColor,
                         style: const TextStyle(color: kBlackColor),
                         keyboardType: TextInputType.multiline,
                         maxLines: 7,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Silahkan Mengisi From Kendala!';
-                          }
-                          return null;
-                        },
                         decoration: InputDecoration(
                           hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
                           hintStyle: TextStyle(
@@ -209,69 +202,85 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(),
-                  BlocBuilder<MahasiswaCubit, MahasiswaState>(
-                    builder: (context, state) {
-                      if (state is MahasiswaGetKendala) {
-                        return Container();
-                      }
-                      return Container(
-                        height: 40.h,
-                        width: (MediaQuery.of(context).size.width / 2.6),
-                        decoration: BoxDecoration(
-                          color: kPrimaryColor,
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: kPrimaryColor),
-                        ),
-                        child: Material(
-                          color: kTransparantColor,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(8.w),
-                            onTap: () {
-                              if (keyForm.currentState!.validate()) {
-                                kendalaCubit.kirimKendala(kendalaC.text);
-                                kendalaCubit.cekKendala();
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  builder: (BuildContext context) {
-                                    return const Dialoginfo(
-                                      title:
-                                          'Kendala kegiatan\nberhasil di simpan',
-                                    );
-                                  },
-                                );
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Kirim',
-                                  style: TextStyle(
-                                    color: kWhiteColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12.sp,
-                                  ),
-                                  textScaleFactor: 1,
-                                )
-                              ],
-                            ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 10.h,
+                        bottom: 20.h,
+                        left: 10.w,
+                      ),
+                      child: BlocBuilder<TextfieldCubit, bool>(
+                        builder: (context, state) {
+                          return Text(
+                            state ? '' : 'Masukkan Kendala',
+                            style: whiteTextStyle.copyWith(color: kRedColor),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(),
+                BlocBuilder<MahasiswaCubit, MahasiswaState>(
+                  builder: (context, state) {
+                    if (state is MahasiswaGetKendala) {
+                      return Container();
+                    }
+                    return Container(
+                      height: 40.h,
+                      width: (MediaQuery.of(context).size.width / 2.6),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(10.r),
+                        border: Border.all(color: kPrimaryColor),
+                      ),
+                      child: Material(
+                        color: kTransparantColor,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(8.w),
+                          onTap: () {
+                            textFieldcCubit.checkTextfield(kendalaC.text);
+                            if (textFieldcCubit.state) {
+                              kendalaCubit.kirimKendala(kendalaC.text);
+                              kendalaCubit.cekKendala();
+                              showDialog<void>(
+                                context: context,
+                                barrierDismissible: true,
+                                builder: (BuildContext context) {
+                                  return const Dialoginfo(
+                                    title:
+                                        'Kendala kegiatan\nberhasil di simpan',
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Kirim',
+                                style: TextStyle(
+                                  color: kWhiteColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12.sp,
+                                ),
+                                textScaleFactor: 1,
+                              )
+                            ],
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

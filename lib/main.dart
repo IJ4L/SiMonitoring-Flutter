@@ -8,11 +8,15 @@ import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/camera_cubit/camera_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/date_index_cubit.dart';
+import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
+import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
+import 'package:simor/cubit/texfield_cubit.dart';
 import 'package:simor/cubit/time_cubit.dart';
 import 'package:simor/services/auth_repository.dart';
+import 'package:simor/services/dosen_repository.dart';
 import 'package:simor/services/mahasiswa_repository.dart';
 import 'package:simor/services/pebimbing_repository.dart';
 import 'package:simor/services/status_repository.dart';
@@ -50,7 +54,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
-      rebuildFactor: RebuildFactors.size,
+      rebuildFactor: RebuildFactors.all,
       minTextAdapt: true,
       builder: (context, child) => MultiBlocProvider(
         providers: [
@@ -59,6 +63,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => CameraCubit()),
           BlocProvider(create: (context) => TimeCubit()),
           BlocProvider(create: (context) => DateFilterCubit()),
+          BlocProvider(create: (context) => TextfieldCubit()),
           BlocProvider(
             create: (context) => AuthCubit(
               AuthRepository(
@@ -86,6 +91,22 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => PembimbingCubit(
               PembimbingRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => KendalaCubit(
+              dosenRepository: DosenRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => DosenCubit(
+              dosenRepository: DosenRepository(
                 client: http.Client(),
                 sharedPreferences: prefs,
               ),

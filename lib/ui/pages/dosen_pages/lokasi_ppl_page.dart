@@ -125,50 +125,62 @@ class LokasiPplPage extends StatelessWidget {
                   children: [
                     cardName('Dosen Pembimbing', 'Reza Maulana', true, 116),
                     cardName(
-                        'Pembimbing Lapangan', 'Rini Apriliani', true, 116),
+                      'Pembimbing Lapangan',
+                      'Rini Apriliani',
+                      true,
+                      116,
+                    ),
                   ],
                 ),
               ],
             ),
           ),
           Expanded(
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => showDialog<void>(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                        insetPadding: EdgeInsets.zero,
-                        content: dialogMahasiswa(context),
-                      );
-                    },
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(12.r),
-                    decoration: BoxDecoration(
-                      color: kWhiteColor,
-                      borderRadius: BorderRadius.circular(12.r),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x19000000),
-                          blurRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: const CostumeCardMhs(),
-                  ),
-                );
+            child: NotificationListener(
+              onNotification: (notification) {
+                if (notification is OverscrollIndicatorNotification) {
+                  notification.disallowIndicator();
+                }
+                return false;
               },
-              separatorBuilder: (_, index) => SizedBox(height: 12.h),
-              itemCount: 6,
-              padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 16.w),
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => showDialog<void>(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          insetPadding: EdgeInsets.zero,
+                          content: dialogMahasiswa(context),
+                        );
+                      },
+                    ),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(12.r),
+                      decoration: BoxDecoration(
+                        color: kWhiteColor,
+                        borderRadius: BorderRadius.circular(12.r),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x19000000),
+                            blurRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: const CostumeCardMhs(),
+                    ),
+                  );
+                },
+                padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 16.w),
+                separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                itemCount: 6,
+              ),
             ),
           )
         ],
@@ -260,7 +272,7 @@ class LokasiPplPage extends StatelessWidget {
                       SizedBox(width: 4.h),
                       Text(
                         '12.30',
-                        style: whiteTextStyle,
+                        style: whiteTextStyle.copyWith(fontSize: 10.sp),
                       ),
                     ],
                   ),
@@ -269,6 +281,8 @@ class LokasiPplPage extends StatelessWidget {
             ],
           ),
           Container(
+            height: 125.h,
+            width: double.infinity,
             padding: EdgeInsets.all(16.r),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
@@ -276,10 +290,11 @@ class LokasiPplPage extends StatelessWidget {
               border: Border.all(color: kBlackColor),
             ),
             child: Text(
-              "Lorem ipsum dolor sit amedo eiusmod empor incididunt ut sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+              'Deskripsi Kegiatan: ',
               textScaleFactor: 1,
               style: blackTextStyle.copyWith(
                 fontWeight: regular,
+                fontSize: 12.sp,
               ),
             ),
           ),
