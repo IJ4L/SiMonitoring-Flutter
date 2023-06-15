@@ -18,4 +18,10 @@ class KendalaCubit extends Cubit<KendalaState> {
       (success) => emit(KendalaLoaded(kendala: success)),
     );
   }
+
+  Future<void> accKendala(String id) async {
+    emit(KendalaLoading());
+    await dosenRepository.terimaKendala(id);
+    await getKendala();
+  }
 }

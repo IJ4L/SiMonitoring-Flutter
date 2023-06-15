@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/config/core.dart';
@@ -63,6 +64,24 @@ class DosenRepository {
       return const Left('Gagal Mengambil Data');
     } catch (e) {
       return Left(e.toString());
+    }
+  }
+
+  Future<void> terimaKendala(String id) async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.put(
+        Uri.parse('$baseUrl/dosen-pembimbing/update_kendala/$id'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'accpent': 'application/json',
+        },
+      );
+
+      debugPrint(response.body);
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

@@ -93,9 +93,11 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
             builder: (context, state) {
               if (state is KendalaLoaded) {
                 return Container(
-                  height: state.kendala.length < 2
-                      ? state.kendala.length * 65.h
-                      : 0.h,
+                  height: state.kendala.isEmpty
+                      ? 0
+                      : state.kendala.length == 1
+                          ? 65.h
+                          : 130.h,
                   margin: EdgeInsets.symmetric(vertical: 14.h),
                   width: double.infinity,
                   child: NotificationListener(
@@ -114,6 +116,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                               context,
                               data.alamat,
                               data.kendala.deskripsi,
+                              '${data.kendala.id}',
                             ),
                             child: CardKendala(
                               fade: false,
@@ -124,7 +127,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                         return Container();
                       },
                       padding: EdgeInsets.zero,
-                      separatorBuilder: (_, index) => SizedBox(height: 0.h),
+                      separatorBuilder: (_, index) => SizedBox(height: 12.h),
                       itemCount: state.kendala.length,
                     ),
                   ),
@@ -157,12 +160,14 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                     },
                     child: ListView.separated(
                       itemBuilder: (context, index) {
+                        final data = state.lokasi[index];
                         return cardPpl(
                           context,
-                          state.lokasi[index].nama,
-                          state.lokasi[index].alamat,
-                          state.lokasi[index].gambar,
-                          state.lokasi[index].pesentasiKehadiran,
+                          data.nama,
+                          data.alamat,
+                          data.gambar,
+                          data.pesentasiKehadiran,
+                          index,
                         );
                       },
                       separatorBuilder: (_, index) => SizedBox(height: 12.h),
@@ -188,7 +193,8 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
   Future<void> dialogKendala(
     BuildContext context,
     final String alamat,
-    kendala,
+    final String kendala,
+    final String id,
   ) {
     return showDialog<void>(
       context: context,
@@ -247,6 +253,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                   child: Costumebutton(
                     title: 'Terima',
                     ontap: () {
+                      context.read<KendalaCubit>().accKendala(id);
                       Navigator.pop(context);
                     },
                   ),
@@ -266,10 +273,11 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
     String alamat,
     String imgUrl,
     int presentase,
+    int index,
   ) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/lokasi-ppl');
+        Navigator.pushNamed(context, '/lokasi-ppl', arguments: {'data': index});
       },
       child: Container(
         width: double.infinity,

@@ -116,94 +116,108 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
             }
           }
         },
-        child: Column(
-          children: [
-            BlocBuilder<MahasiswaCubit, MahasiswaState>(
-              builder: (context, state) {
-                if (state is MahasiswaGetkegiatan) {
-                  final constraint = MediaQuery.of(context).size.height;
-                  return Container(
-                    height: (constraint * 0.16.h) * _controllers.length,
-                    width: double.infinity,
-                    margin: EdgeInsets.only(top: 12.h),
-                    child: ListView.separated(
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return FormInputKegiatan(
-                          controller: _controllers[index],
-                          formKey: _widgetKeys[index],
-                          title: 'Deskripsi Kegiatan:',
-                          index: index,
-                        );
-                      },
-                      separatorBuilder: (_, index) => SizedBox(
-                        height: 16.h,
-                      ),
-                      itemCount: _controllers.length,
-                    ),
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: NotificationListener(
+          onNotification: (notification) {
+            if (notification is OverscrollIndicatorNotification) {
+              notification.disallowIndicator();
+            }
+            return false;
+          },
+          child: ListView(
+            children: [
+              Column(
                 children: [
-                  ButtonWithIcon(
-                    title: 'Tambah',
-                    icon: "assets/icons/add.svg",
-                    color: kTransparantColor,
-                    colorBorder: kSecondColor,
-                    ontap: () {
-                      _addTextField();
-                      _addKeys();
-                      timeCubit.addnew();
+                  BlocBuilder<MahasiswaCubit, MahasiswaState>(
+                    builder: (context, state) {
+                      if (state is MahasiswaGetkegiatan) {
+                        final constraint = MediaQuery.of(context).size.height;
+                        return Container(
+                          height: (constraint * 0.23.h) * _controllers.length,
+                          width: double.infinity,
+                          margin: EdgeInsets.only(top: 12.h),
+                          child: ListView.separated(
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return FormInputKegiatan(
+                                controller: _controllers[index],
+                                formKey: _widgetKeys[index],
+                                title: 'Deskripsi Kegiatan:',
+                                index: index,
+                              );
+                            },
+                            separatorBuilder: (_, index) => SizedBox(
+                              height: 16.h,
+                            ),
+                            itemCount: _controllers.length,
+                          ),
+                        );
+                      }
+                      return const SizedBox();
                     },
                   ),
-                  SizedBox(width: 16.h),
-                  ButtonWithIcon(
-                    title: "Simpan",
-                    icon: "assets/icons/memory.svg",
-                    colorBorder: kWhiteColor,
-                    ontap: () {
-                      bool isValid = true;
-                      for (var key in _widgetKeys) {
-                        if (!key.currentState!.validate()) {
-                          isValid = false;
-                          continue;
-                        }
-                      }
-                      if (isValid) {
-                        _controllers.asMap().forEach((index, controller) {
-                          context.read<MahasiswaCubit>().saveKegiatan(
-                                KegiatanModel(
-                                  id: index.toString(),
-                                  jam: timeCubit.state[index],
-                                  deskripsi: controller.text,
-                                ),
-                                authCubit.mhsId,
-                              );
-                        });
-                        showDialog<void>(
-                          context: context,
-                          barrierDismissible: true,
-                          builder: (BuildContext context) {
-                            return const Dialoginfo(
-                              height: 310,
-                              title: 'Rencana kegiatan\nberhasil disimpan',
-                            );
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ButtonWithIcon(
+                          title: 'Tambah',
+                          icon: "assets/icons/add.svg",
+                          color: kTransparantColor,
+                          colorBorder: kSecondColor,
+                          ontap: () {
+                            _addTextField();
+                            _addKeys();
+                            timeCubit.addnew();
                           },
-                        );
-                      }
-                    },
-                  )
+                        ),
+                        SizedBox(width: 16.h),
+                        ButtonWithIcon(
+                          title: "Simpan",
+                          icon: "assets/icons/memory.svg",
+                          colorBorder: kWhiteColor,
+                          ontap: () {
+                            bool isValid = true;
+                            for (var key in _widgetKeys) {
+                              if (!key.currentState!.validate()) {
+                                isValid = false;
+                                continue;
+                              }
+                            }
+                            if (isValid) {
+                              _controllers.asMap().forEach((index, controller) {
+                                context.read<MahasiswaCubit>().saveKegiatan(
+                                      KegiatanModel(
+                                        id: index.toString(),
+                                        jam: timeCubit.state[index],
+                                        deskripsi: controller.text,
+                                      ),
+                                      authCubit.mhsId,
+                                    );
+                              });
+                              showDialog<void>(
+                                context: context,
+                                barrierDismissible: true,
+                                builder: (BuildContext context) {
+                                  return const Dialoginfo(
+                                    height: 320,
+                                    title:
+                                        'Rencana kegiatan\nberhasil disimpan',
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -162,6 +162,15 @@ class _LoginpageState extends State<Loginpage> {
                                   if (role == 'dosen_pembimbing') {
                                     authCUbit.getDataDosen();
                                   }
+                                  if (role == '') {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Akun Tidak Ditemukan'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
                                 }
                               },
                               child: SizedBox(

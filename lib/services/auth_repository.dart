@@ -104,14 +104,19 @@ class AuthRepository {
   Future<String> getRoleUser() async {
     final token = await getUserToken();
 
-    final response = await client.get(
-      Uri.parse('$baseUrl/me'),
-      headers: {'Authorization': 'Bearer $token'},
-    );
+    if (token != '') {
+      final response = await client.get(
+        Uri.parse('$baseUrl/me'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
 
-    final data = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['data']['roles'];
+      }
+    }
 
-    return data['data']['roles'];
+    return '';
   }
 
   Future<void> setToken(String token) {

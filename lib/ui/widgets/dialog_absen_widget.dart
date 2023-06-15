@@ -121,7 +121,10 @@ Future<void> dialogAbsen(
                                   pembimbingCubit.konfirmasiDatang(nim),
                                   Navigator.pop(context),
                                 }
-                              : pembimbingCubit.konfirmasiPulang(nim);
+                              : {
+                                  pembimbingCubit.konfirmasiPulang(nim),
+                                  Navigator.pop(context),
+                                };
                         },
                         borderRadius: BorderRadius.circular(8.w),
                         child: SizedBox(
