@@ -37,3 +37,15 @@ List<String> getDaysOfMonth() {
 
   return daysList;
 }
+
+String getFormattedDate() {
+  DateTime now = DateTime.now();
+  String formattedDate = DateFormat('dd MMMM yyyy').format(now);
+  return formattedDate;
+}
+
+String getFormattedDateNow() {
+  DateTime now = DateTime.now();
+  String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+  return formattedDate;
+}

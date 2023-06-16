@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/config/core.dart';
 import 'package:simor/models/kendala2_model.dart';
 import 'package:simor/models/lokasi_model.dart';
+import 'package:simor/models/lokasimhs_model.dart';
 
 class DosenRepository {
   final http.Client client;
@@ -82,6 +83,35 @@ class DosenRepository {
       debugPrint(response.body);
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<Either<String, List<DosenMahasiswaModel>>> getByLokasi(
+    String tanggal,
+  ) async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse(
+          '$baseUrl/dosen-pembimbing/detail_lokasi_ppl?tanggal=$tanggal',
+        ),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'accpent': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return Right(List<DosenMahasiswaModel>.from(
+          data['data'].map((x) => DosenMahasiswaModel.fromJson(x)),
+        ));
+      }
+
+      return const Left('Gagal Mengambil Data');
+    } catch (e) {
+      return Left(e.toString());
     }
   }
 

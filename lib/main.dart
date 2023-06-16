@@ -10,6 +10,7 @@ import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/date_index_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
+import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
@@ -106,6 +107,14 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => DosenCubit(
+              dosenRepository: DosenRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => LokasiCubit(
               dosenRepository: DosenRepository(
                 client: http.Client(),
                 sharedPreferences: prefs,

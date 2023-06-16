@@ -7,7 +7,15 @@ import '../../shared/themes.dart';
 class CostumeCardMhs extends StatelessWidget {
   const CostumeCardMhs({
     super.key,
+    required this.nama,
+    required this.nim,
+    required this.datang,
+    required this.pulang,
+    required this.imgUrl,
   });
+
+  final String nama, nim;
+  final String datang, pulang, imgUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +28,32 @@ class CostumeCardMhs extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(color: kBlackColor, width: 2),
             borderRadius: BorderRadius.circular(54.h / 2),
+            image: DecorationImage(
+              image: NetworkImage(
+                imgUrl,
+              ),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Ahmad Ilham',
-              style: TextStyle(
-                fontWeight: medium,
-                fontSize: 16.sp,
+            SizedBox(
+              width: 150.w,
+              child: Text(
+                nama,
+                style: TextStyle(
+                  fontWeight: medium,
+                  fontSize: 14.sp,
+                ),
+                overflow: TextOverflow.ellipsis,
+                textScaleFactor: 1,
               ),
-              textScaleFactor: 1,
             ),
             SizedBox(height: 6.h),
             Text(
-              '60900121070',
+              nim,
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: light,
@@ -46,19 +64,33 @@ class CostumeCardMhs extends StatelessWidget {
           ],
         ),
         const Spacer(),
-        SvgPicture.asset(
-          "assets/icons/check_box_on.svg",
-          width: 28.r,
-          height: 28.r,
-          fit: BoxFit.fill,
-        ),
+        datang == 'hadir'
+            ? SvgPicture.asset(
+                "assets/icons/check_box_on.svg",
+                width: 28.r,
+                height: 28.r,
+                fit: BoxFit.fill,
+              )
+            : SvgPicture.asset(
+                "assets/icons/check_box_off.svg",
+                width: 28.r,
+                height: 28.r,
+                fit: BoxFit.fill,
+              ),
         SizedBox(width: 6.h),
-        SvgPicture.asset(
-          "assets/icons/check_box_off.svg",
-          width: 28.r,
-          height: 28.r,
-          fit: BoxFit.fill,
-        ),
+        pulang == 'hadir'
+            ? SvgPicture.asset(
+                "assets/icons/check_box_on.svg",
+                width: 28.r,
+                height: 28.r,
+                fit: BoxFit.fill,
+              )
+            : SvgPicture.asset(
+                "assets/icons/check_box_off.svg",
+                width: 28.r,
+                height: 28.r,
+                fit: BoxFit.fill,
+              ),
       ],
     );
   }

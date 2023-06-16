@@ -5,7 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
+import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/shared/themes.dart';
+import 'package:simor/ui/utils/date_formatter.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
 
 class HomeDosenPage extends StatefulWidget {
@@ -277,6 +279,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
   ) {
     return GestureDetector(
       onTap: () {
+        context.read<LokasiCubit>().getMahasiswaByLokasi(getFormattedDateNow());
         Navigator.pushNamed(context, '/lokasi-ppl', arguments: {'data': index});
       },
       child: Container(

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
+import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 
 import '../../../shared/themes.dart';
 import '../../widgets/costume_card_mhs.dart';
@@ -165,43 +166,60 @@ class LokasiPplPage extends StatelessWidget {
                 }
                 return false;
               },
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => showDialog<void>(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.r),
+              child: BlocBuilder<LokasiCubit, LokasiState>(
+                builder: (context, state) {
+                  if (state is LokasiLoaded) {
+                    return ListView.separated(
+                      itemBuilder: (context, index) {
+                        final data = state.dosenMahasiswaModel[index];
+                        return GestureDetector(
+                          onTap: () => showDialog<void>(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                contentPadding: EdgeInsets.zero,
+                                insetPadding: EdgeInsets.zero,
+                                content: dialogMahasiswa(context),
+                              );
+                            },
                           ),
-                          contentPadding: EdgeInsets.zero,
-                          insetPadding: EdgeInsets.zero,
-                          content: dialogMahasiswa(context),
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(12.r),
+                            decoration: BoxDecoration(
+                              color: kWhiteColor,
+                              borderRadius: BorderRadius.circular(12.r),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0x19000000),
+                                  blurRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: CostumeCardMhs(
+                              nama: data.nama,
+                              nim: data.nim,
+                              datang: data.datang[0].keterangan,
+                              pulang: data.pulang[0].keterangan,
+                              imgUrl: data.gambar,
+                            ),
+                          ),
                         );
                       },
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(12.r),
-                      decoration: BoxDecoration(
-                        color: kWhiteColor,
-                        borderRadius: BorderRadius.circular(12.r),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x19000000),
-                            blurRadius: 2,
-                          ),
-                        ],
+                      padding: EdgeInsets.symmetric(
+                        vertical: 4.h,
+                        horizontal: 16.w,
                       ),
-                      child: const CostumeCardMhs(),
-                    ),
-                  );
+                      separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                      itemCount: state.dosenMahasiswaModel.length,
+                    );
+                  }
+                  return const SizedBox();
                 },
-                padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 16.w),
-                separatorBuilder: (_, index) => SizedBox(height: 12.h),
-                itemCount: 6,
               ),
             ),
           )
