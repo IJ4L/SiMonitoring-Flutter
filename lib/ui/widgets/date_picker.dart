@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:simor/ui/utils/date_formatter.dart';
 
 import '../../cubit/date_index_cubit.dart';
 import '../../shared/themes.dart';
@@ -32,7 +33,6 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> daysOfWeek = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -53,7 +53,6 @@ class _DatePickerState extends State<DatePicker> {
                   scrollDirection: Axis.horizontal,
                   controller: widget.scrollController,
                   itemBuilder: (context, index) {
-                    final day = (index % 7);
                     return GestureDetector(
                       onTap: () =>
                           context.read<DateFilterCubit>().setDate(index),
@@ -68,7 +67,7 @@ class _DatePickerState extends State<DatePicker> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              daysOfWeek[day],
+                              getDaysOfMonth()[index].substring(0, 3),
                               style: blackTextStyle.copyWith(
                                 fontSize: 12.sp,
                                 color:
@@ -77,7 +76,9 @@ class _DatePickerState extends State<DatePicker> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              '${index + 1}',
+                              index >= getJumlahTanggal()
+                                  ? '${index % getJumlahTanggal() + 1}'
+                                  : '${index + 1}',
                               style: blackTextStyle.copyWith(
                                 fontSize: 16.sp,
                                 color:

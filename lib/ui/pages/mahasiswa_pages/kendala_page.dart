@@ -138,7 +138,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                     padding: EdgeInsets.symmetric(vertical: 20.h),
                     child: TextFormField(
                       controller: kendalaC,
-                      maxLines: 7,
+                      maxLines: 5,
                       cursorColor: kBlackColor,
                       readOnly: true,
                       style: TextStyle(color: kGreyColor.withOpacity(0.6)),
@@ -170,7 +170,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                         cursorColor: kBlackColor,
                         style: const TextStyle(color: kBlackColor),
                         keyboardType: TextInputType.multiline,
-                        maxLines: 7,
+                        maxLines: 5,
                         decoration: InputDecoration(
                           hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
                           hintStyle: TextStyle(
@@ -204,8 +204,8 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                        top: 10.h,
-                        bottom: 20.h,
+                        top: 6.h,
+                        bottom: 10.h,
                         left: 10.w,
                       ),
                       child: BlocBuilder<TextfieldCubit, bool>(
@@ -252,6 +252,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                                 barrierDismissible: true,
                                 builder: (BuildContext context) {
                                   return const Dialoginfo(
+                                    height: 320,
                                     title:
                                         'Kendala kegiatan\nberhasil di simpan',
                                   );

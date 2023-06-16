@@ -67,21 +67,6 @@ class LokasiPplPage extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(top: 14.h, left: 16.w, right: 16.w),
-            child: Row(
-              children: [
-                const Spacer(),
-                Text(
-                  'Juni',
-                  style: blackTextStyle.copyWith(fontSize: 16.sp),
-                  textScaleFactor: 1,
-                ),
-                SizedBox(width: 8.w),
-                const Icon(Icons.keyboard_arrow_down_outlined)
-              ],
-            ),
-          ),
           DatePicker(scrollController: scrollController),
           Container(
             width: double.infinity,

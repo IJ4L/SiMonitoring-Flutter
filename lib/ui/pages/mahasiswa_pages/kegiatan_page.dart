@@ -130,9 +130,8 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                   BlocBuilder<MahasiswaCubit, MahasiswaState>(
                     builder: (context, state) {
                       if (state is MahasiswaGetkegiatan) {
-                        final constraint = MediaQuery.of(context).size.height;
                         return Container(
-                          height: (constraint * 0.23.h) * _controllers.length,
+                          height: 200.h * _controllers.length,
                           width: double.infinity,
                           margin: EdgeInsets.only(top: 12.h),
                           child: ListView.separated(
@@ -157,8 +156,11 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                     },
                   ),
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+                    padding: EdgeInsets.only(
+                      right: 20.w,
+                      left: 20.w,
+                      bottom: 10.h,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
