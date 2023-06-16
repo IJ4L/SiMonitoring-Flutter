@@ -164,6 +164,8 @@ class _LoginpageState extends State<Loginpage> {
                                   }
                                   if (role == '') {
                                     // ignore: use_build_context_synchronously
+                                    context.read<AuthCubit>().initial();
+                                    // ignore: use_build_context_synchronously
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('Akun Tidak Ditemukan'),
@@ -176,9 +178,9 @@ class _LoginpageState extends State<Loginpage> {
                               child: SizedBox(
                                 height: 40.h,
                                 width: double.infinity,
-                                child: BlocBuilder<LodingButtonCubit, bool>(
+                                child: BlocBuilder<AuthCubit, AuthState>(
                                   builder: (_, state) {
-                                    if (state) {
+                                    if (state is AuthLoading) {
                                       return Center(
                                         child: SizedBox(
                                           height: 14.r,
@@ -190,6 +192,19 @@ class _LoginpageState extends State<Loginpage> {
                                         ),
                                       );
                                     }
+
+                                    // if (state) {
+                                    //   return Center(
+                                    //     child: SizedBox(
+                                    //       height: 14.r,
+                                    //       width: 14.r,
+                                    //       child: CircularProgressIndicator(
+                                    //         color: kPrimaryColor,
+                                    //         strokeWidth: 2.5.r,
+                                    //       ),
+                                    //     ),
+                                    //   );
+                                    // }
                                     return Center(
                                       child: Text(
                                         'Login',
