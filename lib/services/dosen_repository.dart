@@ -87,26 +87,26 @@ class DosenRepository {
   }
 
   Future<Either<String, List<DosenMahasiswaModel>>> getByLokasi(
-    String tanggal,
-  ) async {
+      String tanggal) async {
     try {
       final token = await getUserToken();
 
       final response = await client.get(
         Uri.parse(
-          '$baseUrl/dosen-pembimbing/detail_lokasi_ppl?tanggal=$tanggal',
-        ),
+            '$baseUrl/dosen-pembimbing/detail_lokasi_ppl?tanggal=$tanggal'),
         headers: {
           'Authorization': 'Bearer $token',
-          'accpent': 'application/json',
+          'Accept': 'application/json',
         },
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return Right(List<DosenMahasiswaModel>.from(
-          data['data'].map((x) => DosenMahasiswaModel.fromJson(x)),
-        ));
+        print(data);
+        final dataClean = (data['data'] as List<dynamic>)
+            .map((x) => DosenMahasiswaModel.fromJson(x))
+            .toList();
+        return Right(dataClean);
       }
 
       return const Left('Gagal Mengambil Data');

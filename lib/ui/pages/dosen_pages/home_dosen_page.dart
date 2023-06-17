@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
@@ -93,6 +94,27 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
           ),
           BlocBuilder<KendalaCubit, KendalaState>(
             builder: (context, state) {
+              if (state is KendalaLoading) {
+                return Container(
+                  height: 65.h,
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 14.h,
+                  ),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                  ),
+                );
+              }
               if (state is KendalaLoaded) {
                 return Container(
                   height: state.kendala.isEmpty
@@ -100,7 +122,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                       : state.kendala.length == 1
                           ? 65.h
                           : 130.h,
-                  margin: EdgeInsets.symmetric(vertical: 14.h),
+                  margin: EdgeInsets.only(top: 14.h, bottom: 6.h),
                   width: double.infinity,
                   child: NotificationListener(
                     onNotification: (notification) {

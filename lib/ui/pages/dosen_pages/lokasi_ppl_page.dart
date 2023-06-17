@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
+import 'package:simor/models/lokasimhs_model.dart';
 
 import '../../../shared/themes.dart';
 import '../../widgets/costume_card_mhs.dart';
@@ -183,7 +184,7 @@ class LokasiPplPage extends StatelessWidget {
                                 ),
                                 contentPadding: EdgeInsets.zero,
                                 insetPadding: EdgeInsets.zero,
-                                content: dialogMahasiswa(context),
+                                content: dialogMahasiswa(context, data),
                               );
                             },
                           ),
@@ -203,8 +204,12 @@ class LokasiPplPage extends StatelessWidget {
                             child: CostumeCardMhs(
                               nama: data.nama,
                               nim: data.nim,
-                              datang: data.datang[0].keterangan,
-                              pulang: data.pulang[0].keterangan,
+                              datang: data.datang.isEmpty
+                                  ? '-'
+                                  : data.datang[0].keterangan,
+                              pulang: data.pulang.isEmpty
+                                  ? '-'
+                                  : data.pulang[0].keterangan,
                               imgUrl: data.gambar,
                             ),
                           ),
@@ -228,7 +233,10 @@ class LokasiPplPage extends StatelessWidget {
     );
   }
 
-  Container dialogMahasiswa(BuildContext context) {
+  Container dialogMahasiswa(
+    BuildContext context,
+    DosenMahasiswaModel data,
+  ) {
     return Container(
       height: 460.h,
       width: 300.w,
@@ -266,17 +274,30 @@ class LokasiPplPage extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 14.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(164.r / 2),
-              border: Border.all(
-                width: 4.r,
-                color: kPrimaryColor,
+              border: Border.all(width: 4.r, color: kPrimaryColor),
+              image: DecorationImage(
+                image: NetworkImage(
+                  data.gambar,
+                ),
+                fit: BoxFit.cover,
               ),
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              cardName('Jam Datang', '12.30', false, 86),
-              cardName('Jam Pulang', '16.30', false, 86),
+              cardName(
+                'Jam Datang',
+                data.datang.isEmpty ? '-' : data.datang[0].jamDatang,
+                false,
+                86,
+              ),
+              cardName(
+                'Jam Pulang',
+                data.datang.isEmpty ? '-' : data.datang[0].jamPulang,
+                false,
+                86,
+              ),
             ],
           ),
           Row(
@@ -311,7 +332,9 @@ class LokasiPplPage extends StatelessWidget {
                       ),
                       SizedBox(width: 4.h),
                       Text(
-                        '12.30',
+                        data.kegiatan.isEmpty
+                            ? 'Belum diisi'
+                            : data.kegiatan[0].jamMulai,
                         style: whiteTextStyle.copyWith(fontSize: 10.sp),
                       ),
                     ],
@@ -330,7 +353,7 @@ class LokasiPplPage extends StatelessWidget {
               border: Border.all(color: kBlackColor),
             ),
             child: Text(
-              'Deskripsi Kegiatan: ',
+              data.kegiatan.isEmpty ? '' : data.kegiatan[0].deskripsi,
               textScaleFactor: 1,
               style: blackTextStyle.copyWith(
                 fontWeight: regular,

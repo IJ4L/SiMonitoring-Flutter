@@ -26,7 +26,7 @@ class CostumeCardMhs extends StatelessWidget {
           width: 48.r,
           margin: EdgeInsets.only(right: 20.w),
           decoration: BoxDecoration(
-            border: Border.all(color: kBlackColor, width: 2),
+            border: Border.all(color: kPrimaryColor, width: 2),
             borderRadius: BorderRadius.circular(54.h / 2),
             image: DecorationImage(
               image: NetworkImage(

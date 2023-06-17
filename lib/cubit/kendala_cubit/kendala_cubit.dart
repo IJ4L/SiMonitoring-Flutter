@@ -15,7 +15,9 @@ class KendalaCubit extends Cubit<KendalaState> {
     final result = await dosenRepository.getKendala();
     result.fold(
       (erorr) => emit(KendalaFailure(message: erorr)),
-      (success) => emit(KendalaLoaded(kendala: success)),
+      (success) => Future.delayed(const Duration(milliseconds: 1100), () {
+        emit(KendalaLoaded(kendala: success));
+      }),
     );
   }
 

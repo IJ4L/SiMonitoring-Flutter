@@ -17,11 +17,35 @@ class Homepembimbing extends StatefulWidget {
   State<Homepembimbing> createState() => _HomepembimbingState();
 }
 
-class _HomepembimbingState extends State<Homepembimbing> {
+class _HomepembimbingState extends State<Homepembimbing>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+  late Animation<double> _fadeAnimation;
+
   @override
   void initState() {
     super.initState();
     context.read<LodingButtonCubit>().toggleInit();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_animationController);
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -181,11 +205,20 @@ class _HomepembimbingState extends State<Homepembimbing> {
                         padding: EdgeInsets.only(top: 6.h),
                         itemBuilder: (context, index) {
                           final data = state.pembimbing[index];
-                          return CardMahasiswa(
-                            nama: data.nama,
-                            nim: data.nim,
-                            datang: data.keteranganDatang,
-                            pulang: data.keteranganPulang,
+                          return FadeTransition(
+                            opacity: _fadeAnimation,
+                            child: SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(0, (index.toDouble() + 1)),
+                                end: const Offset(0, 0),
+                              ).animate(_animation),
+                              child: CardMahasiswa(
+                                nama: data.nama,
+                                nim: data.nim,
+                                datang: data.keteranganDatang,
+                                pulang: data.keteranganPulang,
+                              ),
+                            ),
                           );
                         },
                         separatorBuilder: (_, index) => const SizedBox(),

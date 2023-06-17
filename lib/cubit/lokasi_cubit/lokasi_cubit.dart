@@ -15,7 +15,15 @@ class LokasiCubit extends Cubit<LokasiState> {
     final result = await dosenRepository.getByLokasi(tanggal);
     result.fold(
       (erorr) => emit(LokasiFailure(erorr)),
-      (success) => emit(LokasiLoaded(success)),
+      (success) {
+        emit(LokasiLoaded(success));
+      },
     );
+  }
+
+  @override
+  void onChange(Change<LokasiState> change) {
+    super.onChange(change);
+    print(change);
   }
 }
