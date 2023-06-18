@@ -15,9 +15,9 @@ class LokasiCubit extends Cubit<LokasiState> {
     final result = await dosenRepository.getByLokasi(tanggal);
     result.fold(
       (erorr) => emit(LokasiFailure(erorr)),
-      (success) {
+      (success) => Future.delayed(const Duration(seconds: 1), () {
         emit(LokasiLoaded(success));
-      },
+      }),
     );
   }
 

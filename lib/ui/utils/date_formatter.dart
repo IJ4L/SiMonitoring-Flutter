@@ -28,8 +28,9 @@ List<String> getDaysOfMonth() {
 
   DateTime now = DateTime.now();
   DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+  int numberOfDaysInMonth = DateTime(now.year, now.month + 1, 0).day;
 
-  for (int i = 0; i < 45; i++) {
+  for (int i = 0; i < numberOfDaysInMonth; i++) {
     DateTime nextDate = firstDayOfMonth.add(Duration(days: i));
     String formattedDay = DateFormat('EEEE', 'id_ID').format(nextDate);
     daysList.add(formattedDay);
@@ -48,4 +49,41 @@ String getFormattedDateNow() {
   DateTime now = DateTime.now();
   String formattedDate = DateFormat('yyyy-MM-dd').format(now);
   return formattedDate;
+}
+
+String formatTime(String time) {
+  List<String> components = time.split(':');
+  int hour = int.parse(components[0]);
+  int minute = int.parse(components[1]);
+  // Ubah jam menjadi format 12 jam
+  if (hour >= 12) {
+    hour = hour - 12;
+  }
+  if (hour == 0) {
+    hour = 12;
+  }
+
+  String formattedHour = hour.toString().padLeft(2, '0');
+  String formattedMinute = minute.toString().padLeft(2, '0');
+
+  return '$formattedHour.$formattedMinute';
+}
+
+String formatDate(String date) {
+  DateTime dateTime = DateTime.parse(date);
+  DateFormat dateFormat = DateFormat('EEEE, d MMMM', 'id_ID');
+  String formattedDate = dateFormat.format(dateTime);
+  return formattedDate;
+}
+
+int getCurrentDate() {
+  DateTime now = DateTime.now();
+  String formattedDate = DateFormat('dd').format(now);
+  return int.parse(formattedDate);
+}
+
+String getFormattedMonth() {
+  DateTime now = DateTime.now();
+  String formattedMonth = DateFormat('MMMM', 'id_ID').format(now);
+  return formattedMonth;
 }

@@ -7,9 +7,12 @@ import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
+import 'package:simor/cubit/month_index_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/ui/utils/date_formatter.dart';
 import 'package:simor/ui/widgets/costume_button.dart';
+
+import '../../../cubit/date_index_cubit.dart';
 
 class HomeDosenPage extends StatefulWidget {
   const HomeDosenPage({super.key});
@@ -302,6 +305,8 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
     return GestureDetector(
       onTap: () {
         context.read<LokasiCubit>().getMahasiswaByLokasi(getFormattedDateNow());
+        context.read<DateFilterCubit>().setDate(getCurrentDate() - 1);
+        context.read<MonthCubit>().setMonth('${DateTime.now().month}');
         Navigator.pushNamed(context, '/lokasi-ppl', arguments: {'data': index});
       },
       child: Container(

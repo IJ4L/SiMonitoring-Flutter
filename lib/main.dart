@@ -12,6 +12,7 @@ import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
+import 'package:simor/cubit/month_index_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/cubit/texfield_cubit.dart';
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => TimeCubit()),
           BlocProvider(create: (context) => DateFilterCubit()),
           BlocProvider(create: (context) => TextfieldCubit()),
+          BlocProvider(create: (context) => MonthCubit()),
           BlocProvider(
             create: (context) => AuthCubit(
               AuthRepository(

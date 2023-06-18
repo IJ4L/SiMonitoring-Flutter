@@ -102,7 +102,6 @@ class DosenRepository {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print(data);
         final dataClean = (data['data'] as List<dynamic>)
             .map((x) => DosenMahasiswaModel.fromJson(x))
             .toList();

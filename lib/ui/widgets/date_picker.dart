@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:simor/ui/utils/date_formatter.dart';
 
 import '../../cubit/date_index_cubit.dart';
+import '../../cubit/lokasi_cubit/lokasi_cubit.dart';
+import '../../cubit/month_index_cubit.dart';
 import '../../shared/themes.dart';
+import '../../ui/utils/date_formatter.dart';
 
 class DatePicker extends StatefulWidget {
-  const DatePicker({
-    Key? key,
-    required this.scrollController,
-  }) : super(key: key);
+  const DatePicker({Key? key, required this.scrollController})
+      : super(key: key);
 
   final ScrollController scrollController;
 
@@ -20,11 +20,38 @@ class DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<DatePicker> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToIndex(context.read<DateFilterCubit>().state);
+    });
+  }
+
   void _scrollTo(double offset) {
     if (offset <= widget.scrollController.position.maxScrollExtent &&
         offset >= widget.scrollController.position.minScrollExtent) {
       widget.scrollController.animateTo(
         offset,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _scrollToIndex(int index) {
+    if (widget.scrollController.hasClients) {
+      final itemWidth = 45.r;
+      final viewportWidth = widget.scrollController.position.viewportDimension;
+      final scrollOffset = widget.scrollController.position.minScrollExtent +
+          index * itemWidth -
+          (viewportWidth - itemWidth) / 2;
+
+      widget.scrollController.animateTo(
+        scrollOffset.clamp(
+          widget.scrollController.position.minScrollExtent,
+          widget.scrollController.position.maxScrollExtent,
+        ),
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
@@ -41,7 +68,7 @@ class _DatePickerState extends State<DatePicker> {
             return Container(
               height: 45.h,
               width: 250.w,
-              margin: EdgeInsets.only(top: 16.h, left: 21.w, right: 21.w),
+              margin: EdgeInsets.symmetric(horizontal: 21.w),
               child: NotificationListener(
                 onNotification: (notification) {
                   if (notification is OverscrollIndicatorNotification) {
@@ -54,8 +81,19 @@ class _DatePickerState extends State<DatePicker> {
                   controller: widget.scrollController,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () =>
-                          context.read<DateFilterCubit>().setDate(index),
+                      onTap: () {
+                        Future.delayed(
+                          const Duration(milliseconds: 50),
+                          () async {
+                            context.read<DateFilterCubit>().setDate(index);
+                            await context
+                                .read<LokasiCubit>()
+                                .getMahasiswaByLokasi(
+                                  '2023-${context.read<MonthCubit>().state}-${context.read<DateFilterCubit>().state + 1}',
+                                );
+                          },
+                        );
+                      },
                       child: Container(
                         height: 45.r,
                         width: 45.r,
@@ -76,14 +114,14 @@ class _DatePickerState extends State<DatePicker> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              index >= getJumlahTanggal()
+                              (index >= getJumlahTanggal()
                                   ? '${index % getJumlahTanggal() + 1}'
-                                  : '${index + 1}',
+                                  : '${index + 1}'),
                               style: blackTextStyle.copyWith(
                                 fontSize: 16.sp,
                                 color:
                                     index == state ? kWhiteColor : kBlackColor,
-                                fontWeight: semiBold,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -92,7 +130,7 @@ class _DatePickerState extends State<DatePicker> {
                     );
                   },
                   separatorBuilder: (_, index) => SizedBox(width: 6.w),
-                  itemCount: 45,
+                  itemCount: getDaysOfMonth().length,
                 ),
               ),
             );
@@ -103,8 +141,9 @@ class _DatePickerState extends State<DatePicker> {
             final currentPosition = widget.scrollController.position.pixels;
             final viewportWidth =
                 widget.scrollController.position.viewportDimension;
-            final itemWidth = 45.r;
-            final scrollOffset = currentPosition + viewportWidth - itemWidth;
+            final width = 45.r;
+            final scrollOffset = currentPosition + viewportWidth - width;
+
             _scrollTo(scrollOffset);
           },
           child: Container(

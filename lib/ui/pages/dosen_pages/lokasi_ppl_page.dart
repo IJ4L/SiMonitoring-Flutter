@@ -1,12 +1,17 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
+import 'package:simor/cubit/month_index_cubit.dart';
 import 'package:simor/models/lokasimhs_model.dart';
+import 'package:simor/ui/utils/date_formatter.dart';
 
+import '../../../cubit/date_index_cubit.dart';
 import '../../../shared/themes.dart';
 import '../../widgets/costume_card_mhs.dart';
 import '../../widgets/date_picker.dart';
@@ -29,9 +34,9 @@ class LokasiPplPage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
               ),
               Positioned(
-                top: 50.h,
-                left: 14.w,
-                right: 14.w,
+                top: 55.h,
+                left: 18.w,
+                right: 18.w,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -48,8 +53,8 @@ class LokasiPplPage extends StatelessWidget {
                       builder: (context, state) {
                         if (state is AuthDosen) {
                           return Container(
-                            height: 40.r,
-                            width: 40.r,
+                            height: 44.r,
+                            width: 44.r,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               image: DecorationImage(
@@ -67,6 +72,101 @@ class LokasiPplPage extends StatelessWidget {
                   ],
                 ),
               ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                height: 54.h,
+                width: 130.w,
+                child: DropdownSearch<String>(
+                  popupProps: const PopupProps.menu(showSelectedItems: true),
+                  items: const [
+                    "Januari",
+                    "Februari",
+                    "Maret",
+                    "April",
+                    "Mei",
+                    "Juni",
+                    "Juli",
+                    "Agustus",
+                    "September",
+                    "Oktober",
+                    "November",
+                    "Desember",
+                  ],
+                  dropdownBuilder: (context, selectedItem) {
+                    return Text(
+                      selectedItem!,
+                      style: blackTextStyle.copyWith(fontSize: 14.sp),
+                      textScaleFactor: 1,
+                    );
+                  },
+                  dropdownButtonProps: const DropdownButtonProps(
+                    icon: Icon(Icons.arrow_drop_down_outlined),
+                    iconSize: 18,
+                  ),
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 18.h,
+                      ),
+                      enabledBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    final lokasi = context.read<LokasiCubit>();
+                    final month = context.read<MonthCubit>();
+                    final date = context.read<DateFilterCubit>();
+                    if (value == 'Januari') {
+                      month.setMonth('01');
+                      lokasi.getMahasiswaByLokasi('2023-01-${date.state + 1}');
+                    } else if (value == 'Februari') {
+                      month.setMonth('02');
+                      lokasi.getMahasiswaByLokasi('2023-02-${date.state + 1}');
+                    } else if (value == 'Maret') {
+                      month.setMonth('03');
+                      lokasi.getMahasiswaByLokasi('2023-03-${date.state + 1}');
+                    } else if (value == 'April') {
+                      month.setMonth('04');
+                      lokasi.getMahasiswaByLokasi('2023-04-${date.state + 1}');
+                    } else if (value == 'Mei') {
+                      month.setMonth('05');
+                      lokasi.getMahasiswaByLokasi('2023-05-${date.state + 1}');
+                    } else if (value == 'Juni') {
+                      month.setMonth('06');
+                      lokasi.getMahasiswaByLokasi('2023-06-${date.state + 1}');
+                    } else if (value == 'Juli') {
+                      month.setMonth('07');
+                      lokasi.getMahasiswaByLokasi('2023-07-${date.state + 1}');
+                    } else if (value == 'Agustus') {
+                      month.setMonth('08');
+                      lokasi.getMahasiswaByLokasi('2023-08-${date.state + 1}');
+                    } else if (value == 'September') {
+                      month.setMonth('09');
+                      lokasi.getMahasiswaByLokasi('2023-09-${date.state + 1}');
+                    } else if (value == 'Oktober') {
+                      month.setMonth('10');
+                      lokasi.getMahasiswaByLokasi('2023-10-${date.state + 1}');
+                    } else if (value == 'November') {
+                      month.setMonth('11');
+                      lokasi.getMahasiswaByLokasi('2023-11-${date.state + 1}');
+                    } else if (value == 'Desember') {
+                      month.setMonth('12');
+                      lokasi.getMahasiswaByLokasi('2023-12-${date.state + 1}');
+                    }
+                  },
+                  selectedItem: getFormattedMonth(),
+                ),
+              ),
+              SizedBox(width: 21.w),
             ],
           ),
           DatePicker(scrollController: scrollController),
@@ -99,9 +199,7 @@ class LokasiPplPage extends StatelessWidget {
                                   Border.all(color: kPrimaryColor, width: 2),
                               borderRadius: BorderRadius.circular(54.h / 2),
                               image: DecorationImage(
-                                image: NetworkImage(
-                                  item.gambar,
-                                ),
+                                image: NetworkImage(item.gambar),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -159,18 +257,36 @@ class LokasiPplPage extends StatelessWidget {
               },
             ),
           ),
-          Expanded(
-            child: NotificationListener(
-              onNotification: (notification) {
-                if (notification is OverscrollIndicatorNotification) {
-                  notification.disallowIndicator();
+          NotificationListener(
+            onNotification: (notification) {
+              if (notification is OverscrollIndicatorNotification) {
+                notification.disallowIndicator();
+              }
+              return false;
+            },
+            child: BlocBuilder<LokasiCubit, LokasiState>(
+              builder: (context, state) {
+                if (state is LokasiLoading) {
+                  return Container(
+                    height: 68.h,
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                      ),
+                    ),
+                  );
                 }
-                return false;
-              },
-              child: BlocBuilder<LokasiCubit, LokasiState>(
-                builder: (context, state) {
-                  if (state is LokasiLoaded) {
-                    return ListView.separated(
+                if (state is LokasiLoaded) {
+                  return Expanded(
+                    child: ListView.separated(
                       itemBuilder: (context, index) {
                         final data = state.dosenMahasiswaModel[index];
                         return GestureDetector(
@@ -221,11 +337,11 @@ class LokasiPplPage extends StatelessWidget {
                       ),
                       separatorBuilder: (_, index) => SizedBox(height: 12.h),
                       itemCount: state.dosenMahasiswaModel.length,
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
             ),
           )
         ],
@@ -239,7 +355,7 @@ class LokasiPplPage extends StatelessWidget {
   ) {
     return Container(
       height: 460.h,
-      width: 300.w,
+      width: 330.w,
       decoration: BoxDecoration(
         color: kWhiteColor,
         borderRadius: BorderRadius.circular(20.r),
@@ -253,8 +369,10 @@ class LokasiPplPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Senin, 13 Juni 2022',
-                  style: blackTextStyle.copyWith(),
+                  data.datang.isEmpty
+                      ? ''
+                      : formatDate(data.datang[0].tanggal.toString()),
+                  style: blackTextStyle,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -272,13 +390,17 @@ class LokasiPplPage extends StatelessWidget {
             height: 164.r,
             width: 164.r,
             margin: EdgeInsets.symmetric(vertical: 14.h),
+            padding: EdgeInsets.all(2.r),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(164.r / 2),
               border: Border.all(width: 4.r, color: kPrimaryColor),
-              image: DecorationImage(
-                image: NetworkImage(
-                  data.gambar,
-                ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(164.r / 2),
+              child: Image.network(
+                data.gambar,
+                width: 200.0,
+                height: 200.0,
                 fit: BoxFit.cover,
               ),
             ),
@@ -286,17 +408,73 @@ class LokasiPplPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              cardName(
-                'Jam Datang',
-                data.datang.isEmpty ? '-' : data.datang[0].jamDatang,
-                false,
-                86,
+              GestureDetector(
+                onTap: () => data.datang.isNotEmpty
+                    ? showDialog<void>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            contentPadding: EdgeInsets.zero,
+                            insetPadding: EdgeInsets.zero,
+                            content: Container(
+                              height: 320.h,
+                              width: 330.r,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.r),
+                                image: DecorationImage(
+                                  image: NetworkImage(data.datang[0].gambar),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : null,
+                child: cardName(
+                  'Jam Datang',
+                  data.datang.isEmpty ? '-' : data.datang[0].jamDatang,
+                  false,
+                  90,
+                ),
               ),
-              cardName(
-                'Jam Pulang',
-                data.datang.isEmpty ? '-' : data.datang[0].jamPulang,
-                false,
-                86,
+              GestureDetector(
+                onTap: () => data.pulang.isNotEmpty
+                    ? showDialog<void>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            contentPadding: EdgeInsets.zero,
+                            insetPadding: EdgeInsets.zero,
+                            content: Container(
+                              height: 320.r,
+                              width: 330.r,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.r),
+                                image: DecorationImage(
+                                  image: NetworkImage(data.pulang[0].gambar),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : null,
+                child: cardName(
+                  'Jam Pulang',
+                  data.pulang.isEmpty ? '-' : data.pulang[0].jamPulang,
+                  false,
+                  90,
+                ),
               ),
             ],
           ),
@@ -334,7 +512,7 @@ class LokasiPplPage extends StatelessWidget {
                       Text(
                         data.kegiatan.isEmpty
                             ? 'Belum diisi'
-                            : data.kegiatan[0].jamMulai,
+                            : formatTime(data.kegiatan[0].jamMulai),
                         style: whiteTextStyle.copyWith(fontSize: 10.sp),
                       ),
                     ],
@@ -343,21 +521,43 @@ class LokasiPplPage extends StatelessWidget {
               )
             ],
           ),
-          Container(
+          SizedBox(
             height: 125.h,
             width: double.infinity,
-            padding: EdgeInsets.all(16.r),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: kBlackColor),
-            ),
-            child: Text(
-              data.kegiatan.isEmpty ? '' : data.kegiatan[0].deskripsi,
-              textScaleFactor: 1,
-              style: blackTextStyle.copyWith(
-                fontWeight: regular,
-                fontSize: 12.sp,
+            child: NotificationListener(
+              onNotification: (notification) {
+                if (notification is OverscrollIndicatorNotification) {
+                  notification.disallowIndicator();
+                }
+                return false;
+              },
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return NotificationListener(
+                    child: Container(
+                      height: 125.h,
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16.r),
+                      margin: EdgeInsets.symmetric(horizontal: 16.w),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.r),
+                        border: Border.all(color: kBlackColor),
+                      ),
+                      child: Text(
+                        data.kegiatan.isEmpty ? '' : data.kegiatan[0].deskripsi,
+                        textScaleFactor: 1,
+                        style: blackTextStyle.copyWith(
+                          fontWeight: regular,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (_, index) => const SizedBox(
+                  height: 6.0,
+                ),
+                itemCount: data.kegiatan.isEmpty ? 1 : data.kegiatan.length,
               ),
             ),
           ),
@@ -369,7 +569,7 @@ class LokasiPplPage extends StatelessWidget {
   Container cardName(
       String title, String subtitle, bool bgColor, double width) {
     return Container(
-      height: 40.h,
+      height: 38.h,
       width: width.w,
       margin: EdgeInsets.only(right: 8.w),
       decoration: BoxDecoration(
