@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:simor/models/dosen_model.dart';
 import 'package:simor/models/mahasiswa_model.dart';
 import 'package:simor/models/pembimbing_model.dart';
@@ -62,11 +61,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   void initial() => emit(AuthInitial());
 
-  @override
-  void onChange(Change<AuthState> change) {
-    super.onChange(change);
-    if (kDebugMode) {
-      print(change);
-    }
-  }
+  // @override
+  // void onChange(Change<AuthState> change) {
+  //   super.onChange(change);
+  //   if (kDebugMode) {
+  //     print(change);
+  //   }
+  // }
 }

@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/camera_cubit/camera_cubit.dart';
+import 'package:simor/cubit/check_days_cubit/check_days_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/date_index_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
@@ -33,6 +34,7 @@ import 'package:simor/ui/pages/mahasiswa_pages/kendala_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/pages/pembimbing_pages/choice_scan.dart';
 import 'package:simor/ui/pages/pembimbing_pages/home_pembimbing.dart';
+import 'package:simor/ui/pages/pembimbing_pages/penilaian_mahasiswa.dart';
 import 'package:simor/ui/pages/pembimbing_pages/scan_pembimbing.dart';
 import 'package:simor/ui/pages/splash_screen.dart';
 
@@ -40,8 +42,8 @@ import 'cubit/loading_button_cubit.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  WidgetsFlutterBinding.ensureInitialized();
   initializeDateFormatting();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MyApp(prefs: prefs));
@@ -123,6 +125,14 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
+          BlocProvider(
+            create: (context) => CheckDaysCubit(
+              pembimbingRepository: PembimbingRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
         ],
         child: MaterialApp(
           title: 'SiMonitoring',
@@ -140,6 +150,7 @@ class MyApp extends StatelessWidget {
             '/home-pembimbing': (context) => const Homepembimbing(),
             '/choice-scan': (context) => const ChoiceScan(),
             '/scan-pembimbing': (context) => const ScanPembimbing(),
+            '/penilaian-Pembimbing': (context) => const PenilaianMahasiswa(),
             '/home-dosen': (context) => const HomeDosenPage(),
             '/lokasi-ppl': (context) => const LokasiPplPage(),
             '/akhir-ppl': (context) => const AkhirPplPage(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:simor/cubit/check_days_cubit/check_days_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/shared/themes.dart';
 
@@ -41,195 +42,197 @@ class _LoginpageState extends State<Loginpage> {
     final authCUbit = context.read<AuthCubit>();
     final pembimbingCubit = context.read<PembimbingCubit>();
     final loadingCubit = context.read<LodingButtonCubit>();
+    final checkDays = context.read<CheckDaysCubit>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: BlocListener<AuthCubit, AuthState>(
+      body: BlocConsumer<CheckDaysCubit, CheckDaysState>(
         listener: (context, state) {
-          if (state is AuthMahsiswa) {
-            loadingCubit.toggleInit();
-            Navigator.pushNamed(
-              context,
-              '/info-scan',
-              arguments: {
-                'title': 'Datang',
-                'bg': 'bg_scan_1.svg',
-                'card': 'bg_scan_In.svg',
-                'type': true,
-              },
-            );
-          }
-          if (state is AuthPembimbing) {
-            pembimbingCubit.getMahasiswa();
-            loadingCubit.toggleInit();
-            Navigator.pushReplacementNamed(context, '/home-pembimbing');
-          }
-          if (state is AuthDosen) {
-            Navigator.pushReplacementNamed(context, '/home-dosen');
-          }
-          if (state is AuthFailed) {
-            loadingCubit.toggleInit();
+          if (state is CheckDayPembimbing) {
+            if (state.days == true) {
+              Navigator.pushReplacementNamed(context, '/penilaian-Pembimbing');
+            } else {
+              pembimbingCubit.getMahasiswa();
+              Navigator.pushReplacementNamed(context, '/home-pembimbing');
+            }
           }
         },
-        child: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Stack(
-            children: [
-              Image.asset(
-                "assets/images/backgorund.png",
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.fill,
-              ),
-              SafeArea(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 16.h),
-                        Image.asset(
-                          "assets/images/logo.png",
-                          height: 40.h,
-                          width: 180.w,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 56.h),
-                        Text(
-                          'MONITORING',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 46.sp,
-                          ),
-                          textScaleFactor: 1,
-                        ),
-                        Text(
-                          'PRAKTEK PENGENALAN LAPANGAN',
-                          style: whiteTextStyle.copyWith(
-                            fontSize: 16.sp,
-                            fontWeight: light,
-                          ),
-                          textScaleFactor: 1,
-                        ),
-                        SizedBox(height: 48.h),
-                        TextfieldMaker(
-                          title: 'Username',
-                          showIcon: false,
-                          controller: usernameController,
-                          form: key1,
-                        ),
-                        SizedBox(height: 16.h),
-                        BlocBuilder<ObscureTextCubit, bool>(
-                          builder: (context, state) {
-                            return TextfieldMaker(
-                              title: 'Password',
-                              obscure: state,
-                              showIcon: true,
-                              controller: passwordController,
-                              form: key2,
-                              icon: state
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            );
-                          },
-                        ),
-                        SizedBox(height: 28.h),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: kWhiteColor,
-                            borderRadius: BorderRadius.circular(8.w),
-                          ),
-                          child: Material(
-                            color: kTransparantColor,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(8.w),
-                              onTap: () async {
-                                final formOne = key1.currentState!.validate();
-                                final formTwo = key2.currentState!.validate();
-                                if (formOne && formTwo) {
-                                  loadingCubit.toggleLoading();
-                                  await authCUbit.login(
-                                    usernameController.text,
-                                    passwordController.text,
-                                  );
-                                  final role = await authCUbit.getRole();
-                                  if (role == 'mahasiswa') {
-                                    authCUbit.getDataMahasiswa();
-                                  }
-                                  if (role == 'pembimbing_lapangan') {
-                                    authCUbit.getDataPembimbing();
-                                  }
-                                  if (role == 'dosen_pembimbing') {
-                                    authCUbit.getDataDosen();
-                                  }
-                                  if (role == '') {
-                                    // ignore: use_build_context_synchronously
-                                    context.read<AuthCubit>().initial();
-                                    // ignore: use_build_context_synchronously
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Akun Tidak Ditemukan'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }
-                                }
+        builder: (context, state) {
+          return BlocListener<AuthCubit, AuthState>(
+            listener: (context, state2) {
+              if (state2 is AuthMahsiswa) {
+                loadingCubit.toggleInit();
+                Navigator.pushNamed(
+                  context,
+                  '/info-scan',
+                  arguments: {
+                    'title': 'Datang',
+                    'bg': 'bg_scan_1.svg',
+                    'card': 'bg_scan_In.svg',
+                    'type': true,
+                  },
+                );
+              }
+              if (state2 is AuthDosen) {
+                Navigator.pushReplacementNamed(context, '/home-dosen');
+              }
+              if (state2 is AuthFailed) {
+                loadingCubit.toggleInit();
+              }
+            },
+            child: GestureDetector(
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: Stack(
+                children: [
+                  Image.asset(
+                    "assets/images/backgorund.png",
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.fill,
+                  ),
+                  SafeArea(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 16.h),
+                            Image.asset(
+                              "assets/images/logo.png",
+                              height: 40.h,
+                              width: 180.w,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(height: 56.h),
+                            Text(
+                              'MONITORING',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 46.sp,
+                              ),
+                              textScaleFactor: 1,
+                            ),
+                            Text(
+                              'PRAKTEK PENGENALAN LAPANGAN',
+                              style: whiteTextStyle.copyWith(
+                                fontSize: 16.sp,
+                                fontWeight: light,
+                              ),
+                              textScaleFactor: 1,
+                            ),
+                            SizedBox(height: 48.h),
+                            TextfieldMaker(
+                              title: 'Username',
+                              showIcon: false,
+                              controller: usernameController,
+                              form: key1,
+                            ),
+                            SizedBox(height: 16.h),
+                            BlocBuilder<ObscureTextCubit, bool>(
+                              builder: (context, state) {
+                                return TextfieldMaker(
+                                  title: 'Password',
+                                  obscure: state,
+                                  showIcon: true,
+                                  controller: passwordController,
+                                  form: key2,
+                                  icon: state
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                );
                               },
-                              child: SizedBox(
-                                height: 40.h,
-                                width: double.infinity,
-                                child: BlocBuilder<AuthCubit, AuthState>(
-                                  builder: (_, state) {
-                                    if (state is AuthLoading) {
-                                      return Center(
-                                        child: SizedBox(
-                                          height: 14.r,
-                                          width: 14.r,
-                                          child: CircularProgressIndicator(
-                                            color: kPrimaryColor,
-                                            strokeWidth: 2.5.r,
-                                          ),
-                                        ),
+                            ),
+                            SizedBox(height: 28.h),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: kWhiteColor,
+                                borderRadius: BorderRadius.circular(8.w),
+                              ),
+                              child: Material(
+                                color: kTransparantColor,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(8.w),
+                                  onTap: () async {
+                                    final formOne =
+                                        key1.currentState!.validate();
+                                    final formTwo =
+                                        key2.currentState!.validate();
+                                    if (formOne && formTwo) {
+                                      loadingCubit.toggleLoading();
+                                      await authCUbit.login(
+                                        usernameController.text,
+                                        passwordController.text,
                                       );
+                                      final role = await authCUbit.getRole();
+                                      if (role == 'mahasiswa') {
+                                        authCUbit.getDataMahasiswa();
+                                      }
+                                      if (role == 'pembimbing_lapangan') {
+                                        authCUbit.getDataPembimbing();
+                                        checkDays.checkDaysPembimbing();
+                                      }
+                                      if (role == 'dosen_pembimbing') {
+                                        authCUbit.getDataDosen();
+                                      }
+                                      if (role == '') {
+                                        // ignore: use_build_context_synchronously
+                                        context.read<AuthCubit>().initial();
+                                        // ignore: use_build_context_synchronously
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content:
+                                                Text('Akun Tidak Ditemukan'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
                                     }
-
-                                    // if (state) {
-                                    //   return Center(
-                                    //     child: SizedBox(
-                                    //       height: 14.r,
-                                    //       width: 14.r,
-                                    //       child: CircularProgressIndicator(
-                                    //         color: kPrimaryColor,
-                                    //         strokeWidth: 2.5.r,
-                                    //       ),
-                                    //     ),
-                                    //   );
-                                    // }
-                                    return Center(
-                                      child: Text(
-                                        'Login',
-                                        style: TextStyle(
-                                          color: kPrimaryColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12.sp,
-                                        ),
-                                        textScaleFactor: 1,
-                                      ),
-                                    );
                                   },
+                                  child: SizedBox(
+                                    height: 40.h,
+                                    width: double.infinity,
+                                    child: BlocBuilder<AuthCubit, AuthState>(
+                                      builder: (_, state) {
+                                        if (state is AuthLoading) {
+                                          return Center(
+                                            child: SizedBox(
+                                              height: 14.r,
+                                              width: 14.r,
+                                              child: CircularProgressIndicator(
+                                                color: kPrimaryColor,
+                                                strokeWidth: 2.5.r,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return Center(
+                                          child: Text(
+                                            'Login',
+                                            style: TextStyle(
+                                              color: kPrimaryColor,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12.sp,
+                                            ),
+                                            textScaleFactor: 1,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

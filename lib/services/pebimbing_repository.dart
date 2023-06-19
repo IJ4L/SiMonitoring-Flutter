@@ -155,6 +155,29 @@ class PembimbingRepository {
     }
   }
 
+  Future<Either<String, bool>> checkDays() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('$baseUrl/pembimbing-lapangan/check_hari_ke_45'),
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return Right(data['data']['check45Hari']);
+      }
+
+      return const Left('Gagal mengecek hari ke 45');
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
   Future<String> getUserToken() async {
     return sharedPreferences.getString(_userTokenKey) ?? '';
   }

@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:simor/models/cek_mahasiswa.dart';
 import 'package:simor/services/pebimbing_repository.dart';
 
@@ -48,11 +47,11 @@ class PembimbingCubit extends Cubit<PembimbingState> {
     );
   }
 
-  @override
-  void onChange(Change<PembimbingState> change) {
-    super.onChange(change);
-    if (kDebugMode) {
-      print(change);
-    }
-  }
+  // @override
+  // void onChange(Change<PembimbingState> change) {
+  //   super.onChange(change);
+  //   if (kDebugMode) {
+  //     print(change);
+  //   }
+  // }
 }
