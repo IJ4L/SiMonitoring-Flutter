@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/models/cek_mahasiswa.dart';
+import 'package:simor/models/penilaian_model.dart';
 
 import '../config/core.dart';
 
@@ -155,7 +156,7 @@ class PembimbingRepository {
     }
   }
 
-  Future<Either<String, bool>> checkDays() async {
+  Future<Either<String, bool>> checkDaysPembimbing() async {
     try {
       final token = await getUserToken();
 
@@ -173,6 +174,33 @@ class PembimbingRepository {
       }
 
       return const Left('Gagal mengecek hari ke 45');
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, List<PenilaianModel>>> getPenilaian() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse(
+          '$baseUrl/pembimbing-lapangan/select_mahasiswa_kriteria_penilaian',
+        ),
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return Right(List<PenilaianModel>.from(
+          data['data'].map((e) => PenilaianModel.fromJson(e)).toList(),
+        ));
+      }
+
+      return const Left('Gagal mengambil data penilaian');
     } catch (e) {
       return Left(e.toString());
     }

@@ -49,29 +49,34 @@ class _LoginpageState extends State<Loginpage> {
         listener: (context, state) {
           if (state is CheckDayPembimbing) {
             if (state.days == true) {
+              pembimbingCubit.getMahasiswaPenilaian();
               Navigator.pushReplacementNamed(context, '/penilaian-Pembimbing');
             } else {
               pembimbingCubit.getMahasiswa();
               Navigator.pushReplacementNamed(context, '/home-pembimbing');
             }
           }
+          if (state is CheckDayMahasiswa) {
+            if (state.days == true) {
+              Navigator.pushReplacementNamed(context, '/lampiran-kegiatan');
+            } else {
+              loadingCubit.toggleInit();
+              Navigator.pushNamed(
+                context,
+                '/info-scan',
+                arguments: {
+                  'title': 'Datang',
+                  'bg': 'bg_scan_1.svg',
+                  'card': 'bg_scan_In.svg',
+                  'type': true,
+                },
+              );
+            }
+          }
         },
         builder: (context, state) {
           return BlocListener<AuthCubit, AuthState>(
             listener: (context, state2) {
-              if (state2 is AuthMahsiswa) {
-                loadingCubit.toggleInit();
-                Navigator.pushNamed(
-                  context,
-                  '/info-scan',
-                  arguments: {
-                    'title': 'Datang',
-                    'bg': 'bg_scan_1.svg',
-                    'card': 'bg_scan_In.svg',
-                    'type': true,
-                  },
-                );
-              }
               if (state2 is AuthDosen) {
                 Navigator.pushReplacementNamed(context, '/home-dosen');
               }
@@ -166,6 +171,7 @@ class _LoginpageState extends State<Loginpage> {
                                       final role = await authCUbit.getRole();
                                       if (role == 'mahasiswa') {
                                         authCUbit.getDataMahasiswa();
+                                        checkDays.checkDaysMahasiswa();
                                       }
                                       if (role == 'pembimbing_lapangan') {
                                         authCUbit.getDataPembimbing();

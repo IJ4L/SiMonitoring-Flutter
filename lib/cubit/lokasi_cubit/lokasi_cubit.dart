@@ -20,10 +20,4 @@ class LokasiCubit extends Cubit<LokasiState> {
       }),
     );
   }
-
-  @override
-  void onChange(Change<LokasiState> change) {
-    super.onChange(change);
-    print(change);
-  }
 }

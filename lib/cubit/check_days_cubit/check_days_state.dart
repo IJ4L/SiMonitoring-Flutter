@@ -19,6 +19,14 @@ class CheckDayPembimbing extends CheckDaysState {
   List<Object> get props => [days];
 }
 
+class CheckDayMahasiswa extends CheckDaysState {
+  final bool days;
+  const CheckDayMahasiswa({required this.days});
+
+  @override
+  List<Object> get props => [days];
+}
+
 class CheckDaysFailure extends CheckDaysState {
   final String message;
   const CheckDaysFailure({required this.message});

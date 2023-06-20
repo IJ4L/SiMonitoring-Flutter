@@ -13,7 +13,9 @@ import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
+import 'package:simor/cubit/mhs_pick_cubit.dart';
 import 'package:simor/cubit/month_index_cubit.dart';
+import 'package:simor/cubit/nilai_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/cubit/texfield_cubit.dart';
@@ -31,6 +33,7 @@ import 'package:simor/ui/pages/mahasiswa_pages/home_mahasiswa.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/info_scan_card_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/kegiatan_page.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/kendala_page.dart';
+import 'package:simor/ui/pages/mahasiswa_pages/lampiran_kegiatan.dart';
 import 'package:simor/ui/pages/mahasiswa_pages/take_picture_page.dart';
 import 'package:simor/ui/pages/pembimbing_pages/choice_scan.dart';
 import 'package:simor/ui/pages/pembimbing_pages/home_pembimbing.dart';
@@ -42,8 +45,8 @@ import 'cubit/loading_button_cubit.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   initializeDateFormatting();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MyApp(prefs: prefs));
@@ -69,6 +72,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => DateFilterCubit()),
           BlocProvider(create: (context) => TextfieldCubit()),
           BlocProvider(create: (context) => MonthCubit()),
+          BlocProvider(create: (context) => PickMhs()),
+          BlocProvider(create: (context) => NilaiCubit()),
           BlocProvider(
             create: (context) => AuthCubit(
               AuthRepository(
@@ -131,6 +136,10 @@ class MyApp extends StatelessWidget {
                 client: http.Client(),
                 sharedPreferences: prefs,
               ),
+              mahasiswaRepository: MahasiswaRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
             ),
           ),
         ],
@@ -147,6 +156,7 @@ class MyApp extends StatelessWidget {
             '/take-picture': (context) => const CameraPage(),
             '/kegiatan-mahasiswa': (context) => const Kegiatanmahasiswa(),
             '/kendala-mahasiswa': (context) => const KendalaMahasiswa(),
+            '/lampiran-kegiatan': (context) => const LampiranKegiatan(),
             '/home-pembimbing': (context) => const Homepembimbing(),
             '/choice-scan': (context) => const ChoiceScan(),
             '/scan-pembimbing': (context) => const ScanPembimbing(),

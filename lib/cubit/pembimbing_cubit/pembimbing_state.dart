@@ -34,3 +34,11 @@ class PembimbingCekMhs extends PembimbingState {
   @override
   List<Object> get props => [mhs];
 }
+
+class PembimbingPenilaian extends PembimbingState {
+  final List<PenilaianModel> mhs;
+  const PembimbingPenilaian(this.mhs);
+
+  @override
+  List<Object> get props => [mhs];
+}

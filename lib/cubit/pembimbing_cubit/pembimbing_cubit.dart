@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:simor/models/cek_mahasiswa.dart';
 import 'package:simor/services/pebimbing_repository.dart';
 
+import '../../models/penilaian_model.dart';
+
 part 'pembimbing_state.dart';
 
 class PembimbingCubit extends Cubit<PembimbingState> {
@@ -44,6 +46,15 @@ class PembimbingCubit extends Cubit<PembimbingState> {
     result.fold(
       (erorr) => emit(PembimbingFailure(erorr)),
       (succes) => null,
+    );
+  }
+
+  Future<void> getMahasiswaPenilaian() async {
+    emit(PembimbingLoading());
+    final result = await pembimbingRepository.getPenilaian();
+    result.fold(
+      (erorr) => emit(PembimbingFailure(erorr)),
+      (success) => emit(PembimbingPenilaian(success)),
     );
   }
 

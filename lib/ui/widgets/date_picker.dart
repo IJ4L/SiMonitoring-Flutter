@@ -41,7 +41,7 @@ class _DatePickerState extends State<DatePicker> {
 
   void _scrollToIndex(int index) {
     if (widget.scrollController.hasClients) {
-      final itemWidth = 45.r;
+      final itemWidth = 51.r;
       final viewportWidth = widget.scrollController.position.viewportDimension;
       final scrollOffset = widget.scrollController.position.minScrollExtent +
           index * itemWidth -
@@ -141,7 +141,7 @@ class _DatePickerState extends State<DatePicker> {
             final currentPosition = widget.scrollController.position.pixels;
             final viewportWidth =
                 widget.scrollController.position.viewportDimension;
-            final width = 45.r;
+            final width = 52.r;
             final scrollOffset = currentPosition + viewportWidth - width;
 
             _scrollTo(scrollOffset);

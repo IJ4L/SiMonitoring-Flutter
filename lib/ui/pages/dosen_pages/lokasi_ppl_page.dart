@@ -354,7 +354,7 @@ class LokasiPplPage extends StatelessWidget {
     DosenMahasiswaModel data,
   ) {
     return Container(
-      height: 460.h,
+      height: 444.h,
       width: 330.w,
       decoration: BoxDecoration(
         color: kWhiteColor,
@@ -544,7 +544,9 @@ class LokasiPplPage extends StatelessWidget {
                         border: Border.all(color: kBlackColor),
                       ),
                       child: Text(
-                        data.kegiatan.isEmpty ? '' : data.kegiatan[0].deskripsi,
+                        data.kegiatan.isEmpty
+                            ? ''
+                            : data.kegiatan[index].deskripsi,
                         textScaleFactor: 1,
                         style: blackTextStyle.copyWith(
                           fontWeight: regular,
@@ -554,9 +556,7 @@ class LokasiPplPage extends StatelessWidget {
                     ),
                   );
                 },
-                separatorBuilder: (_, index) => const SizedBox(
-                  height: 6.0,
-                ),
+                separatorBuilder: (_, index) => const SizedBox(height: 6.0),
                 itemCount: data.kegiatan.isEmpty ? 1 : data.kegiatan.length,
               ),
             ),
