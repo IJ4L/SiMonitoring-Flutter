@@ -5,8 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/shared/themes.dart';
-import 'package:simor/ui/utils/date_formatter.dart';
-import 'package:simor/ui/widgets/costume_button.dart';
+import 'package:simor/presentation/utils/date_formatter.dart';
+import 'package:simor/presentation/widgets/costume_button.dart';
 
 import '../../../cubit/loading_button_cubit.dart';
 

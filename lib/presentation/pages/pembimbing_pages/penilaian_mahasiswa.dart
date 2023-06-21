@@ -2,12 +2,13 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/mhs_pick_cubit.dart';
 import 'package:simor/cubit/nilai_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/models/penilaian_model.dart';
-import 'package:simor/ui/widgets/costume_button.dart';
+import 'package:simor/presentation/widgets/costume_button.dart';
 
 import '../../../shared/themes.dart';
 
@@ -18,6 +19,7 @@ class PenilaianMahasiswa extends StatelessWidget {
   Widget build(BuildContext context) {
     final pickMhs = context.read<PickMhs>();
     final nialiCubit = context.read<NilaiCubit>();
+    final pembimbingCubit = context.read<PembimbingCubit>();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(130.h),
@@ -198,10 +200,16 @@ class PenilaianMahasiswa extends StatelessWidget {
                                     itemBuilder: (ctx, index) {
                                       final data = state.mhs[index];
                                       return GestureDetector(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          pickMhs.pickMhs(state.mhs[index]);
-                                        },
+                                        onTap: data.status != 1
+                                            ? () {
+                                                context
+                                                    .read<NilaiCubit>()
+                                                    .initial();
+                                                Navigator.pop(context);
+                                                pickMhs
+                                                    .pickMhs(state.mhs[index]);
+                                              }
+                                            : () {},
                                         child: Column(
                                           children: [
                                             CardMahasiswa(
@@ -278,13 +286,25 @@ class PenilaianMahasiswa extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10.h),
-              padding: EdgeInsets.only(left: 200.w, right: 20.w),
-              child: Costumebutton(
-                title: 'Kirim',
-                ontap: () {},
-              ),
+            BlocBuilder<PickMhs, PenilaianModel>(
+              builder: (context, state) {
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 10.h),
+                  padding: EdgeInsets.only(left: 200.w, right: 20.w),
+                  child: Costumebutton(
+                    title: 'Kirim',
+                    ontap: state.id != -1
+                        ? () async {
+                            await context.read<PembimbingCubit>().sendNilai(
+                                  context.read<NilaiCubit>().state,
+                                  state.id.toString(),
+                                );
+                            pembimbingCubit.getMahasiswaPenilaian();
+                          }
+                        : () {},
+                  ),
+                );
+              },
             )
           ],
         ),
@@ -436,10 +456,11 @@ class CardMahasiswa extends StatelessWidget {
               ),
             ],
           ),
-
-          // const Spacer(),
-          // const Icon(Icons.arrow_drop_down_outlined),
-          // SizedBox(width: 12.w),
+          const Spacer(),
+          status == 0
+              ? Container()
+              : SvgPicture.asset('assets/icons/checklis.svg'),
+          SizedBox(width: 12.w),
         ],
       ),
     );

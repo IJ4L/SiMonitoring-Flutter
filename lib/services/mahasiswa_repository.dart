@@ -121,7 +121,7 @@ class MahasiswaRepository {
       final token = await getUserToken();
       final listKegiatan = await getKegiatan(userId);
 
-      for (var kegiatan in listKegiatan) {
+      for (var i = 0; i < listKegiatan.length; i++) {
         var response = await client.post(
           Uri.parse('$baseUrl/mahasiswa/kegiatan/create'),
           headers: {
@@ -129,15 +129,14 @@ class MahasiswaRepository {
             'authorization': 'Bearer $token',
           },
           body: {
-            'deskripsi': kegiatan.deskripsi,
-            'jam_mulai': kegiatan.jam,
-            'jam_selesai': kegiatan.jam,
+            'deskripsi': listKegiatan[i].deskripsi,
+            'jam_mulai': listKegiatan[i].jam,
+            'jam_selesai': listKegiatan[i].jam,
           },
         );
 
         if (response.statusCode == 200) {
           await deleteAllKegiatan(userId);
-          return const Right(null);
         }
       }
 
@@ -159,12 +158,15 @@ class MahasiswaRepository {
         },
       );
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return Right(data['data'][0]['check45Hari']);
+      final data = json.decode(response.body);
+
+      final tes = data['data'];
+
+      if (response.statusCode == 200 && data['data'] != tes) {
+        return const Right(true);
       }
 
-      return const Left('Gagal mengecek hari ke 45');
+      return const Right(false);
     } catch (e) {
       return Left(e.toString());
     }

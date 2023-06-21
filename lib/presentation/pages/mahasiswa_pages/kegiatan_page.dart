@@ -7,7 +7,7 @@ import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/time_cubit.dart';
 import 'package:simor/models/kegiatan_model.dart';
 import 'package:simor/shared/themes.dart';
-import 'package:simor/ui/widgets/costume_dialog.dart';
+import 'package:simor/presentation/widgets/costume_dialog.dart';
 
 import '../../widgets/form_input_kegiatan.dart';
 
@@ -131,7 +131,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                     builder: (context, state) {
                       if (state is MahasiswaGetkegiatan) {
                         return Container(
-                          height: 200.h * _controllers.length,
+                          height: 250.0 * _controllers.length,
                           width: double.infinity,
                           margin: EdgeInsets.only(top: 12.h),
                           child: ListView.separated(

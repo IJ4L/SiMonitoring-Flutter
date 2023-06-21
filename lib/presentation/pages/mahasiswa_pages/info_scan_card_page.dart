@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/shared/themes.dart';
-import 'package:simor/ui/widgets/costume_dialog.dart';
+import 'package:simor/presentation/widgets/costume_dialog.dart';
 
 class InfoScan extends StatelessWidget {
   const InfoScan({super.key});

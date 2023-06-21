@@ -9,8 +9,8 @@ import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/month_index_cubit.dart';
 import 'package:simor/shared/themes.dart';
-import 'package:simor/ui/utils/date_formatter.dart';
-import 'package:simor/ui/widgets/costume_button.dart';
+import 'package:simor/presentation/utils/date_formatter.dart';
+import 'package:simor/presentation/widgets/costume_button.dart';
 
 import '../../../cubit/date_index_cubit.dart';
 

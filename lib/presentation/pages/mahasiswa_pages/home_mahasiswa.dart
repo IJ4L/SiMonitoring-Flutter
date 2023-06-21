@@ -7,7 +7,7 @@ import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/texfield_cubit.dart';
 import 'package:simor/cubit/time_cubit.dart';
 import 'package:simor/shared/themes.dart';
-import 'package:simor/ui/widgets/costume_button.dart';
+import 'package:simor/presentation/widgets/costume_button.dart';
 
 import '../../widgets/costume_card.dart';
 

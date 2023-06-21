@@ -168,12 +168,13 @@ class PembimbingRepository {
         },
       );
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200 && data['data'] != []) {
         return Right(data['data']['check45Hari']);
       }
 
-      return const Left('Gagal mengecek hari ke 45');
+      return const Right(false);
     } catch (e) {
       return Left(e.toString());
     }
@@ -201,6 +202,38 @@ class PembimbingRepository {
       }
 
       return const Left('Gagal mengambil data penilaian');
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, void>> sendNilai(List<int> data, String id) async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.post(
+          Uri.parse(
+            '$baseUrl/pembimbing-lapangan/kriteria_penilaian?id=$id',
+          ),
+          headers: {
+            'accept': 'application/json',
+            'authorization': 'Bearer $token',
+          },
+          body: {
+            'mahasiswa_id': id,
+            'inovasi': '${data[0]}',
+            'kerja_sama': '${data[1]}',
+            'disiplin': '${data[2]}',
+            'inisiatif': '${data[3]}',
+            'kerajinan': '${data[4]}',
+            'sikap': '${data[5]}',
+          });
+
+      if (response.statusCode == 200) {
+        return const Right(null);
+      }
+
+      return const Left('Gagal mengirim Nilai');
     } catch (e) {
       return Left(e.toString());
     }

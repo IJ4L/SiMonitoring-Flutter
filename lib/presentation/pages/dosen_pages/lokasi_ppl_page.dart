@@ -9,7 +9,7 @@ import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/month_index_cubit.dart';
 import 'package:simor/models/lokasimhs_model.dart';
-import 'package:simor/ui/utils/date_formatter.dart';
+import 'package:simor/presentation/utils/date_formatter.dart';
 
 import '../../../cubit/date_index_cubit.dart';
 import '../../../shared/themes.dart';
@@ -172,7 +172,12 @@ class LokasiPplPage extends StatelessWidget {
           DatePicker(scrollController: scrollController),
           Container(
             width: double.infinity,
-            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+            margin: EdgeInsets.only(
+              left: 16.w,
+              right: 16.w,
+              top: 24.h,
+              bottom: 12.h,
+            ),
             padding: EdgeInsets.all(15.r),
             decoration: BoxDecoration(
               color: kPrimaryColor,
@@ -354,7 +359,7 @@ class LokasiPplPage extends StatelessWidget {
     DosenMahasiswaModel data,
   ) {
     return Container(
-      height: 444.h,
+      height: 455.h,
       width: 330.w,
       decoration: BoxDecoration(
         color: kWhiteColor,
@@ -478,51 +483,9 @@ class LokasiPplPage extends StatelessWidget {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                margin: EdgeInsets.only(
-                  left: 16.w,
-                  bottom: 12.h,
-                  top: 22.h,
-                ),
-                child: Text(
-                  'Deskripsi Kegiatan: ',
-                  textScaleFactor: 1,
-                  style: blackTextStyle.copyWith(
-                    fontWeight: regular,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(6.r),
-                margin: EdgeInsets.only(right: 16.w),
-                decoration: BoxDecoration(
-                  color: kSecondColor,
-                  borderRadius: BorderRadius.circular(4.r),
-                ),
-                child: Center(
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/clock.svg',
-                      ),
-                      SizedBox(width: 4.h),
-                      Text(
-                        data.kegiatan.isEmpty
-                            ? 'Belum diisi'
-                            : formatTime(data.kegiatan[0].jamMulai),
-                        style: whiteTextStyle.copyWith(fontSize: 10.sp),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 125.h,
+          Container(
+            height: 180.h,
+            margin: EdgeInsets.only(bottom: 10.h),
             width: double.infinity,
             child: NotificationListener(
               onNotification: (notification) {
@@ -532,28 +495,77 @@ class LokasiPplPage extends StatelessWidget {
                 return false;
               },
               child: ListView.separated(
+                padding: EdgeInsets.zero,
                 itemBuilder: (context, index) {
-                  return NotificationListener(
-                    child: Container(
-                      height: 125.h,
-                      width: double.infinity,
-                      padding: EdgeInsets.all(16.r),
-                      margin: EdgeInsets.symmetric(horizontal: 16.w),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        border: Border.all(color: kBlackColor),
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: 16.w,
+                              bottom: 12.h,
+                              top: 22.h,
+                            ),
+                            child: Text(
+                              'Deskripsi Kegiatan: ',
+                              textScaleFactor: 1,
+                              style: blackTextStyle.copyWith(
+                                fontWeight: regular,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(6.r),
+                            margin: EdgeInsets.only(right: 16.w),
+                            decoration: BoxDecoration(
+                              color: kSecondColor,
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/clock.svg',
+                                  ),
+                                  SizedBox(width: 4.h),
+                                  Text(
+                                    data.kegiatan.isEmpty
+                                        ? 'Belum diisi'
+                                        : formatTime(
+                                            data.kegiatan[index].jamMulai,
+                                          ),
+                                    style: whiteTextStyle.copyWith(
+                                        fontSize: 10.sp),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      child: Text(
-                        data.kegiatan.isEmpty
-                            ? ''
-                            : data.kegiatan[index].deskripsi,
-                        textScaleFactor: 1,
-                        style: blackTextStyle.copyWith(
-                          fontWeight: regular,
-                          fontSize: 12.sp,
+                      Container(
+                        height: 125.h,
+                        width: double.infinity,
+                        padding: EdgeInsets.all(16.r),
+                        margin: EdgeInsets.symmetric(horizontal: 16.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          border: Border.all(color: kBlackColor),
+                        ),
+                        child: Text(
+                          data.kegiatan.isEmpty
+                              ? ''
+                              : data.kegiatan[index].deskripsi,
+                          textScaleFactor: 1,
+                          style: blackTextStyle.copyWith(
+                            fontWeight: regular,
+                            fontSize: 12.sp,
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   );
                 },
                 separatorBuilder: (_, index) => const SizedBox(height: 6.0),

@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
-import 'package:simor/ui/widgets/dialog_absen_widget.dart';
+import 'package:simor/presentation/widgets/dialog_absen_widget.dart';
 
 import '../../../shared/themes.dart';
 import '../../utils/date_formatter.dart';

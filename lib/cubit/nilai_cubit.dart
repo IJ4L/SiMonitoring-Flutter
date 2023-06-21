@@ -6,4 +6,8 @@ class NilaiCubit extends Cubit<List<int>> {
   void klikNilai(int nilai, int index) {
     emit(List.from(state)..[index] = nilai);
   }
+
+  void initial() {
+    emit([4, 4, 4, 4, 4, 4]);
+  }
 }

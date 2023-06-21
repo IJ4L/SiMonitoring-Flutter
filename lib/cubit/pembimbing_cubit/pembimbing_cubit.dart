@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:simor/models/cek_mahasiswa.dart';
 import 'package:simor/services/pebimbing_repository.dart';
 
@@ -55,6 +56,14 @@ class PembimbingCubit extends Cubit<PembimbingState> {
     result.fold(
       (erorr) => emit(PembimbingFailure(erorr)),
       (success) => emit(PembimbingPenilaian(success)),
+    );
+  }
+
+  Future<void> sendNilai(List<int> data, String id) async {
+    final result = await pembimbingRepository.sendNilai(data, id);
+    result.fold(
+      (l) => debugPrint(l),
+      (r) => null,
     );
   }
 

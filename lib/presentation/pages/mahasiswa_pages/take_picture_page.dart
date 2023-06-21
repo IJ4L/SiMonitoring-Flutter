@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/shared/themes.dart';
-import 'package:simor/ui/widgets/costume_button.dart';
+import 'package:simor/presentation/widgets/costume_button.dart';
 
 import '../../../cubit/camera_cubit/camera_cubit.dart';
 import '../../widgets/costume_dialog.dart';
