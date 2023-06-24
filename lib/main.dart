@@ -9,6 +9,7 @@ import 'package:simor/cubit/camera_cubit/camera_cubit.dart';
 import 'package:simor/cubit/check_days_cubit/check_days_cubit.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/date_index_cubit.dart';
+import 'package:simor/cubit/date_picker_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => MonthCubit()),
           BlocProvider(create: (context) => PickMhs()),
           BlocProvider(create: (context) => NilaiCubit()),
+          BlocProvider(create: (context) => DatePickerCubit()),
           BlocProvider(
             create: (context) => AuthCubit(
               AuthRepository(

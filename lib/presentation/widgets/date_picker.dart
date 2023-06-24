@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../cubit/date_index_cubit.dart';
+import '../../cubit/date_picker_cubit.dart';
 import '../../cubit/lokasi_cubit/lokasi_cubit.dart';
 import '../../cubit/month_index_cubit.dart';
 import '../../shared/themes.dart';
-import '../utils/date_formatter.dart';
 
 class DatePicker extends StatefulWidget {
   const DatePicker({Key? key, required this.scrollController})
@@ -60,6 +60,9 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final lokasiCubit = context.read<LokasiCubit>();
+    final monthCubit = context.read<MonthCubit>().state;
+    final dateCubit = context.read<DateFilterCubit>();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -76,61 +79,65 @@ class _DatePickerState extends State<DatePicker> {
                   }
                   return false;
                 },
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  controller: widget.scrollController,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Future.delayed(
-                          const Duration(milliseconds: 50),
-                          () async {
-                            context.read<DateFilterCubit>().setDate(index);
-                            await context
-                                .read<LokasiCubit>()
-                                .getMahasiswaByLokasi(
-                                  '2023-${context.read<MonthCubit>().state}-${context.read<DateFilterCubit>().state + 1}',
+                child: BlocBuilder<DatePickerCubit, List<String>>(
+                  builder: (context, hari) {
+                    return ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      controller: widget.scrollController,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Future.delayed(
+                              const Duration(milliseconds: 50),
+                              () async {
+                                dateCubit.setDate(index);
+                                await lokasiCubit.getMahasiswaByLokasi(
+                                  '2023-$monthCubit-${dateCubit.state + 1}',
                                 );
+                              },
+                            );
                           },
+                          child: Container(
+                            height: 45.r,
+                            width: 45.r,
+                            decoration: BoxDecoration(
+                              color: index == state ? kSecondColor : null,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  hari[index].substring(0, 3),
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 12.sp,
+                                    color: index == state
+                                        ? kWhiteColor
+                                        : kBlackColor,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  (index >= hari.length
+                                      ? '${index + 1}'
+                                      : '${index + 1}'),
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 16.sp,
+                                    color: index == state
+                                        ? kWhiteColor
+                                        : kBlackColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         );
                       },
-                      child: Container(
-                        height: 45.r,
-                        width: 45.r,
-                        decoration: BoxDecoration(
-                          color: index == state ? kSecondColor : null,
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              getDaysOfMonth()[index].substring(0, 3),
-                              style: blackTextStyle.copyWith(
-                                fontSize: 12.sp,
-                                color:
-                                    index == state ? kWhiteColor : kBlackColor,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            Text(
-                              (index >= getJumlahTanggal()
-                                  ? '${index % getJumlahTanggal() + 1}'
-                                  : '${index + 1}'),
-                              style: blackTextStyle.copyWith(
-                                fontSize: 16.sp,
-                                color:
-                                    index == state ? kWhiteColor : kBlackColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      separatorBuilder: (_, index) => SizedBox(width: 6.w),
+                      itemCount: hari.length,
                     );
                   },
-                  separatorBuilder: (_, index) => SizedBox(width: 6.w),
-                  itemCount: getDaysOfMonth().length,
                 ),
               ),
             );

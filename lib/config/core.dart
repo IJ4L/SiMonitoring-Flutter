@@ -1,1 +1,1 @@
-const baseUrl = 'http://192.168.1.44:8000/api';
+const baseUrl = 'https://iamtampan.cfg.my.id/api';

@@ -125,13 +125,15 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
           },
           child: ListView(
             children: [
-              Column(
-                children: [
-                  BlocBuilder<MahasiswaCubit, MahasiswaState>(
-                    builder: (context, state) {
-                      if (state is MahasiswaGetkegiatan) {
-                        return Container(
-                          height: 250.0 * _controllers.length,
+              BlocBuilder<MahasiswaCubit, MahasiswaState>(
+                builder: (context, state) {
+                  if (state is MahasiswaGetkegiatan) {
+                    return Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height > 690
+                              ? _widgetKeys.length * 195.h
+                              : _widgetKeys.length * 210.h,
                           width: double.infinity,
                           margin: EdgeInsets.only(top: 12.h),
                           child: ListView.separated(
@@ -150,73 +152,72 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                             ),
                             itemCount: _controllers.length,
                           ),
-                        );
-                      }
-                      return const SizedBox();
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 20.w,
-                      left: 20.w,
-                      bottom: 10.h,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ButtonWithIcon(
-                          title: 'Tambah',
-                          icon: "assets/icons/add.svg",
-                          color: kTransparantColor,
-                          colorBorder: kSecondColor,
-                          ontap: () {
-                            _addTextField();
-                            _addKeys();
-                            timeCubit.addnew();
-                          },
                         ),
-                        SizedBox(width: 16.h),
-                        ButtonWithIcon(
-                          title: "Simpan",
-                          icon: "assets/icons/memory.svg",
-                          colorBorder: kWhiteColor,
-                          ontap: () {
-                            bool isValid = true;
-                            for (var key in _widgetKeys) {
-                              if (!key.currentState!.validate()) {
-                                isValid = false;
-                                continue;
-                              }
-                            }
-                            if (isValid) {
-                              _controllers.asMap().forEach((index, controller) {
-                                context.read<MahasiswaCubit>().saveKegiatan(
-                                      KegiatanModel(
-                                        id: index.toString(),
-                                        jam: timeCubit.state[index],
-                                        deskripsi: controller.text,
-                                      ),
-                                      authCubit.mhsId,
-                                    );
-                              });
-                              showDialog<void>(
-                                context: context,
-                                barrierDismissible: true,
-                                builder: (BuildContext context) {
-                                  return const Dialoginfo(
-                                    height: 320,
-                                    title:
-                                        'Rencana kegiatan\nberhasil disimpan',
-                                  );
-                                },
-                              );
-                            }
-                          },
-                        )
                       ],
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  right: 20.w,
+                  left: 20.w,
+                  bottom: 10.h,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ButtonWithIcon(
+                      title: 'Tambah',
+                      icon: "assets/icons/add.svg",
+                      color: kTransparantColor,
+                      colorBorder: kSecondColor,
+                      ontap: () {
+                        _addTextField();
+                        _addKeys();
+                        timeCubit.addnew();
+                      },
                     ),
-                  ),
-                ],
+                    SizedBox(width: 16.h),
+                    ButtonWithIcon(
+                      title: "Simpan",
+                      icon: "assets/icons/memory.svg",
+                      colorBorder: kWhiteColor,
+                      ontap: () {
+                        bool isValid = true;
+                        for (var key in _widgetKeys) {
+                          if (!key.currentState!.validate()) {
+                            isValid = false;
+                            continue;
+                          }
+                        }
+                        if (isValid) {
+                          _controllers.asMap().forEach((index, controller) {
+                            context.read<MahasiswaCubit>().saveKegiatan(
+                                  KegiatanModel(
+                                    id: index.toString(),
+                                    jam: timeCubit.state[index],
+                                    deskripsi: controller.text,
+                                  ),
+                                  authCubit.mhsId,
+                                );
+                          });
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) {
+                              return const Dialoginfo(
+                                height: 320,
+                                title: 'Rencana kegiatan\nberhasil disimpan',
+                              );
+                            },
+                          );
+                        }
+                      },
+                    )
+                  ],
+                ),
               ),
             ],
           ),

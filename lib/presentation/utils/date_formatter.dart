@@ -21,14 +21,14 @@ int getJumlahTanggal() {
   return numberOfDays;
 }
 
-List<String> getDaysOfMonth() {
+List<String> getDaysOfMonth(int month) {
   List<String> daysList = [];
 
   initializeDateFormatting('id_ID', null);
 
   DateTime now = DateTime.now();
-  DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-  int numberOfDaysInMonth = DateTime(now.year, now.month + 1, 0).day;
+  DateTime firstDayOfMonth = DateTime(now.year, month, 1);
+  int numberOfDaysInMonth = DateTime(now.year, month + 1, 0).day;
 
   for (int i = 0; i < numberOfDaysInMonth; i++) {
     DateTime nextDate = firstDayOfMonth.add(Duration(days: i));

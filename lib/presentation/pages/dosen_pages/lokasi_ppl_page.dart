@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
+import 'package:simor/cubit/date_picker_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/month_index_cubit.dart';
@@ -162,6 +163,9 @@ class LokasiPplPage extends StatelessWidget {
                       month.setMonth('12');
                       lokasi.getMahasiswaByLokasi('2023-12-${date.state + 1}');
                     }
+                    context.read<DatePickerCubit>().setDate(int.parse(
+                          context.read<MonthCubit>().state,
+                        ));
                   },
                   selectedItem: getFormattedMonth(),
                 ),
@@ -359,7 +363,7 @@ class LokasiPplPage extends StatelessWidget {
     DosenMahasiswaModel data,
   ) {
     return Container(
-      height: 455.h,
+      height: 485.h - 5,
       width: 330.w,
       decoration: BoxDecoration(
         color: kWhiteColor,
@@ -483,9 +487,8 @@ class LokasiPplPage extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            height: 180.h,
-            margin: EdgeInsets.only(bottom: 10.h),
+          SizedBox(
+            height: 190.h,
             width: double.infinity,
             child: NotificationListener(
               onNotification: (notification) {
@@ -513,6 +516,7 @@ class LokasiPplPage extends StatelessWidget {
                               textScaleFactor: 1,
                               style: blackTextStyle.copyWith(
                                 fontWeight: regular,
+                                fontSize: 14.sp,
                               ),
                             ),
                           ),
@@ -546,7 +550,7 @@ class LokasiPplPage extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        height: 125.h,
+                        height: 120.h,
                         width: double.infinity,
                         padding: EdgeInsets.all(16.r),
                         margin: EdgeInsets.symmetric(horizontal: 16.w),

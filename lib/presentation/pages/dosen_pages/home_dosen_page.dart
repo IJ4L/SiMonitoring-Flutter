@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
+import 'package:simor/cubit/date_picker_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
@@ -307,6 +308,9 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
         context.read<LokasiCubit>().getMahasiswaByLokasi(getFormattedDateNow());
         context.read<DateFilterCubit>().setDate(getCurrentDate() - 1);
         context.read<MonthCubit>().setMonth('${DateTime.now().month}');
+        context
+            .read<DatePickerCubit>()
+            .setDate(int.parse(context.read<MonthCubit>().state));
         Navigator.pushNamed(context, '/lokasi-ppl', arguments: {'data': index});
       },
       child: Container(
