@@ -46,6 +46,15 @@ class MahasiswaCubit extends Cubit<MahasiswaState> {
     await mahasiswaRepository.upKegiatan(userId);
   }
 
+  Future<void> getPdf() async {
+    emit(MahasiswaLoading());
+    final result = await mahasiswaRepository.getPdf();
+    result.fold(
+      (erorr) => emit(MahasiswaFailure(erorr)),
+      (success) => emit(MahasiswaGetPdf(success)),
+    );
+  }
+
   @override
   void onChange(Change<MahasiswaState> change) {
     super.onChange(change);

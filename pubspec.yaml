@@ -26,6 +26,7 @@ dependencies:
   logger: ^1.4.0
   shimmer: ^3.0.0
   nfc_manager: ^3.2.0
+  url_launcher: ^6.1.11
   dropdown_search: ^5.0.6
   page_transition: ^2.0.9
   shared_preferences: ^2.1.1

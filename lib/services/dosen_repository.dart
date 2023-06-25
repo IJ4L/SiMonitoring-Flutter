@@ -114,6 +114,53 @@ class DosenRepository {
     }
   }
 
+  Future<Either<String, bool>> checkDaysDosen() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('$baseUrl/dosen-pembimbing/check_hari_ke_45'),
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return Right(data['data']['check45Hari']);
+      }
+
+      return const Left("Gagal mengambil data");
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, String>> getPdf() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('$baseUrl/mahasiswa/kegiatanPDF'),
+        headers: {
+          'accept': 'application/pdf',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return Right(data['data']);
+      }
+
+      return const Left("Gagal mengambil data");
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
   Future<String> getUserToken() async {
     return sharedPreferences.getString(_userTokenKey) ?? '';
   }

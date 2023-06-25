@@ -31,3 +31,11 @@ class MahasiswaGetKendala extends MahasiswaState {
   @override
   List<Object> get props => [kendala];
 }
+
+class MahasiswaGetPdf extends MahasiswaState {
+  final String url;
+  const MahasiswaGetPdf(this.url);
+
+  @override
+  List<Object> get props => [url];
+}

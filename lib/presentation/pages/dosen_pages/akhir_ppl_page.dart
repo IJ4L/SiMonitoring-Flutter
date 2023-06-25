@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 
 import '../../../shared/themes.dart';
 
@@ -25,22 +27,25 @@ class AkhirPplPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
+                    const SizedBox(),
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, state) {
+                        if (state is AuthDosen) {
+                          return Container(
+                            height: 45.r,
+                            width: 45.r,
+                            decoration: BoxDecoration(
+                              color: kWhiteColor,
+                              borderRadius: BorderRadius.circular(10.r),
+                              image: DecorationImage(
+                                image: NetworkImage(state.dosenModel.gambar),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        }
+                        return Container();
                       },
-                      child: const Icon(
-                        Icons.arrow_back_outlined,
-                        color: kWhiteColor,
-                      ),
-                    ),
-                    Container(
-                      height: 40.r,
-                      width: 40.r,
-                      decoration: BoxDecoration(
-                        color: kWhiteColor,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
                     ),
                   ],
                 ),
@@ -86,29 +91,46 @@ class AkhirPplPage extends StatelessWidget {
                   textScaleFactor: 1,
                 ),
                 Container(
-                  height: 45.h,
-                  width: double.infinity,
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 26.w, vertical: 20.h),
+                  margin: EdgeInsets.only(top: 20.h, right: 20.w, left: 20.w),
                   decoration: BoxDecoration(
+                    color: kWhiteColor,
+                    borderRadius: BorderRadius.circular(8.w),
                     border: Border.all(color: kSecondColor),
-                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset('assets/icons/cloud_download.svg'),
-                      SizedBox(width: 8.h),
-                      Text(
-                        'Unduh Rekapitulasi',
-                        style: orangeTextStyle.copyWith(
-                          fontSize: 14.sp,
-                          fontWeight: semiBold,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {},
+                      borderRadius: BorderRadius.circular(8.w),
+                      child: SizedBox(
+                        height: 44.h,
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/cloud_download.svg',
+                                // ignore: deprecated_member_use
+                                color: kSecondColor,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                'Unduh Lampiran Kegiatan',
+                                style: TextStyle(
+                                  color: kSecondColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 11.sp,
+                                ),
+                                textScaleFactor: 1,
+                              ),
+                            ],
+                          ),
                         ),
-                      )
-                    ],
+                      ),
+                    ),
                   ),
-                ),
+                )
               ],
             ),
           )

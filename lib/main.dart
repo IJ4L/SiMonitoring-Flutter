@@ -142,6 +142,10 @@ class MyApp extends StatelessWidget {
                 client: http.Client(),
                 sharedPreferences: prefs,
               ),
+              dosenrepository: DosenRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
             ),
           ),
         ],

@@ -160,13 +160,34 @@ class MahasiswaRepository {
 
       final data = json.decode(response.body);
 
-      final tes = data['data'];
-
-      if (response.statusCode == 200 && data['data'] != tes) {
-        return const Right(true);
+      if (response.statusCode == 200) {
+        return Right(data['data'][0]['check45Hari']);
       }
 
-      return const Right(false);
+      return const Left("Gagal mengambil data");
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, String>> getPdf() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('$baseUrl/mahasiswa/kegiatanPDF'),
+        headers: {
+          'accept': 'application/pdf',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return Right(data['data']);
+      }
+
+      return const Left("Gagal mengambil data");
     } catch (e) {
       return Left(e.toString());
     }
