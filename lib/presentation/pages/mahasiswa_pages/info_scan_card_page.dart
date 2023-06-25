@@ -34,6 +34,7 @@ class InfoScan extends StatelessWidget {
                   );
                 });
                 return const Dialoginfo(
+                  type: false,
                   height: 390,
                   title:
                       '''Rencana Kegiatan,\ndan Absensi Anda Telah Terkirim.\n\nAnda Akan Logout Otomatis\nSelamat Istirahat!''',

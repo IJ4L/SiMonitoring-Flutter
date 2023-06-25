@@ -29,7 +29,7 @@ class _HomepembimbingState extends State<Homepembimbing>
     context.read<LodingButtonCubit>().toggleInit();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
     );
     _animation = CurvedAnimation(
       parent: _animationController,
