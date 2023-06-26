@@ -160,11 +160,11 @@ class MahasiswaRepository {
 
       final data = json.decode(response.body);
 
-      if (response.statusCode == 200) {
+      if (data['data'].toString() != '[]') {
         return Right(data['data'][0]['check45Hari']);
       }
 
-      return const Left("Gagal mengambil data");
+      return const Right(false);
     } catch (e) {
       return Left(e.toString());
     }
@@ -182,12 +182,13 @@ class MahasiswaRepository {
         },
       );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body);
+
+      if (data['data'].toString() != '[]') {
         return Right(data['data']);
       }
 
-      return const Left("Gagal mengambil data");
+      return const Right('false');
     } catch (e) {
       return Left(e.toString());
     }
@@ -195,6 +196,10 @@ class MahasiswaRepository {
 
   Future<String> getUserToken() async {
     return sharedPreferences.getString(_userTokenKey) ?? '';
+  }
+
+  Future<void> removeUserToken() async {
+    await sharedPreferences.remove(_userTokenKey);
   }
 
   Future<void> saveKegiatan(KegiatanModel kegiatanModel, String userId) async {

@@ -61,7 +61,7 @@ class _LoginpageState extends State<Loginpage> {
               Navigator.pushReplacementNamed(context, '/lampiran-kegiatan');
             } else {
               loadingCubit.toggleInit();
-              Navigator.pushNamed(
+              Navigator.pushReplacementNamed(
                 context,
                 '/info-scan',
                 arguments: {

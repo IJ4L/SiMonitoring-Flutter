@@ -170,7 +170,7 @@ class PembimbingRepository {
 
       final data = json.decode(response.body);
 
-      if (response.statusCode == 200 && data['data'] != []) {
+      if (response.statusCode == 200 && data['data'].toString() != '[]') {
         return Right(data['data']['check45Hari']);
       }
 

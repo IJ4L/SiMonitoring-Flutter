@@ -19,6 +19,14 @@ class DosenLoaded extends DosenState {
   List<Object> get props => [lokasi];
 }
 
+class DosenGetPdf extends DosenState {
+  final String url;
+  const DosenGetPdf({required this.url});
+
+  @override
+  List<Object> get props => [url];
+}
+
 class DosenFailure extends DosenState {
   final String message;
   const DosenFailure({required this.message});

@@ -28,6 +28,12 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   @override
+  void dispose() {
+    context.read<AuthCubit>().getDataMahasiswa();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mhsCubit = context.read<MahasiswaCubit>();
     final Map<String, dynamic> type =
@@ -99,7 +105,12 @@ class _CameraPageState extends State<CameraPage> {
                             colorButton: kPrimaryColor,
                             ontap: () {
                               type['inOut'] == true
-                                  ? mhsCubit.datang(state.imagePath)
+                                  ? {
+                                      mhsCubit.datang(state.imagePath),
+                                      context
+                                          .read<AuthCubit>()
+                                          .getDataMahasiswa()
+                                    }
                                   : mhsCubit.upFotoKegiatan(
                                       state.imagePath,
                                       stateMhs.mahasiswaModel.nim,

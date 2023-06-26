@@ -18,4 +18,13 @@ class DosenCubit extends Cubit<DosenState> {
       (success) => emit(DosenLoaded(lokasi: success)),
     );
   }
+
+  Future<void> getPdf() async {
+    emit(DosenLoading());
+    final result = await dosenRepository.getPdf();
+    result.fold(
+      (erorr) => emit(DosenFailure(message: erorr)),
+      (succes) => emit(DosenGetPdf(url: succes)),
+    );
+  }
 }

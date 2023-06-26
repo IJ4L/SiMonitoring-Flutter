@@ -128,11 +128,11 @@ class DosenRepository {
 
       final data = json.decode(response.body);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && data['data'] != '[]') {
         return Right(data['data']['check45Hari']);
       }
 
-      return const Left("Gagal mengambil data");
+      return const Right(false);
     } catch (e) {
       return Left(e.toString());
     }
@@ -143,15 +143,16 @@ class DosenRepository {
       final token = await getUserToken();
 
       final response = await client.get(
-        Uri.parse('$baseUrl/mahasiswa/kegiatanPDF'),
+        Uri.parse('$baseUrl/dosen-pembimbing/semuaKegianPDF'),
         headers: {
           'accept': 'application/pdf',
           'authorization': 'Bearer $token',
         },
       );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['data'] != '[]') {
         return Right(data['data']);
       }
 

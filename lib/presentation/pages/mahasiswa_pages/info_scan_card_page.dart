@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
+import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/shared/themes.dart';
 import 'package:simor/presentation/widgets/costume_dialog.dart';
 
@@ -23,6 +24,7 @@ class InfoScan extends StatelessWidget {
             Navigator.pushNamed(context, '/home-mahasiswa');
           }
           if (state is ComeOutPulang) {
+            context.read<MahasiswaCubit>().logoutMahasiswa();
             showDialog<void>(
               context: context,
               builder: (BuildContext context) {

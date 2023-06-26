@@ -89,7 +89,7 @@ class _FormInputKegiatanState extends State<FormInputKegiatan> {
             key: widget.formKey,
             child: TextFormField(
               controller: widget.controller,
-              maxLines: MediaQuery.of(context).size.height > 690 ? 6 : 5,
+              maxLines: MediaQuery.of(context).size.height > 690 ? 9 : 6,
               cursorColor: kBlackColor,
               decoration: InputDecoration(
                 hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',

@@ -55,6 +55,10 @@ class MahasiswaCubit extends Cubit<MahasiswaState> {
     );
   }
 
+  Future<void> logoutMahasiswa() async {
+    await mahasiswaRepository.removeUserToken();
+  }
+
   @override
   void onChange(Change<MahasiswaState> change) {
     super.onChange(change);
