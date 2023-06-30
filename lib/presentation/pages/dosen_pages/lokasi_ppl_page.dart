@@ -128,40 +128,52 @@ class LokasiPplPage extends StatelessWidget {
                     final date = context.read<DateFilterCubit>();
                     if (value == 'Januari') {
                       month.setMonth('01');
-                      lokasi.getMahasiswaByLokasi('2023-01-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-01-${date.state + 1}', data['id']);
                     } else if (value == 'Februari') {
                       month.setMonth('02');
-                      lokasi.getMahasiswaByLokasi('2023-02-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-02-${date.state + 1}', data['id']);
                     } else if (value == 'Maret') {
                       month.setMonth('03');
-                      lokasi.getMahasiswaByLokasi('2023-03-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-03-${date.state + 1}', data['id']);
                     } else if (value == 'April') {
                       month.setMonth('04');
-                      lokasi.getMahasiswaByLokasi('2023-04-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-04-${date.state + 1}', data['id']);
                     } else if (value == 'Mei') {
                       month.setMonth('05');
-                      lokasi.getMahasiswaByLokasi('2023-05-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-05-${date.state + 1}', data['id']);
                     } else if (value == 'Juni') {
                       month.setMonth('06');
-                      lokasi.getMahasiswaByLokasi('2023-06-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-06-${date.state + 1}', data['id']);
                     } else if (value == 'Juli') {
                       month.setMonth('07');
-                      lokasi.getMahasiswaByLokasi('2023-07-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-07-${date.state + 1}', data['id']);
                     } else if (value == 'Agustus') {
                       month.setMonth('08');
-                      lokasi.getMahasiswaByLokasi('2023-08-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-08-${date.state + 1}', data['id']);
                     } else if (value == 'September') {
                       month.setMonth('09');
-                      lokasi.getMahasiswaByLokasi('2023-09-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-09-${date.state + 1}', data['id']);
                     } else if (value == 'Oktober') {
                       month.setMonth('10');
-                      lokasi.getMahasiswaByLokasi('2023-10-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-10-${date.state + 1}', data['id']);
                     } else if (value == 'November') {
                       month.setMonth('11');
-                      lokasi.getMahasiswaByLokasi('2023-11-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-11-${date.state + 1}', data['id']);
                     } else if (value == 'Desember') {
                       month.setMonth('12');
-                      lokasi.getMahasiswaByLokasi('2023-12-${date.state + 1}');
+                      lokasi.getMahasiswaByLokasi(
+                          '2023-12-${date.state + 1}', data['id']);
                     }
                     context.read<DatePickerCubit>().setDate(int.parse(
                           context.read<MonthCubit>().state,
@@ -173,7 +185,7 @@ class LokasiPplPage extends StatelessWidget {
               SizedBox(width: 21.w),
             ],
           ),
-          DatePicker(scrollController: scrollController),
+          DatePicker(scrollController: scrollController, id: data['id']),
           Container(
             width: double.infinity,
             margin: EdgeInsets.only(

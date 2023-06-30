@@ -10,10 +10,11 @@ import '../../cubit/month_index_cubit.dart';
 import '../../shared/themes.dart';
 
 class DatePicker extends StatefulWidget {
-  const DatePicker({Key? key, required this.scrollController})
+  const DatePicker({Key? key, required this.scrollController, required this.id})
       : super(key: key);
 
   final ScrollController scrollController;
+  final String id;
 
   @override
   State<DatePicker> createState() => _DatePickerState();
@@ -93,6 +94,7 @@ class _DatePickerState extends State<DatePicker> {
                                 dateCubit.setDate(index);
                                 await lokasiCubit.getMahasiswaByLokasi(
                                   '2023-$monthCubit-${dateCubit.state + 1}',
+                                  widget.id,
                                 );
                               },
                             );

@@ -10,9 +10,9 @@ class LokasiCubit extends Cubit<LokasiState> {
   final DosenRepository dosenRepository;
   LokasiCubit({required this.dosenRepository}) : super(LokasiInitial());
 
-  Future<void> getMahasiswaByLokasi(String tanggal) async {
+  Future<void> getMahasiswaByLokasi(String tanggal, String id) async {
     emit(LokasiLoading());
-    final result = await dosenRepository.getByLokasi(tanggal);
+    final result = await dosenRepository.getByLokasi(tanggal, id);
     result.fold(
       (erorr) => emit(LokasiFailure(erorr)),
       (success) => Future.delayed(const Duration(seconds: 1), () {

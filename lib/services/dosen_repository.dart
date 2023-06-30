@@ -87,13 +87,15 @@ class DosenRepository {
   }
 
   Future<Either<String, List<DosenMahasiswaModel>>> getByLokasi(
-      String tanggal) async {
+    String tanggal,
+    String id,
+  ) async {
     try {
       final token = await getUserToken();
 
       final response = await client.get(
         Uri.parse(
-            '$baseUrl/dosen-pembimbing/detail_lokasi_ppl?tanggal=$tanggal'),
+            '$baseUrl/dosen-pembimbing/detail_lokasi_ppl?tanggal=$tanggal&lokasi_id=$id'),
         headers: {
           'Authorization': 'Bearer $token',
           'Accept': 'application/json',

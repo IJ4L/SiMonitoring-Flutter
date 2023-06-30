@@ -196,6 +196,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                           data.gambar,
                           data.pesentasiKehadiran,
                           index,
+                          '${data.id}',
                         );
                       },
                       separatorBuilder: (_, index) => SizedBox(height: 12.h),
@@ -302,16 +303,23 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
     String imgUrl,
     int presentase,
     int index,
+    String id,
   ) {
     return GestureDetector(
       onTap: () {
-        context.read<LokasiCubit>().getMahasiswaByLokasi(getFormattedDateNow());
+        context
+            .read<LokasiCubit>()
+            .getMahasiswaByLokasi(getFormattedDateNow(), id);
         context.read<DateFilterCubit>().setDate(getCurrentDate() - 1);
         context.read<MonthCubit>().setMonth('${DateTime.now().month}');
         context
             .read<DatePickerCubit>()
             .setDate(int.parse(context.read<MonthCubit>().state));
-        Navigator.pushNamed(context, '/lokasi-ppl', arguments: {'data': index});
+        Navigator.pushNamed(
+          context,
+          '/lokasi-ppl',
+          arguments: {'data': index, 'id': id},
+        );
       },
       child: Container(
         width: double.infinity,
