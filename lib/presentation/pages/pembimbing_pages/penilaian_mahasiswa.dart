@@ -295,11 +295,12 @@ class PenilaianMahasiswa extends StatelessWidget {
                     title: 'Kirim',
                     ontap: state.id != -1
                         ? () async {
+                            context.read<PickMhs>().initial();
                             await context.read<PembimbingCubit>().sendNilai(
                                   context.read<NilaiCubit>().state,
                                   state.id.toString(),
                                 );
-                            pembimbingCubit.getMahasiswaPenilaian();
+                            await pembimbingCubit.getMahasiswaPenilaian();
                           }
                         : () {},
                   ),

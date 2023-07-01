@@ -301,7 +301,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
     String nama,
     String alamat,
     String imgUrl,
-    int presentase,
+    double presentase,
     int index,
     String id,
   ) {
@@ -398,7 +398,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                       ),
                       child: Center(
                         child: Text(
-                          '$presentase%',
+                          '${presentase.toInt()}%',
                           style: orangeTextStyle.copyWith(
                             fontWeight: semiBold,
                             fontSize: 10.sp,
