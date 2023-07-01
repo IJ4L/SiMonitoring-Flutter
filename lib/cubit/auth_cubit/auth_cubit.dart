@@ -60,12 +60,4 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void initial() => emit(AuthInitial());
-
-  // @override
-  // void onChange(Change<AuthState> change) {
-  //   super.onChange(change);
-  //   if (kDebugMode) {
-  //     print(change);
-  //   }
-  // }
 }

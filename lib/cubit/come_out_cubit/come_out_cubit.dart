@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:simor/models/datang_model.dart';
 import 'package:simor/services/status_repository.dart';
 
@@ -27,13 +26,5 @@ class ComeOutCubit extends Cubit<ComeOutState> {
       (failed) => emit(ComeOutFailure()),
       (success) => emit(ComeOutPulang(status: success)),
     );
-  }
-
-  @override
-  void onChange(Change<ComeOutState> change) {
-    super.onChange(change);
-    if (kDebugMode) {
-      print(change);
-    }
   }
 }

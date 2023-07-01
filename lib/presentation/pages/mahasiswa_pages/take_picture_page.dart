@@ -107,9 +107,6 @@ class _CameraPageState extends State<CameraPage> {
                               type['inOut'] == true
                                   ? {
                                       mhsCubit.datang(state.imagePath),
-                                      context
-                                          .read<AuthCubit>()
-                                          .getDataMahasiswa()
                                     }
                                   : mhsCubit.upFotoKegiatan(
                                       state.imagePath,

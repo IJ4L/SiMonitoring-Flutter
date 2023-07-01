@@ -79,7 +79,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
               children: [
                 Text(
                   'Kendala:',
-                  style: TextStyle(
+                  style: blackTextStyle.copyWith(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
                     color: kTextInfoColor,
@@ -130,15 +130,12 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                 }
               },
               builder: (context, state) {
-                if (state is MahasiswaLoading) {
-                  return Container();
-                }
                 if (state is MahasiswaGetKendala) {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.h),
                     child: TextFormField(
                       controller: kendalaC,
-                      maxLines: 5,
+                      maxLines: 7,
                       cursorColor: kBlackColor,
                       readOnly: true,
                       style: TextStyle(color: kGreyColor.withOpacity(0.6)),
@@ -170,7 +167,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                         cursorColor: kBlackColor,
                         style: const TextStyle(color: kBlackColor),
                         keyboardType: TextInputType.multiline,
-                        maxLines: 5,
+                        maxLines: 8,
                         decoration: InputDecoration(
                           hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
                           hintStyle: TextStyle(

@@ -175,9 +175,11 @@ class LokasiPplPage extends StatelessWidget {
                       lokasi.getMahasiswaByLokasi(
                           '2023-12-${date.state + 1}', data['id']);
                     }
-                    context.read<DatePickerCubit>().setDate(int.parse(
-                          context.read<MonthCubit>().state,
-                        ));
+                    context.read<DatePickerCubit>().setDate(
+                          int.parse(
+                            context.read<MonthCubit>().state,
+                          ),
+                        );
                   },
                   selectedItem: getFormattedMonth(),
                 ),

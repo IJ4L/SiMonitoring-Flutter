@@ -77,13 +77,21 @@ String formatDate(String date) {
 }
 
 int getCurrentDate() {
-  DateTime now = DateTime.now();
+  DateTime now = DateTime.now().toUtc().add(const Duration(hours: 8));
   String formattedDate = DateFormat('dd').format(now);
   return int.parse(formattedDate);
 }
 
 String getFormattedMonth() {
-  DateTime now = DateTime.now();
-  String formattedMonth = DateFormat('MMMM', 'id_ID').format(now);
+  final currentTime = DateTime.now().toUtc().add(const Duration(hours: 8));
+  final formatter = DateFormat.MMMM('id_ID');
+  final formattedMonth = formatter.format(currentTime);
+  return formattedMonth;
+}
+
+String getMonthNow() {
+  final currentTime = DateTime.now().toUtc().add(const Duration(hours: 8));
+  final formatter = DateFormat.M('id_ID');
+  final formattedMonth = formatter.format(currentTime);
   return formattedMonth;
 }

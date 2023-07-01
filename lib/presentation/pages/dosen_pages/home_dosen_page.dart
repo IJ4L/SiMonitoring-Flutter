@@ -311,7 +311,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
             .read<LokasiCubit>()
             .getMahasiswaByLokasi(getFormattedDateNow(), id);
         context.read<DateFilterCubit>().setDate(getCurrentDate() - 1);
-        context.read<MonthCubit>().setMonth('${DateTime.now().month}');
+        context.read<MonthCubit>().setMonth(getMonthNow());
         context
             .read<DatePickerCubit>()
             .setDate(int.parse(context.read<MonthCubit>().state));

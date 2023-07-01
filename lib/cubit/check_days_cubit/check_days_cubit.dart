@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:simor/services/dosen_repository.dart';
 import 'package:simor/services/mahasiswa_repository.dart';
 import 'package:simor/services/pebimbing_repository.dart';
@@ -42,11 +41,5 @@ class CheckDaysCubit extends Cubit<CheckDaysState> {
       (erorr) => emit(CheckDaysFailure(message: erorr)),
       (success) => emit(CheckDayDosen(days: success)),
     );
-  }
-
-  @override
-  void onChange(Change<CheckDaysState> change) {
-    super.onChange(change);
-    debugPrint(change.toString());
   }
 }

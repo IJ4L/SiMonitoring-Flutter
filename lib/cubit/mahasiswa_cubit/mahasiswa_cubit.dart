@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:simor/models/kegiatan_model.dart';
 import 'package:simor/services/mahasiswa_repository.dart';
 
@@ -57,13 +56,5 @@ class MahasiswaCubit extends Cubit<MahasiswaState> {
 
   Future<void> logoutMahasiswa() async {
     await mahasiswaRepository.removeUserToken();
-  }
-
-  @override
-  void onChange(Change<MahasiswaState> change) {
-    super.onChange(change);
-    if (kDebugMode) {
-      print(change);
-    }
   }
 }
