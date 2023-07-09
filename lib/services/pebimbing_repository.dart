@@ -128,6 +128,9 @@ class PembimbingRepository {
     try {
       final token = await getUserToken();
 
+      final stopwatch = Stopwatch(); // Create a stopwatch to measure time
+      stopwatch.start();
+
       final response = await client.get(
         Uri.parse(
           '$baseUrl/pembimbing-lapangan/check_presensi_datang?nim=$nim',
@@ -139,6 +142,10 @@ class PembimbingRepository {
       );
 
       if (response.statusCode == 200) {
+        stopwatch.stop(); // Stop the stopwatch
+
+        final duration = stopwatch.elapsedMilliseconds;
+        print('$duration Miliseconds');
         final data = json.decode(response.body);
         CekMhs cleanData = CekMhs(
           nim: data['data']['nim'],
