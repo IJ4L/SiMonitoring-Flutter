@@ -23,7 +23,6 @@ class _ScanPembimbingState extends State<ScanPembimbing> {
   void initState() {
     super.initState();
     _listenLnLinks();
-    context.read<PembimbingCubit>().cekMahasiswa("88888");
   }
 
   @override
