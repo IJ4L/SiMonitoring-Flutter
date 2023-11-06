@@ -15,16 +15,28 @@ class AkhirPplPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void openUrl(String url) async {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        debugPrint('Could not launch $url');
+      }
+    }
+
     return Scaffold(
       body: BlocListener<DosenCubit, DosenState>(
-        listener: (context, state) async {
+        listener: (context, state) {
           if (state is DosenGetPdf) {
             var url = state.url;
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              debugPrint('Could not launch $url');
-            }
+            openUrl(url);
+          }
+          if (state is DosenFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Penilaian Belum Lengkap'),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
         },
         child: Column(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/models/cek_mahasiswa.dart';
@@ -50,6 +51,7 @@ class PembimbingRepository {
               nama: mhs[i]['nama'],
               keteranganDatang: keteranganDatang,
               keteranganPulang: keteranganPulang,
+              idPpl: mhs[i]['id_PPL'],
             );
             cleanDataList.add(cleanData);
           } else {
@@ -59,6 +61,7 @@ class PembimbingRepository {
               nama: mhs[i]['nama'],
               keteranganDatang: '',
               keteranganPulang: '',
+              idPpl: mhs[i]['id_PPL'],
             );
             cleanDataList.add(cleanData);
           }
@@ -74,7 +77,7 @@ class PembimbingRepository {
     }
   }
 
-  Future<Either<String, void>> konfirmasiDatang(String nim) async {
+  Future<Either<String, void>> konfirmasiDatang(String idPpl) async {
     try {
       final token = await getUserToken();
 
@@ -84,7 +87,7 @@ class PembimbingRepository {
           'accept': 'application/json',
           'authorization': 'Bearer $token',
         },
-        body: {'nim': nim},
+        body: {'id_PPL': idPpl},
       );
 
       if (response.statusCode == 200) {
@@ -99,7 +102,7 @@ class PembimbingRepository {
     }
   }
 
-  Future<Either<String, void>> konfirmasiPulang(String nim) async {
+  Future<Either<String, void>> konfirmasiPulang(String idPpl) async {
     try {
       final token = await getUserToken();
 
@@ -109,7 +112,7 @@ class PembimbingRepository {
           'accept': 'application/json',
           'authorization': 'Bearer $token',
         },
-        body: {'nim': nim},
+        body: {'id_PPL': idPpl},
       );
 
       if (response.statusCode == 200) {
@@ -124,16 +127,16 @@ class PembimbingRepository {
     }
   }
 
-  Future<Either<String, CekMhs>> cekMahasiswa(String nim) async {
+  Future<Either<String, CekMhs>> cekMahasiswa(String idPpl) async {
     try {
       final token = await getUserToken();
 
-      final stopwatch = Stopwatch(); // Create a stopwatch to measure time
+      final stopwatch = Stopwatch();
       stopwatch.start();
 
       final response = await client.get(
         Uri.parse(
-          '$baseUrl/pembimbing-lapangan/check_presensi_datang?nim=$nim',
+          '$baseUrl/pembimbing-lapangan/check_presensi_datang?id_PPL=$idPpl',
         ),
         headers: {
           'accept': 'application/json',
@@ -145,7 +148,7 @@ class PembimbingRepository {
         stopwatch.stop(); // Stop the stopwatch
 
         final duration = stopwatch.elapsedMilliseconds;
-        print('$duration Miliseconds');
+        debugPrint('$duration Miliseconds For Hit Api');
         final data = json.decode(response.body);
         CekMhs cleanData = CekMhs(
           nim: data['data']['nim'],
@@ -153,6 +156,7 @@ class PembimbingRepository {
           nama: data['data']['nama'],
           keteranganDatang: '',
           keteranganPulang: '',
+          idPpl: data['data']['id_PPL'],
         );
         return Right(cleanData);
       }

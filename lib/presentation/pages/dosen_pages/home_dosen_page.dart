@@ -436,7 +436,7 @@ class CardKendala extends StatelessWidget {
       decoration: BoxDecoration(
         color: kYellowColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: kYellowColor),
+        border: Border.all(color: kRedColor),
       ),
       child: Row(
         children: [
@@ -444,6 +444,7 @@ class CardKendala extends StatelessWidget {
             'assets/icons/error.svg',
             width: 24.r,
             height: 24.r,
+            color: kRedColor,
           ),
           SizedBox(width: 14.w),
           Column(
@@ -452,7 +453,7 @@ class CardKendala extends StatelessWidget {
             children: [
               Text(
                 'Info Kendala',
-                style: yellowTextStyle.copyWith(
+                style: redTextStyle.copyWith(
                   fontWeight: semiBold,
                   fontSize: 12.sp,
                 ),
@@ -463,7 +464,7 @@ class CardKendala extends StatelessWidget {
                 width: 220.w,
                 child: Text(
                   alamat,
-                  style: yellowTextStyle.copyWith(
+                  style: redTextStyle.copyWith(
                     fontWeight: regular,
                     fontSize: 12.sp,
                   ),

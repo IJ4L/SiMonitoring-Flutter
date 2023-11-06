@@ -14,16 +14,28 @@ class LampiranKegiatan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void openUrl(String url) async {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        debugPrint('Could not launch $url');
+      }
+    }
+
     return Scaffold(
       body: BlocListener<MahasiswaCubit, MahasiswaState>(
-        listener: (context, state) async {
+        listener: (context, state) {
           if (state is MahasiswaGetPdf) {
             var url = state.url;
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              debugPrint('Could not launch $url');
-            }
+            openUrl(url);
+          }
+          if (state is MahasiswaFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Masih Dalam Tahap Penilaian'),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
         },
         child: Stack(

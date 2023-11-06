@@ -8,6 +8,7 @@ class CekMhs {
   final String gambar;
   final String keteranganDatang;
   final String keteranganPulang;
+  final String idPpl;
 
   CekMhs({
     required this.nama,
@@ -15,6 +16,7 @@ class CekMhs {
     required this.gambar,
     required this.keteranganDatang,
     required this.keteranganPulang,
+    required this.idPpl,
   });
 
   factory CekMhs.fromJson(Map<String, dynamic> json) => CekMhs(
@@ -23,5 +25,6 @@ class CekMhs {
         gambar: json["gambar"],
         keteranganDatang: json["keteranganDatang"],
         keteranganPulang: json["keteranganPulang"],
+        idPpl: json["id_PPL"],
       );
 }

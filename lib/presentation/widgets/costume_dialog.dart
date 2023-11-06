@@ -53,13 +53,11 @@ class Dialoginfo extends StatelessWidget {
               child: Costumebutton(
                 title: 'Continue',
                 ontap: type
-                    ? () async {
+                    ? () {
                         pageTo
                             ? {
-                                await context
-                                    .read<ComeOutCubit>()
-                                    .checkDatang(),
-                                await Navigator.pushNamedAndRemoveUntil(
+                                context.read<ComeOutCubit>().checkDatang(),
+                                Navigator.pushNamedAndRemoveUntil(
                                   context,
                                   '/home-mahasiswa',
                                   (route) => false,

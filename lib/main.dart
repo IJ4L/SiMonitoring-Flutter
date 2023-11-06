@@ -62,7 +62,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
-      rebuildFactor: RebuildFactors.all,
       minTextAdapt: true,
       builder: (context, child) => MultiBlocProvider(
         providers: [

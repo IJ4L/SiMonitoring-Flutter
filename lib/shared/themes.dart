@@ -17,6 +17,7 @@ TextStyle whiteTextStyle = const TextStyle(color: kWhiteColor);
 TextStyle blueTextStyle = const TextStyle(color: kPrimaryColor);
 TextStyle orangeTextStyle = const TextStyle(color: kSecondColor);
 TextStyle yellowTextStyle = const TextStyle(color: kYellowColor);
+TextStyle redTextStyle = const TextStyle(color: kRedColor);
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;

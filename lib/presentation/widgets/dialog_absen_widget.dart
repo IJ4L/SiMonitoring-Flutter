@@ -11,6 +11,7 @@ Future<void> dialogAbsen(
   String gambar,
   String nama,
   String nim,
+  String idPpl,
 ) {
   return showDialog<void>(
     context: context,
@@ -24,7 +25,7 @@ Future<void> dialogAbsen(
         contentPadding: EdgeInsets.zero,
         insetPadding: EdgeInsets.zero,
         content: Container(
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.62,
           width: 320.w,
           padding: EdgeInsets.all(20.r),
           decoration: const BoxDecoration(
@@ -58,10 +59,15 @@ Future<void> dialogAbsen(
                 SizedBox(height: 6.h),
                 Row(
                   children: [
+                    const Icon(
+                      Icons.error,
+                      color: kRedColor,
+                    ),
+                    const SizedBox(width: 10.0),
                     Text(
                       'Pastikan Foto Pada Kartu Sesuai Dengan\nWajah Asli Mahasiswa',
                       style: TextStyle(
-                        color: kGreyColor,
+                        color: kRedColor,
                         fontSize: 11.sp,
                         height: 1.6,
                       ),
@@ -118,11 +124,11 @@ Future<void> dialogAbsen(
                         onTap: () {
                           status == 'Datang'
                               ? {
-                                  pembimbingCubit.konfirmasiDatang(nim),
+                                  pembimbingCubit.konfirmasiDatang(idPpl),
                                   Navigator.pop(context),
                                 }
                               : {
-                                  pembimbingCubit.konfirmasiPulang(nim),
+                                  pembimbingCubit.konfirmasiPulang(idPpl),
                                   Navigator.pop(context),
                                 };
                         },

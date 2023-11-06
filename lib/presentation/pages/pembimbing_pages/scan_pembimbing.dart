@@ -23,6 +23,7 @@ class _ScanPembimbingState extends State<ScanPembimbing> {
   void initState() {
     super.initState();
     _listenLnLinks();
+    context.read<PembimbingCubit>().cekMahasiswa("88888");
   }
 
   @override
@@ -40,14 +41,19 @@ class _ScanPembimbingState extends State<ScanPembimbing> {
 
   _startNFCSession() async {
     await NfcManager.instance.stopSession();
+    final stopwatch = Stopwatch();
+    stopwatch.start();
     NfcManager.instance.startSession(
       onDiscovered: (NfcTag tag) async {
         var ndef = Ndef.from(tag);
         if (ndef != null) {
+          stopwatch.stop();
+          final duration = stopwatch.elapsedMilliseconds;
+          debugPrint('$duration Miliseconds For Read Card');
           for (var rec in ndef.cachedMessage!.records) {
             String payload = String.fromCharCodes(rec.payload);
-            String nimMahasiswa = payload.substring(3);
-            context.read<PembimbingCubit>().cekMahasiswa(nimMahasiswa);
+            String idPpl = payload.substring(3);
+            context.read<PembimbingCubit>().cekMahasiswa(idPpl);
           }
         }
       },
@@ -74,6 +80,15 @@ class _ScanPembimbingState extends State<ScanPembimbing> {
               state.mhs.gambar,
               state.mhs.nama,
               state.mhs.nim,
+              state.mhs.idPpl,
+            );
+          }
+          if (state is PembimbingFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Kamu Tidak Terdaftar di Pembimbing ini'),
+                backgroundColor: Colors.red,
+              ),
             );
           }
         },
