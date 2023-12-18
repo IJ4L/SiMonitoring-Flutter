@@ -1,7 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simor/cubit/check_days_cubit/check_days_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
 import 'package:simor/shared/themes.dart';
 
@@ -42,13 +43,12 @@ class _LoginpageState extends State<Loginpage> {
     final authCUbit = context.read<AuthCubit>();
     final pembimbingCubit = context.read<PembimbingCubit>();
     final loadingCubit = context.read<LodingButtonCubit>();
-    final checkDays = context.read<CheckDaysCubit>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: BlocConsumer<CheckDaysCubit, CheckDaysState>(
+      body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is CheckDayPembimbing) {
-            if (state.days == true) {
+          if (state is AuthPembimbing) {
+            if (state.pembimbing.keteranganPembimbingLapangan == 1) {
               pembimbingCubit.getMahasiswaPenilaian();
               Navigator.pushReplacementNamed(context, '/penilaian-Pembimbing');
             } else {
@@ -56,8 +56,8 @@ class _LoginpageState extends State<Loginpage> {
               Navigator.pushReplacementNamed(context, '/home-pembimbing');
             }
           }
-          if (state is CheckDayMahasiswa) {
-            if (state.days == true) {
+          if (state is AuthMahsiswa) {
+            if (state.mahasiswaModel.keterangan == 1) {
               Navigator.pushReplacementNamed(context, '/lampiran-kegiatan');
             } else {
               loadingCubit.toggleInit();
@@ -73,13 +73,9 @@ class _LoginpageState extends State<Loginpage> {
               );
             }
           }
-          if (state is CheckDayDosen) {
-            if (state.days == true) {
-              Navigator.pushReplacementNamed(context, '/akhir-ppl');
-            } else {
-              loadingCubit.toggleInit();
-              Navigator.pushReplacementNamed(context, '/home-dosen');
-            }
+          if (state is AuthDosen) {
+            loadingCubit.toggleInit();
+            Navigator.pushReplacementNamed(context, '/home-dosen');
           }
         },
         builder: (context, state) {
@@ -166,22 +162,18 @@ class _LoginpageState extends State<Loginpage> {
                                       passwordController.text,
                                     );
                                     final role = await authCUbit.getRole();
+
                                     if (role == 'mahasiswa') {
                                       authCUbit.getDataMahasiswa();
-                                      checkDays.checkDaysMahasiswa();
                                     }
                                     if (role == 'pembimbing_lapangan') {
                                       authCUbit.getDataPembimbing();
-                                      checkDays.checkDaysPembimbing();
                                     }
                                     if (role == 'dosen_pembimbing') {
                                       authCUbit.getDataDosen();
-                                      checkDays.checkDaysDosen();
                                     }
                                     if (role == '') {
-                                      // ignore: use_build_context_synchronously
                                       context.read<AuthCubit>().initial();
-                                      // ignore: use_build_context_synchronously
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(

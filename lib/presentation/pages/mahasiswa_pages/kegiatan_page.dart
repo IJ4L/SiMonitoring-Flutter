@@ -57,7 +57,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
   @override
   Widget build(BuildContext context) {
     final timeCubit = context.read<TimeCubit>();
-    final authCubit = context.read<AuthCubit>();
+    // final authCubit = context.read<AuthCubit>();
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: PreferredSize(
@@ -131,9 +131,7 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                     return Column(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height > 690
-                              ? _widgetKeys.length * 195.h
-                              : _widgetKeys.length * 210.h,
+                          height: _widgetKeys.length * 210.h,
                           width: double.infinity,
                           margin: EdgeInsets.only(top: 12.h),
                           child: ListView.separated(
@@ -174,14 +172,16 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                       color: kTransparantColor,
                       colorBorder: kSecondColor,
                       ontap: () {
-                        _addTextField();
-                        _addKeys();
-                        timeCubit.addnew();
+                        if (_controllers.length <= 5) {
+                          _addTextField();
+                          _addKeys();
+                          timeCubit.addnew();
+                        }
                       },
                     ),
                     SizedBox(width: 16.h),
                     ButtonWithIcon(
-                      title: "Simpan",
+                      title: "Kirim",
                       icon: "assets/icons/memory.svg",
                       colorBorder: kWhiteColor,
                       ontap: () {
@@ -192,24 +192,39 @@ class _KegiatanmahasiswaState extends State<Kegiatanmahasiswa> {
                             continue;
                           }
                         }
+
                         if (isValid) {
-                          _controllers.asMap().forEach((index, controller) {
-                            context.read<MahasiswaCubit>().saveKegiatan(
-                                  KegiatanModel(
-                                    id: index.toString(),
-                                    jam: timeCubit.state[index],
-                                    deskripsi: controller.text,
-                                  ),
-                                  authCubit.mhsId,
-                                );
-                          });
+                          List<KegiatanModel> listKegiatan = [];
+                          _controllers.asMap().forEach(
+                            (index, controller) {
+                              listKegiatan.add(
+                                KegiatanModel(
+                                  id: index.toString(),
+                                  jam: timeCubit.state[index],
+                                  deskripsi: controller.text,
+                                ),
+                              );
+
+                              // context.read<MahasiswaCubit>().saveKegiatan(
+                              //       KegiatanModel(
+                              //         id: index.toString(),
+                              //         jam: timeCubit.state[index],
+                              //         deskripsi: controller.text,
+                              //       ),
+                              //       authCubit.mhsId,
+                              //     );
+                            },
+                          );
+                          context
+                              .read<MahasiswaCubit>()
+                              .upKegiatan(listKegiatan);
                           showDialog<void>(
                             context: context,
                             barrierDismissible: true,
                             builder: (BuildContext context) {
                               return const Dialoginfo(
                                 height: 320,
-                                title: 'Rencana kegiatan\nberhasil disimpan',
+                                title: 'Rencana kegiatan\nberhasil dikirim',
                               );
                             },
                           );

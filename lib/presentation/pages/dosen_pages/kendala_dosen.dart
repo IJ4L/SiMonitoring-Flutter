@@ -2,38 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:simor/cubit/get_kendala_dosen/get_kendala_dosen_cubit.dart';
 import 'package:simor/cubit/get_komen_cubit/getkomen_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
-import 'package:simor/cubit/post_komen/post_komen_cubit.dart';
+import 'package:simor/cubit/post_komen_dosen/post_komen_dosen_cubit.dart';
 import 'package:simor/cubit/texfield_cubit.dart';
 import 'package:simor/presentation/widgets/costume_button.dart';
 import 'package:simor/shared/themes.dart';
 
-import '../../widgets/costume_dialog.dart';
-
-class KendalaMahasiswa extends StatefulWidget {
-  const KendalaMahasiswa({Key? key}) : super(key: key);
+class KendalaDosen extends StatefulWidget {
+  const KendalaDosen({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
   _KendalaMahasiswaState createState() => _KendalaMahasiswaState();
 }
 
-class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
+class _KendalaMahasiswaState extends State<KendalaDosen> {
   late TextEditingController kendalaController;
   final TextEditingController feedbackController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    context.read<MahasiswaCubit>().cekKendala();
     context.read<GetkomenCubit>().getKomen();
     kendalaController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
-    final kendalaCubit = context.read<MahasiswaCubit>();
+    final GetKendalaDosenCubit kendalaCubit =
+        context.read<GetKendalaDosenCubit>();
     final textFieldCubit = context.read<TextfieldCubit>();
 
     return Scaffold(
@@ -62,11 +61,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/home-mahasiswa',
-                    (route) => false,
-                  );
+                  Navigator.pop(context);
                 },
                 child: const Icon(
                   Icons.arrow_back_outlined,
@@ -87,7 +82,8 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
     );
   }
 
-  Widget buildBody(MahasiswaCubit kendalaCubit, TextfieldCubit textFieldCubit) {
+  Widget buildBody(
+      GetKendalaDosenCubit kendalaCubit, TextfieldCubit textFieldCubit) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       child: Column(
@@ -95,7 +91,6 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
         children: [
           buildKendalaRow(kendalaCubit),
           buildKendalaTextField(kendalaCubit, textFieldCubit),
-          buildKirimButton(kendalaCubit, textFieldCubit),
           buildListKomen(),
         ],
       ),
@@ -144,7 +139,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
     );
   }
 
-  Widget buildKendalaRow(MahasiswaCubit kendalaCubit) {
+  Widget buildKendalaRow(GetKendalaDosenCubit kendalaCubit) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -201,18 +196,15 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
   }
 
   Widget buildKendalaTextField(
-      MahasiswaCubit kendalaCubit, TextfieldCubit textFieldCubit) {
-    return BlocConsumer<MahasiswaCubit, MahasiswaState>(
+      GetKendalaDosenCubit kendalaCubit, TextfieldCubit textFieldCubit) {
+    return BlocConsumer<GetKendalaDosenCubit, GetKendalaDosenState>(
       listener: (context, state) {
-        if (state is MahasiswaGetKendala) {
-          kendalaController.text = state.kendala.deskripsi;
+        if (state is GetKendalaDosenLoaded) {
+          kendalaController.text = state.kendala;
         }
       },
       builder: (context, state) {
-        if (state is MahasiswaGetKendala) {
-          return buildKendalaContainer();
-        }
-        return buildDefaultKendalaTextField();
+        return buildKendalaContainer();
       },
     );
   }
@@ -298,6 +290,9 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
   }
 
   Widget buildBottomSheetContainer() {
+    final String kendalaId =
+        ModalRoute.of(context)!.settings.arguments as String;
+
     return SingleChildScrollView(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -328,14 +323,15 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                 Padding(
                   padding: const EdgeInsets.only(left: 200),
                   child: Costumebutton(
-                      title: "Kirim",
-                      ontap: () {
-                        Navigator.pop(context);
-                        context
-                            .read<PostKomenCubit>()
-                            .postKomen(feedbackController.text);
-                        context.read<GetkomenCubit>().getKomen();
-                      }),
+                    title: "Kirim",
+                    ontap: () {
+                      Navigator.pop(context);
+                      context
+                          .read<PostKomenDosenCubit>()
+                          .postKomen(feedbackController.text, kendalaId);
+                      context.read<GetkomenCubit>().getKomen();
+                    },
+                  ),
                 )
               ],
             ),
@@ -428,73 +424,6 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
             style: whiteTextStyle.copyWith(color: kRedColor),
           );
         },
-      ),
-    );
-  }
-
-  Widget buildKirimButton(
-      MahasiswaCubit kendalaCubit, TextfieldCubit textFieldCubit) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const SizedBox(),
-        BlocBuilder<MahasiswaCubit, MahasiswaState>(
-          builder: (context, state) {
-            return state is MahasiswaGetKendala
-                ? Container()
-                : buildKirimButtonContainer(kendalaCubit, textFieldCubit);
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget buildKirimButtonContainer(
-      MahasiswaCubit kendalaCubit, TextfieldCubit textFieldCubit) {
-    return Container(
-      height: 40.h,
-      width: (MediaQuery.of(context).size.width / 2.6),
-      decoration: BoxDecoration(
-        color: kPrimaryColor,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: kPrimaryColor),
-      ),
-      child: Material(
-        color: kTransparantColor,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(8.w),
-          onTap: () {
-            textFieldCubit.checkTextfield(kendalaController.text);
-            if (textFieldCubit.state) {
-              kendalaCubit.kirimKendala(kendalaController.text);
-              kendalaCubit.cekKendala();
-              showDialog<void>(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return const Dialoginfo(
-                    height: 320,
-                    title: 'Kendala kegiatan\nberhasil di simpan',
-                  );
-                },
-              );
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Kirim',
-                style: TextStyle(
-                  color: kWhiteColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12.sp,
-                ),
-                textScaleFactor: 1,
-              )
-            ],
-          ),
-        ),
       ),
     );
   }

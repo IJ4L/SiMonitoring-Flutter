@@ -11,7 +11,11 @@ import 'package:simor/cubit/come_out_cubit/come_out_cubit.dart';
 import 'package:simor/cubit/date_index_cubit.dart';
 import 'package:simor/cubit/date_picker_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
+import 'package:simor/cubit/get_kendala_dosen/get_kendala_dosen_cubit.dart';
+import 'package:simor/cubit/get_komen_cubit/getkomen_cubit.dart';
+import 'package:simor/cubit/get_rekap/get_rekap_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
+import 'package:simor/cubit/komen_dosen/komen_dosen_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/mhs_pick_cubit.dart';
@@ -19,8 +23,11 @@ import 'package:simor/cubit/month_index_cubit.dart';
 import 'package:simor/cubit/nilai_cubit.dart';
 import 'package:simor/cubit/obscure_text_cubit.dart';
 import 'package:simor/cubit/pembimbing_cubit/pembimbing_cubit.dart';
+import 'package:simor/cubit/post_komen/post_komen_cubit.dart';
+import 'package:simor/cubit/post_komen_dosen/post_komen_dosen_cubit.dart';
 import 'package:simor/cubit/texfield_cubit.dart';
 import 'package:simor/cubit/time_cubit.dart';
+import 'package:simor/presentation/pages/dosen_pages/kendala_dosen.dart';
 import 'package:simor/services/auth_repository.dart';
 import 'package:simor/services/dosen_repository.dart';
 import 'package:simor/services/mahasiswa_repository.dart';
@@ -147,6 +154,54 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
+          BlocProvider(
+            create: (context) => PostKomenCubit(
+              MahasiswaRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => KomenDosenCubit(
+              DosenRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => GetkomenCubit(
+              MahasiswaRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => GetKendalaDosenCubit(
+              DosenRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => GetRekapCubit(
+              DosenRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => PostKomenDosenCubit(
+              DosenRepository(
+                client: http.Client(),
+                sharedPreferences: prefs,
+              ),
+            ),
+          )
         ],
         child: MaterialApp(
           title: 'SiMonitoring',
@@ -161,6 +216,7 @@ class MyApp extends StatelessWidget {
             '/take-picture': (context) => const CameraPage(),
             '/kegiatan-mahasiswa': (context) => const Kegiatanmahasiswa(),
             '/kendala-mahasiswa': (context) => const KendalaMahasiswa(),
+            '/kendala-dosen': (context) => const KendalaDosen(),
             '/lampiran-kegiatan': (context) => const LampiranKegiatan(),
             '/home-pembimbing': (context) => const Homepembimbing(),
             '/choice-scan': (context) => const ChoiceScan(),
@@ -169,6 +225,7 @@ class MyApp extends StatelessWidget {
             '/home-dosen': (context) => const HomeDosenPage(),
             '/lokasi-ppl': (context) => const LokasiPplPage(),
             '/akhir-ppl': (context) => const AkhirPplPage(),
+           
           },
         ),
       ),

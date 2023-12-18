@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/config/core.dart';
 import 'package:simor/models/kendala2_model.dart';
+import 'package:simor/models/komen_dosen_model.dart';
 import 'package:simor/models/lokasi_model.dart';
 import 'package:simor/models/lokasimhs_model.dart';
 
@@ -140,6 +141,32 @@ class DosenRepository {
     }
   }
 
+  Future<Either<String, List<KomenDosenModel>>> getKendalaKomenMhs() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('$baseUrl/dosen-pembimbing/home_komen'),
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200 && data['data'] != '[]') {
+        return Right(List<KomenDosenModel>.from(
+          data['data'].map((x) => KomenDosenModel.fromJson(x)),
+        ).toList());
+      }
+
+      return const Left('Gagal Mengambil Data');
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
   Future<Either<String, String>> getPdf() async {
     try {
       final token = await getUserToken();
@@ -159,6 +186,81 @@ class DosenRepository {
       }
 
       return const Left("Gagal mengambil data");
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, String>> getKendalaDosen(String id) async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('$baseUrl/dosen-pembimbing/home_kendala_true?kendala_id=$id'),
+        headers: {
+          'accept': 'application/pdf',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['data'] != '[]') {
+        return Right(data['data']['deskripsi']);
+      }
+
+      return const Left("Gagal mengambil data");
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, bool>> postKomen(String komen, String kendalaId) async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.post(
+          Uri.parse(
+              '$baseUrl/dosen-pembimbing/komen/store?kendala_id=$kendalaId'),
+          headers: {
+            'accept': 'application/json',
+            'authorization': 'Bearer $token',
+          },
+          body: {
+            'deskripsi': komen
+          });
+
+      if (response.statusCode == 200) {
+        return const Right(true);
+      }
+
+      return const Right(false);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, String>> getRekap(String idLokasi) async {
+  
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse(
+          'https://iamtampan.cfg.my.id/dosen_pembimbing/tabel_rekaputulasi?lokasi_id=$idLokasi',
+        ),
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        
+        return Right(response.body);
+      }
+
+      return const Right('Gagal Data');
     } catch (e) {
       return Left(e.toString());
     }

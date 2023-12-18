@@ -1,19 +1,20 @@
 import 'dart:convert';
 
-PembimbingModel pembimbingModelFromJson(String str) =>
+PembimbingModel articleModelFromJson(String str) =>
     PembimbingModel.fromJson(json.decode(str));
 
-String pembimbingModelToJson(PembimbingModel data) =>
-    json.encode(data.toJson());
+String articleModelToJson(PembimbingModel data) => json.encode(data.toJson());
 
 class PembimbingModel {
   final String namaPembimbingLapangan;
+  final int keteranganPembimbingLapangan;
   final String namaDosenPembimbing;
   final String roles;
   final Lokasi lokasi;
 
   PembimbingModel({
     required this.namaPembimbingLapangan,
+    required this.keteranganPembimbingLapangan,
     required this.namaDosenPembimbing,
     required this.roles,
     required this.lokasi,
@@ -22,6 +23,7 @@ class PembimbingModel {
   factory PembimbingModel.fromJson(Map<String, dynamic> json) =>
       PembimbingModel(
         namaPembimbingLapangan: json["nama_pembimbing_lapangan"],
+        keteranganPembimbingLapangan: json["keterangan_pembimbing_lapangan"],
         namaDosenPembimbing: json["nama_dosen_pembimbing"],
         roles: json["roles"],
         lokasi: Lokasi.fromJson(json["lokasi"]),
@@ -29,6 +31,7 @@ class PembimbingModel {
 
   Map<String, dynamic> toJson() => {
         "nama_pembimbing_lapangan": namaPembimbingLapangan,
+        "keterangan_pembimbing_lapangan": keteranganPembimbingLapangan,
         "nama_dosen_pembimbing": namaDosenPembimbing,
         "roles": roles,
         "lokasi": lokasi.toJson(),

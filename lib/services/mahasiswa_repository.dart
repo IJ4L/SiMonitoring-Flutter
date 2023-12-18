@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simor/models/kegiatan_model.dart';
 import 'package:simor/models/kendala_model.dart';
+import 'package:simor/models/komen_model.dart';
 
 import '../config/core.dart';
 
@@ -116,13 +117,13 @@ class MahasiswaRepository {
     }
   }
 
-  Future<Either<String, void>> upKegiatan(String userId) async {
+  Future<Either<String, void>> upKegiatan(
+      List<KegiatanModel> listKegiatan) async {
     try {
       final token = await getUserToken();
-      final listKegiatan = await getKegiatan(userId);
 
       for (var i = 0; i < listKegiatan.length; i++) {
-        var response = await client.post(
+        await client.post(
           Uri.parse('$baseUrl/mahasiswa/kegiatan/create'),
           headers: {
             'accept': 'application/json',
@@ -134,10 +135,6 @@ class MahasiswaRepository {
             'jam_selesai': listKegiatan[i].jam,
           },
         );
-
-        if (response.statusCode == 200) {
-          await deleteAllKegiatan(userId);
-        }
       }
 
       return const Left('Gagal mengirim');
@@ -189,6 +186,59 @@ class MahasiswaRepository {
       }
 
       return const Right('false');
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, bool>> postKomen(String komen) async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client
+          .post(Uri.parse('$baseUrl/mahasiswa/komen/store'), headers: {
+        'accept': 'application/json',
+        'authorization': 'Bearer $token',
+      }, body: {
+        'deskripsi': komen
+      });
+
+
+      if (response.statusCode == 200) {
+        return const Right(true);
+      }
+
+      return const Right(false);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, List<KomenModel>>> getKomen() async {
+    try {
+      final token = await getUserToken();
+
+      final response = await client.get(
+        Uri.parse('$baseUrl/mahasiswa/komen/komen_by_tanggal'),
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (data['data'].toString() != '[]') {
+        return Right(
+          List<KomenModel>.from(
+            data['data'].map((x) => KomenModel.fromJson(x)),
+          ),
+        );
+      }
+
+      return Left(
+        'Gagal mengambil deskripsi. Status code: ${response.statusCode}',
+      );
     } catch (e) {
       return Left(e.toString());
     }

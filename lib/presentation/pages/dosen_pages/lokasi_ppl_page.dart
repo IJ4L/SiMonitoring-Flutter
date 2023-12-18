@@ -10,11 +10,11 @@ import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/month_index_cubit.dart';
 import 'package:simor/models/lokasimhs_model.dart';
+import 'package:simor/presentation/pages/dosen_pages/web_view_rekap.dart';
 import 'package:simor/presentation/utils/date_formatter.dart';
 
 import '../../../cubit/date_index_cubit.dart';
 import '../../../shared/themes.dart';
-import '../../widgets/costume_card_mhs.dart';
 import '../../widgets/date_picker.dart';
 
 class LokasiPplPage extends StatelessWidget {
@@ -31,7 +31,7 @@ class LokasiPplPage extends StatelessWidget {
           Stack(
             children: [
               SvgPicture.asset(
-                'assets/images/img_appbar_dosen.svg',
+                'assets/images/img_appbar_dosen_2.svg',
                 width: MediaQuery.of(context).size.width,
               ),
               Positioned(
@@ -71,6 +71,51 @@ class LokasiPplPage extends StatelessWidget {
                       },
                     )
                   ],
+                ),
+              ),
+              Positioned(
+                bottom: 14,
+                left: 70.w,
+                child: SizedBox(
+                  width: 200.w,
+                  height: 45.h,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReakapitulasiPage(
+                            lokasi: data["id"],
+                          ),
+                        ),
+                      );
+                    },
+                    icon: Container(
+                      width: 200.w,
+                      height: 45.h,
+                      decoration: BoxDecoration(
+                        color: kWhiteColor,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.remove_red_eye_outlined,
+                            color: kSecondColor,
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            "Lihat Rekapitulasi",
+                            style: TextStyle(
+                              color: kSecondColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -340,16 +385,85 @@ class LokasiPplPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            child: CostumeCardMhs(
-                              nama: data.nama,
-                              nim: data.nim,
-                              datang: data.datang.isEmpty
-                                  ? '-'
-                                  : data.datang[0].keterangan,
-                              pulang: data.pulang.isEmpty
-                                  ? '-'
-                                  : data.pulang[0].keterangan,
-                              imgUrl: data.gambar,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 48.r,
+                                  width: 48.r,
+                                  margin: EdgeInsets.only(right: 20.w),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: kPrimaryColor, width: 2),
+                                    borderRadius:
+                                        BorderRadius.circular(54.h / 2),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        data.gambar,
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 150.w,
+                                      child: Text(
+                                        data.nama,
+                                        style: TextStyle(
+                                          fontWeight: medium,
+                                          fontSize: 14.sp,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        textScaleFactor: 1,
+                                      ),
+                                    ),
+                                    SizedBox(height: 6.h),
+                                    Text(
+                                      data.nim,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: light,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                      textScaleFactor: 1,
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                data.datang.isNotEmpty && data.pulang.isNotEmpty
+                                    ? Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: kRedColor.withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          "Hadir",
+                                          style: greenTextStyle.copyWith(
+                                            fontWeight: bold,
+                                            fontSize: 12.sp,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: kRedColor.withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          "Tidak Hadir",
+                                          style: redTextStyle.copyWith(
+                                            fontWeight: bold,
+                                            fontSize: 12.sp,
+                                          ),
+                                        ),
+                                      )
+                              ],
                             ),
                           ),
                         );
@@ -432,32 +546,32 @@ class LokasiPplPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () => data.datang.isNotEmpty
-                    ? showDialog<void>(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.r),
-                            ),
-                            contentPadding: EdgeInsets.zero,
-                            insetPadding: EdgeInsets.zero,
-                            content: Container(
-                              height: 320.h,
-                              width: 330.r,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.r),
-                                image: DecorationImage(
-                                  image: NetworkImage(data.datang[0].gambar),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    : null,
+                // onTap: () => data.datang.isNotEmpty
+                //     ? showDialog<void>(
+                //         context: context,
+                //         barrierDismissible: true,
+                //         builder: (BuildContext context) {
+                //           return AlertDialog(
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(20.r),
+                //             ),
+                //             contentPadding: EdgeInsets.zero,
+                //             insetPadding: EdgeInsets.zero,
+                //             content: Container(
+                //               height: 320.h,
+                //               width: 330.r,
+                //               decoration: BoxDecoration(
+                //                 borderRadius: BorderRadius.circular(20.r),
+                //                 image: DecorationImage(
+                //                   image: NetworkImage(data.datang[0].gambar),
+                //                   fit: BoxFit.cover,
+                //                 ),
+                //               ),
+                //             ),
+                //           );
+                //         },
+                //       )
+                //     : null,
                 child: cardName(
                   'Jam Datang',
                   data.datang.isEmpty ? '-' : data.datang[0].jamDatang,

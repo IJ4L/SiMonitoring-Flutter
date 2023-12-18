@@ -40,9 +40,12 @@ class MahasiswaCubit extends Cubit<MahasiswaState> {
     );
   }
 
-  Future<void> upFotoKegiatan(String imagePath, String userId) async {
+  Future<void> upFoto(String imagePath, String userId) async {
     await mahasiswaRepository.upFoto(imagePath);
-    await mahasiswaRepository.upKegiatan(userId);
+  }
+
+  Future<void> upKegiatan(List<KegiatanModel> listKegiatan) async {
+    await mahasiswaRepository.upKegiatan(listKegiatan);
   }
 
   Future<void> getPdf() async {

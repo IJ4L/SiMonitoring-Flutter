@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simor/shared/themes.dart';
 
 import '../../cubit/auth_cubit/auth_cubit.dart';
-import '../../cubit/check_days_cubit/check_days_cubit.dart';
 import '../../cubit/pembimbing_cubit/pembimbing_cubit.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -23,21 +22,15 @@ class _SplashscreenState extends State<Splashscreen> {
 
   Future<void> navigateToLoginPage() async {
     final authCubit = context.read<AuthCubit>();
-    final checkDays = context.read<CheckDaysCubit>();
-
     final role = await authCubit.getRole();
     Future.delayed(const Duration(seconds: 2), () {
       if (role == 'mahasiswa') {
         authCubit.getDataMahasiswa();
-        checkDays.checkDaysMahasiswa();
       } else if (role == 'pembimbing_lapangan') {
         authCubit.getDataPembimbing();
-        checkDays.checkDaysPembimbing();
       } else if (role == 'dosen_pembimbing') {
         authCubit.getDataDosen();
-        checkDays.checkDaysDosen();
       } else {
-        // ignore: use_build_context_synchronously
         context.read<AuthCubit>().initial();
         Navigator.pushReplacementNamed(context, '/login');
       }
@@ -48,10 +41,10 @@ class _SplashscreenState extends State<Splashscreen> {
   Widget build(BuildContext context) {
     final pembimbingCubit = context.read<PembimbingCubit>();
     return Scaffold(
-      body: BlocListener<CheckDaysCubit, CheckDaysState>(
+      body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is CheckDayPembimbing) {
-            if (state.days == true) {
+          if (state is AuthPembimbing) {
+            if (state.pembimbing.keteranganPembimbingLapangan == 1) {
               pembimbingCubit.getMahasiswaPenilaian();
               Navigator.pushReplacementNamed(context, '/penilaian-Pembimbing');
             } else {
@@ -59,8 +52,8 @@ class _SplashscreenState extends State<Splashscreen> {
               Navigator.pushReplacementNamed(context, '/home-pembimbing');
             }
           }
-          if (state is CheckDayMahasiswa) {
-            if (state.days == true) {
+          if (state is AuthMahsiswa) {
+            if (state.mahasiswaModel.keterangan == 1) {
               Navigator.pushReplacementNamed(context, '/lampiran-kegiatan');
             } else {
               Navigator.pushNamed(
@@ -75,12 +68,8 @@ class _SplashscreenState extends State<Splashscreen> {
               );
             }
           }
-          if (state is CheckDayDosen) {
-            if (state.days == true) {
-              Navigator.pushReplacementNamed(context, '/akhir-ppl');
-            } else {
-              Navigator.pushReplacementNamed(context, '/home-dosen');
-            }
+          if (state is AuthDosen) {
+            Navigator.pushReplacementNamed(context, '/home-dosen');
           }
         },
         child: Stack(

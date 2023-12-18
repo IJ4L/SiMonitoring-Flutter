@@ -52,7 +52,7 @@ class _HomemahasiswaState extends State<Homemahasiswa>
         },
         child: SingleChildScrollView(
           child: SizedBox(
-            height: 780.h,
+            height: 740.h,
             child: Stack(
               children: [
                 Image.asset(
@@ -66,7 +66,7 @@ class _HomemahasiswaState extends State<Homemahasiswa>
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      height: 634.h,
+                      height: 590.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: kWhiteColor,
@@ -139,24 +139,6 @@ class _HomemahasiswaState extends State<Homemahasiswa>
                                   final set = data == 'null';
                                   return Column(
                                     children: [
-                                      set
-                                          ? Costumebutton(
-                                              title: 'Datang',
-                                              ontap: () => Navigator.pushNamed(
-                                                context,
-                                                '/take-picture',
-                                                arguments: {
-                                                  'type': true,
-                                                  'inOut': true
-                                                },
-                                              ),
-                                            )
-                                          : Costumebutton(
-                                              title: 'Datang',
-                                              colorButton: kDisableColor,
-                                              ontap: () {},
-                                            ),
-                                      SizedBox(height: 10.h),
                                       !set
                                           ? Costumebutton(
                                               title: 'Kegiatan',

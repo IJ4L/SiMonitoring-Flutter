@@ -108,7 +108,7 @@ class _CameraPageState extends State<CameraPage> {
                                   ? {
                                       mhsCubit.datang(state.imagePath),
                                     }
-                                  : mhsCubit.upFotoKegiatan(
+                                  : mhsCubit.upFoto(
                                       state.imagePath,
                                       stateMhs.mahasiswaModel.nim,
                                     );

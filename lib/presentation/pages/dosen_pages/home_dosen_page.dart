@@ -6,7 +6,9 @@ import 'package:shimmer/shimmer.dart';
 import 'package:simor/cubit/auth_cubit/auth_cubit.dart';
 import 'package:simor/cubit/date_picker_cubit.dart';
 import 'package:simor/cubit/dosen_cubit/dosen_cubit.dart';
+import 'package:simor/cubit/get_kendala_dosen/get_kendala_dosen_cubit.dart';
 import 'package:simor/cubit/kendala_cubit/kendala_cubit.dart';
+import 'package:simor/cubit/komen_dosen/komen_dosen_cubit.dart';
 import 'package:simor/cubit/lokasi_cubit/lokasi_cubit.dart';
 import 'package:simor/cubit/month_index_cubit.dart';
 import 'package:simor/shared/themes.dart';
@@ -29,6 +31,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
   void initState() {
     context.read<KendalaCubit>().getKendala();
     context.read<DosenCubit>().getLokasi();
+    context.read<KomenDosenCubit>().getKomenDosen();
     super.initState();
   }
 
@@ -149,6 +152,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                             child: CardKendala(
                               fade: false,
                               alamat: data.alamat,
+                              title: 'Info Kendala',
                             ),
                           );
                         }
@@ -157,6 +161,53 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                       padding: EdgeInsets.zero,
                       separatorBuilder: (_, index) => SizedBox(height: 12.h),
                       itemCount: state.kendala.length,
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            },
+          ),
+          BlocBuilder<KomenDosenCubit, KomenDosenState>(
+            builder: (context, state) {
+              if (state is KomenDosenLoaded) {
+                return Container(
+                  height: state.komenDosenModel.isNotEmpty ? 65.h : 0,
+                  margin: state.komenDosenModel.isNotEmpty
+                      ? EdgeInsets.only(top: 14.h, bottom: 6.h)
+                      : const EdgeInsets.only(),
+                  width: double.infinity,
+                  child: NotificationListener(
+                    onNotification: (notification) {
+                      if (notification is OverscrollIndicatorNotification) {
+                        notification.disallowIndicator();
+                      }
+                      return false;
+                    },
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        final data = state.komenDosenModel[index];
+                        return GestureDetector(
+                          onTap: () => {
+                            context
+                                .read<GetKendalaDosenCubit>()
+                                .getKendala(data.komen.kendalaId.toString()),
+                            Navigator.pushNamed(
+                              context,
+                              "/kendala-dosen",
+                              arguments: data.komen.kendalaId.toString(),
+                            )
+                          },
+                          child: CardKendala(
+                            fade: false,
+                            alamat: data.komen.deskripsi,
+                            title: 'Komentar',
+                          ),
+                        );
+                      },
+                      padding: EdgeInsets.zero,
+                      separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                      itemCount: state.komenDosenModel.length,
                     ),
                   ),
                 );
@@ -244,7 +295,7 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CardKendala(fade: true, alamat: alamat),
+                CardKendala(fade: true, alamat: alamat, title: 'Lokasi:'),
                 const SizedBox(height: 12.0),
                 Container(
                   margin: EdgeInsets.only(left: 16.w, bottom: 12.h),
@@ -422,10 +473,12 @@ class CardKendala extends StatelessWidget {
     super.key,
     required this.fade,
     required this.alamat,
+    required this.title,
   });
 
   final bool fade;
   final String alamat;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -444,6 +497,7 @@ class CardKendala extends StatelessWidget {
             'assets/icons/error.svg',
             width: 24.r,
             height: 24.r,
+            // ignore: deprecated_member_use
             color: kRedColor,
           ),
           SizedBox(width: 14.w),
@@ -452,7 +506,7 @@ class CardKendala extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Info Kendala',
+                title,
                 style: redTextStyle.copyWith(
                   fontWeight: semiBold,
                   fontSize: 12.sp,
