@@ -29,7 +29,6 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
   void initState() {
     super.initState();
     context.read<MahasiswaCubit>().cekKendala();
-    context.read<GetkomenCubit>().getKomen();
     kendalaController = TextEditingController();
   }
 
@@ -267,8 +266,9 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 20.h),
       child: SingleChildScrollView(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: Container(
           height: 210.h,
           width: double.infinity,
@@ -499,9 +499,11 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
         const SizedBox(),
         BlocBuilder<MahasiswaCubit, MahasiswaState>(
           builder: (context, state) {
-            return state is MahasiswaGetKendala
-                ? Container()
-                : buildKirimButtonContainer(kendalaCubit, textFieldCubit);
+            if (state is MahasiswaGetKendala) {
+              context.read<GetkomenCubit>().getKomen();
+              return Container();
+            }
+            return buildKirimButtonContainer(kendalaCubit, textFieldCubit);
           },
         ),
       ],

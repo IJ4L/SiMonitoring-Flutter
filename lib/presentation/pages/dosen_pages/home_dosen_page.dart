@@ -342,6 +342,12 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                     title: 'Terima',
                     ontap: () {
                       context.read<KendalaCubit>().accKendala(id);
+                      context.read<GetKendalaDosenCubit>().getKendala(id);
+                      Navigator.pushNamed(
+                        context,
+                        "/kendala-dosen",
+                        arguments: id,
+                      );
                     },
                   ),
                 ),
