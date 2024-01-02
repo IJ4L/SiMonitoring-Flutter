@@ -225,7 +225,6 @@ class MyApp extends StatelessWidget {
             '/home-dosen': (context) => const HomeDosenPage(),
             '/lokasi-ppl': (context) => const LokasiPplPage(),
             '/akhir-ppl': (context) => const AkhirPplPage(),
-           
           },
         ),
       ),

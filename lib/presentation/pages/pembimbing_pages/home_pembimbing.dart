@@ -277,7 +277,7 @@ class CardMahasiswa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80.h,
+      height: 90.h,
       padding: EdgeInsets.symmetric(
         vertical: 12.h,
         horizontal: 6.w,
@@ -317,33 +317,81 @@ class CardMahasiswa extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              datang == 'hadir'
-                  ? SvgPicture.asset(
-                      "assets/icons/check_box_on.svg",
-                      width: 28.r,
-                      height: 28.r,
-                      fit: BoxFit.fill,
-                    )
-                  : SvgPicture.asset(
-                      "assets/icons/check_box_off.svg",
-                      width: 28.r,
-                      height: 28.r,
-                      fit: BoxFit.fill,
+              Column(
+                children: [
+                  Container(
+                    height: 28.r,
+                    width: 28.r,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: kBlackColor.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    child: Center(
+                      child: Text(
+                        "D",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: medium,
+                        ),
+                        textScaleFactor: 1,
+                      ),
+                    ),
+                  ),
+                  datang == 'hadir'
+                      ? SvgPicture.asset(
+                          "assets/icons/check_box_on.svg",
+                          width: 28.r,
+                          height: 28.r,
+                          fit: BoxFit.fill,
+                        )
+                      : SvgPicture.asset(
+                          "assets/icons/check_box_off.svg",
+                          width: 28.r,
+                          height: 28.r,
+                          fit: BoxFit.fill,
+                        ),
+                ],
+              ),
               SizedBox(width: 6.h),
-              pulang == 'hadir'
-                  ? SvgPicture.asset(
-                      "assets/icons/check_box_on.svg",
-                      width: 28.r,
-                      height: 28.r,
-                      fit: BoxFit.fill,
-                    )
-                  : SvgPicture.asset(
-                      "assets/icons/check_box_off.svg",
-                      width: 28.r,
-                      height: 28.r,
-                      fit: BoxFit.fill,
+              Column(
+                children: [
+                  Container(
+                    height: 28.r,
+                    width: 28.r,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: kBlackColor.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    child: Center(
+                      child: Text(
+                        "P",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: medium,
+                        ),
+                        textScaleFactor: 1,
+                      ),
+                    ),
+                  ),
+                  pulang == 'hadir'
+                      ? SvgPicture.asset(
+                          "assets/icons/check_box_on.svg",
+                          width: 28.r,
+                          height: 28.r,
+                          fit: BoxFit.fill,
+                        )
+                      : SvgPicture.asset(
+                          "assets/icons/check_box_off.svg",
+                          width: 28.r,
+                          height: 28.r,
+                          fit: BoxFit.fill,
+                        ),
+                ],
+              ),
             ],
           ),
           SizedBox(height: 12.h),

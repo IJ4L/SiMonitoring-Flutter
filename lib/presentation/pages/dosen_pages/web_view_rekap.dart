@@ -15,7 +15,6 @@ class ReakapitulasiPage extends StatefulWidget {
 class _ReakapitulasiPageState extends State<ReakapitulasiPage> {
   @override
   void initState() {
-
     context.read<GetRekapCubit>().getRekap(widget.lokasi);
     super.initState();
   }
@@ -38,14 +37,16 @@ class _ReakapitulasiPageState extends State<ReakapitulasiPage> {
       ..loadHtmlString("<html><body><h1>Hello, HTML!</h1></body></html>");
 
     return Scaffold(
-      body: BlocBuilder<GetRekapCubit, GetRekapState>(
-        builder: (context, state) {
-          if (state is GetRekapLoaded) {
-            controller.loadHtmlString(state.url);
+      body: SafeArea(
+        child: BlocBuilder<GetRekapCubit, GetRekapState>(
+          builder: (context, state) {
+            if (state is GetRekapLoaded) {
+              controller.loadHtmlString(state.url);
+              return WebViewWidget(controller: controller);
+            }
             return WebViewWidget(controller: controller);
-          }
-          return WebViewWidget(controller: controller);
-        },
+          },
+        ),
       ),
     );
   }

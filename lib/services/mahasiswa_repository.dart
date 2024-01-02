@@ -22,7 +22,7 @@ class MahasiswaRepository {
 
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('$baseUrl/mahasiswa/datang/create'),
+        Uri.parse('$baseUrl/mahasiswa/datang/update_gambar'),
       );
       request.headers['accept'] = 'application/json';
       request.headers['Authorization'] = 'Bearer $token';
@@ -32,7 +32,7 @@ class MahasiswaRepository {
       if (response.statusCode == 200) {
         return const Right(null);
       }
-
+      
       return Left(
         'Gagal mengirim gambar. Status code: ${response.statusCode}',
       );
@@ -202,7 +202,6 @@ class MahasiswaRepository {
       }, body: {
         'deskripsi': komen
       });
-
 
       if (response.statusCode == 200) {
         return const Right(true);

@@ -38,234 +38,242 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              SvgPicture.asset(
-                'assets/images/img_appbar_dosen.svg',
-                width: MediaQuery.of(context).size.width,
-              ),
-              BlocBuilder<AuthCubit, AuthState>(
-                builder: (context, state) {
-                  if (state is AuthDosen) {
-                    return Positioned(
-                      top: 55.h,
-                      left: 18.w,
-                      right: 18.w,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Welcome',
-                                style: whiteTextStyle.copyWith(
-                                  fontWeight: light,
-                                  fontSize: 14.sp,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<KendalaCubit>().getKendala();
+          context.read<KomenDosenCubit>().getKomenDosen();
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                SvgPicture.asset(
+                  'assets/images/img_appbar_dosen.svg',
+                  width: MediaQuery.of(context).size.width,
+                ),
+                BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthDosen) {
+                      return Positioned(
+                        top: 55.h,
+                        left: 18.w,
+                        right: 18.w,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Welcome',
+                                  style: whiteTextStyle.copyWith(
+                                    fontWeight: light,
+                                    fontSize: 14.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                state.dosenModel.nama,
-                                style: whiteTextStyle.copyWith(
-                                  fontWeight: semiBold,
-                                  fontSize: 16.sp,
+                                SizedBox(height: 4.h),
+                                Text(
+                                  state.dosenModel.nama,
+                                  style: whiteTextStyle.copyWith(
+                                    fontWeight: semiBold,
+                                    fontSize: 16.sp,
+                                  ),
+                                  textScaleFactor: 1,
                                 ),
-                                textScaleFactor: 1,
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 44.r,
-                            width: 44.r,
-                            decoration: BoxDecoration(
-                              color: kWhiteColor,
-                              borderRadius: BorderRadius.circular(10.r),
-                              image: DecorationImage(
-                                image: NetworkImage(state.dosenModel.gambar),
-                                fit: BoxFit.cover,
-                              ),
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              ),
-            ],
-          ),
-          BlocBuilder<KendalaCubit, KendalaState>(
-            builder: (context, state) {
-              if (state is KendalaLoading) {
-                return Container(
-                  height: 65.h,
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 14.h,
-                  ),
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.r),
+                            Container(
+                              height: 44.r,
+                              width: 44.r,
+                              decoration: BoxDecoration(
+                                color: kWhiteColor,
+                                borderRadius: BorderRadius.circular(10.r),
+                                image: DecorationImage(
+                                  image: NetworkImage(state.dosenModel.gambar),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+              ],
+            ),
+            BlocBuilder<KendalaCubit, KendalaState>(
+              builder: (context, state) {
+                if (state is KendalaLoading) {
+                  return Container(
+                    height: 65.h,
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 14.h,
+                    ),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }
-              if (state is KendalaLoaded) {
-                return Container(
-                  height: state.kendala.isEmpty
-                      ? 0
-                      : state.kendala.length == 1
-                          ? 65.h
-                          : 130.h,
-                  margin: EdgeInsets.only(top: 14.h, bottom: 6.h),
-                  width: double.infinity,
-                  child: NotificationListener(
-                    onNotification: (notification) {
-                      if (notification is OverscrollIndicatorNotification) {
-                        notification.disallowIndicator();
-                      }
-                      return false;
-                    },
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final data = state.kendala[index];
-                        if (data.kendala.status == 0) {
+                  );
+                }
+                if (state is KendalaLoaded) {
+                  return Container(
+                    height: state.kendala.isEmpty
+                        ? 0
+                        : state.kendala.length == 1
+                            ? 65.h
+                            : 130.h,
+                    margin: state.kendala.isEmpty
+                        ? const EdgeInsets.all(0)
+                        : EdgeInsets.only(top: 14.h, bottom: 6.h),
+                    width: double.infinity,
+                    child: NotificationListener(
+                      onNotification: (notification) {
+                        if (notification is OverscrollIndicatorNotification) {
+                          notification.disallowIndicator();
+                        }
+                        return false;
+                      },
+                      child: ListView.separated(
+                        itemBuilder: (context, index) {
+                          final data = state.kendala[index];
+                          if (data.kendala.status == 0) {
+                            return GestureDetector(
+                              onTap: () => dialogKendala(
+                                context,
+                                data.alamat,
+                                data.kendala.deskripsi,
+                                '${data.kendala.id}',
+                              ),
+                              child: CardKendala(
+                                fade: false,
+                                alamat: data.alamat,
+                                title: 'Info Kendala',
+                              ),
+                            );
+                          }
+                          return Container();
+                        },
+                        padding: EdgeInsets.zero,
+                        separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                        itemCount: state.kendala.length,
+                      ),
+                    ),
+                  );
+                }
+                return Container();
+              },
+            ),
+            BlocBuilder<KomenDosenCubit, KomenDosenState>(
+              builder: (context, state) {
+                if (state is KomenDosenLoaded) {
+                  return Container(
+                    height: state.komenDosenModel.isNotEmpty ? 65.h : 0,
+                    margin: state.komenDosenModel.isNotEmpty
+                        ? EdgeInsets.only(top: 14.h, bottom: 6.h)
+                        : const EdgeInsets.only(),
+                    width: double.infinity,
+                    child: NotificationListener(
+                      onNotification: (notification) {
+                        if (notification is OverscrollIndicatorNotification) {
+                          notification.disallowIndicator();
+                        }
+                        return false;
+                      },
+                      child: ListView.separated(
+                        itemBuilder: (context, index) {
+                          final data = state.komenDosenModel[index];
                           return GestureDetector(
-                            onTap: () => dialogKendala(
-                              context,
-                              data.alamat,
-                              data.kendala.deskripsi,
-                              '${data.kendala.id}',
-                            ),
+                            onTap: () => {
+                              context
+                                  .read<GetKendalaDosenCubit>()
+                                  .getKendala(data.komen.kendalaId.toString()),
+                              Navigator.pushNamed(
+                                context,
+                                "/kendala-dosen",
+                                arguments: data.komen.kendalaId.toString(),
+                              )
+                            },
                             child: CardKendala(
                               fade: false,
-                              alamat: data.alamat,
-                              title: 'Info Kendala',
+                              alamat: data.komen.deskripsi,
+                              title: 'Komentar',
                             ),
                           );
-                        }
-                        return Container();
-                      },
-                      padding: EdgeInsets.zero,
-                      separatorBuilder: (_, index) => SizedBox(height: 12.h),
-                      itemCount: state.kendala.length,
+                        },
+                        padding: EdgeInsets.zero,
+                        separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                        itemCount: state.komenDosenModel.length,
+                      ),
                     ),
-                  ),
-                );
-              }
-              return Container();
-            },
-          ),
-          BlocBuilder<KomenDosenCubit, KomenDosenState>(
-            builder: (context, state) {
-              if (state is KomenDosenLoaded) {
-                return Container(
-                  height: state.komenDosenModel.isNotEmpty ? 65.h : 0,
-                  margin: state.komenDosenModel.isNotEmpty
-                      ? EdgeInsets.only(top: 14.h, bottom: 6.h)
-                      : const EdgeInsets.only(),
-                  width: double.infinity,
-                  child: NotificationListener(
-                    onNotification: (notification) {
-                      if (notification is OverscrollIndicatorNotification) {
-                        notification.disallowIndicator();
-                      }
-                      return false;
-                    },
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final data = state.komenDosenModel[index];
-                        return GestureDetector(
-                          onTap: () => {
-                            context
-                                .read<GetKendalaDosenCubit>()
-                                .getKendala(data.komen.kendalaId.toString()),
-                            Navigator.pushNamed(
-                              context,
-                              "/kendala-dosen",
-                              arguments: data.komen.kendalaId.toString(),
-                            )
-                          },
-                          child: CardKendala(
-                            fade: false,
-                            alamat: data.komen.deskripsi,
-                            title: 'Komentar',
-                          ),
-                        );
-                      },
-                      padding: EdgeInsets.zero,
-                      separatorBuilder: (_, index) => SizedBox(height: 12.h),
-                      itemCount: state.komenDosenModel.length,
-                    ),
-                  ),
-                );
-              }
-              return Container();
-            },
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 16.w, bottom: 12.h),
-            child: Text(
-              'Lokasi PPL',
-              textScaleFactor: 1,
-              style: blackTextStyle.copyWith(
-                fontSize: 14.sp,
-                fontWeight: medium,
+                  );
+                }
+                return Container();
+              },
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 16.w, bottom: 12.h),
+              child: Text(
+                'Lokasi PPL',
+                textScaleFactor: 1,
+                style: blackTextStyle.copyWith(
+                  fontSize: 14.sp,
+                  fontWeight: medium,
+                ),
               ),
             ),
-          ),
-          BlocBuilder<DosenCubit, DosenState>(
-            builder: (context, state) {
-              if (state is DosenLoaded) {
-                return Expanded(
-                  child: NotificationListener(
-                    onNotification: (notification) {
-                      if (notification is OverscrollIndicatorNotification) {
-                        notification.disallowIndicator();
-                      }
-                      return false;
-                    },
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final data = state.lokasi[index];
-                        return cardPpl(
-                          context,
-                          data.nama,
-                          data.alamat,
-                          data.gambar,
-                          data.pesentasiKehadiran,
-                          index,
-                          '${data.id}',
-                        );
+            BlocBuilder<DosenCubit, DosenState>(
+              builder: (context, state) {
+                if (state is DosenLoaded) {
+                  return Expanded(
+                    child: NotificationListener(
+                      onNotification: (notification) {
+                        if (notification is OverscrollIndicatorNotification) {
+                          notification.disallowIndicator();
+                        }
+                        return false;
                       },
-                      separatorBuilder: (_, index) => SizedBox(height: 12.h),
-                      padding: EdgeInsets.only(
-                        right: 16.w,
-                        left: 16.w,
-                        bottom: 16.h,
-                        top: 4.h,
+                      child: ListView.separated(
+                        itemBuilder: (context, index) {
+                          final data = state.lokasi[index];
+                          return cardPpl(
+                            context,
+                            data.nama,
+                            data.alamat,
+                            data.gambar,
+                            data.pesentasiKehadiran,
+                            index,
+                            '${data.id}',
+                          );
+                        },
+                        separatorBuilder: (_, index) => SizedBox(height: 12.h),
+                        padding: EdgeInsets.only(
+                          right: 16.w,
+                          left: 16.w,
+                          bottom: 16.h,
+                          top: 4.h,
+                        ),
+                        itemCount: state.lokasi.length,
                       ),
-                      itemCount: state.lokasi.length,
                     ),
-                  ),
-                );
-              }
-              return Container();
-            },
-          )
-        ],
+                  );
+                }
+                return Container();
+              },
+            )
+          ],
+        ),
       ),
     );
   }
@@ -334,7 +342,6 @@ class _HomeDosenPageState extends State<HomeDosenPage> {
                     title: 'Terima',
                     ontap: () {
                       context.read<KendalaCubit>().accKendala(id);
-                      Navigator.pop(context);
                     },
                   ),
                 ),

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 KomenDosenModel komenDosenModelFromJson(String str) =>
@@ -35,12 +34,14 @@ class KomenDosenModel {
 class Komen {
   final int id;
   final int kendalaId;
+  final String author;
   final String deskripsi;
   final DateTime tanggal;
 
   Komen({
     required this.id,
     required this.kendalaId,
+    required this.author,
     required this.deskripsi,
     required this.tanggal,
   });
@@ -48,6 +49,7 @@ class Komen {
   factory Komen.fromJson(Map<String, dynamic> json) => Komen(
         id: json["id"],
         kendalaId: json["kendala_id"],
+        author: json["author"],
         deskripsi: json["deskripsi"],
         tanggal: DateTime.parse(json["tanggal"]),
       );
@@ -55,6 +57,7 @@ class Komen {
   Map<String, dynamic> toJson() => {
         "id": id,
         "kendala_id": kendalaId,
+        "author": author,
         "deskripsi": deskripsi,
         "tanggal":
             "${tanggal.year.toString().padLeft(4, '0')}-${tanggal.month.toString().padLeft(2, '0')}-${tanggal.day.toString().padLeft(2, '0')}",

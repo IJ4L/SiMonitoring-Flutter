@@ -241,13 +241,12 @@ class DosenRepository {
   }
 
   Future<Either<String, String>> getRekap(String idLokasi) async {
-  
     try {
       final token = await getUserToken();
 
       final response = await client.get(
         Uri.parse(
-          'https://iamtampan.cfg.my.id/dosen_pembimbing/tabel_rekaputulasi?lokasi_id=$idLokasi',
+          'https://iamtampan.cfg.my.id/dosen_pembimbing/tabel_dosen_pembimbing',
         ),
         headers: {
           'accept': 'application/json',
@@ -256,7 +255,6 @@ class DosenRepository {
       );
 
       if (response.statusCode == 200) {
-        
         return Right(response.body);
       }
 

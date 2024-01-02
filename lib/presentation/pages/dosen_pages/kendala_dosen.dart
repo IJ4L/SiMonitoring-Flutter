@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:simor/cubit/get_kendala_dosen/get_kendala_dosen_cubit.dart';
 import 'package:simor/cubit/get_komen_cubit/getkomen_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/post_komen_dosen/post_komen_dosen_cubit.dart';
 import 'package:simor/cubit/texfield_cubit.dart';
+import 'package:simor/models/komen_model.dart';
 import 'package:simor/presentation/widgets/costume_button.dart';
 import 'package:simor/shared/themes.dart';
 
@@ -35,11 +37,16 @@ class _KendalaMahasiswaState extends State<KendalaDosen> {
         context.read<GetKendalaDosenCubit>();
     final textFieldCubit = context.read<TextfieldCubit>();
 
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(242, 255, 255, 255),
-      appBar: buildAppBar(),
-      body: buildBody(kendalaCubit, textFieldCubit),
-      resizeToAvoidBottomInset: false,
+    return RefreshIndicator(
+      onRefresh: () {
+        return context.read<GetkomenCubit>().getKomen();
+      },
+      child: Scaffold(
+        backgroundColor: const Color.fromARGB(242, 255, 255, 255),
+        appBar: buildAppBar(),
+        body: buildBody(kendalaCubit, textFieldCubit),
+        resizeToAvoidBottomInset: false,
+      ),
     );
   }
 
@@ -101,12 +108,30 @@ class _KendalaMahasiswaState extends State<KendalaDosen> {
     return Expanded(
       child: BlocBuilder<GetkomenCubit, GetkomenState>(
         builder: (context, state) {
+          if (state is GetkomenLoading) {
+            return SizedBox(
+              height: 10.h,
+              width: double.infinity,
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  height: 10.h,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+              ),
+            );
+          }
           if (state is GetkomenLoaded) {
             final data = state.komen;
             return ListView.separated(
               itemCount: data.length,
               itemBuilder: (context, index) {
-                return buildListKomenItem(data[index].deskripsi);
+                return buildListKomenItem(data[index]);
               },
               separatorBuilder: (context, index) {
                 return const SizedBox(height: 10);
@@ -119,7 +144,7 @@ class _KendalaMahasiswaState extends State<KendalaDosen> {
     );
   }
 
-  Widget buildListKomenItem(String komen) {
+  Widget buildListKomenItem(KomenModel komen) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -127,14 +152,33 @@ class _KendalaMahasiswaState extends State<KendalaDosen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Text(
-        komen,
-        style: blackTextStyle.copyWith(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w500,
-          color: kTextInfoColor,
-        ),
-        textScaleFactor: 1,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                komen.author,
+                style: const TextStyle(color: kTextInfoColor, fontSize: 10),
+              ),
+              const Spacer(),
+              Text(
+                "${komen.createdAt}",
+                style: const TextStyle(color: kTextInfoColor, fontSize: 10),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6.0),
+          Text(
+            komen.deskripsi,
+            style: blackTextStyle.copyWith(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color: kTextInfoColor,
+            ),
+            textScaleFactor: 1,
+          ),
+        ],
       ),
     );
   }
@@ -216,7 +260,7 @@ class _KendalaMahasiswaState extends State<KendalaDosen> {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          height: 210,
+          height: 210.h,
           width: double.infinity,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -233,6 +277,7 @@ class _KendalaMahasiswaState extends State<KendalaDosen> {
                 style: TextStyle(color: kGreyColor.withOpacity(0.6)),
                 decoration: buildInputDecoration(),
               ),
+              const Spacer(),
               buildFeedbackContainer(),
             ],
           ),
@@ -298,7 +343,7 @@ class _KendalaMahasiswaState extends State<KendalaDosen> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Container(
-        height: 270.0,
+        height: 270.h,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -325,11 +370,13 @@ class _KendalaMahasiswaState extends State<KendalaDosen> {
                   child: Costumebutton(
                     title: "Kirim",
                     ontap: () {
-                      Navigator.pop(context);
-                      context
-                          .read<PostKomenDosenCubit>()
-                          .postKomen(feedbackController.text, kendalaId);
-                      context.read<GetkomenCubit>().getKomen();
+                      if (feedbackController.text.isNotEmpty) {
+                        Navigator.pop(context);
+                        context
+                            .read<PostKomenDosenCubit>()
+                            .postKomen(feedbackController.text, kendalaId);
+                        context.read<GetkomenCubit>().getKomen();
+                      }
                     },
                   ),
                 )

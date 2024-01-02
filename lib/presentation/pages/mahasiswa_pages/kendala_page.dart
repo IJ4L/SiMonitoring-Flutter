@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:simor/cubit/get_komen_cubit/getkomen_cubit.dart';
 import 'package:simor/cubit/mahasiswa_cubit/mahasiswa_cubit.dart';
 import 'package:simor/cubit/post_komen/post_komen_cubit.dart';
 import 'package:simor/cubit/texfield_cubit.dart';
+import 'package:simor/models/komen_model.dart';
 import 'package:simor/presentation/widgets/costume_button.dart';
 import 'package:simor/shared/themes.dart';
 
@@ -31,6 +33,8 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
     kendalaController = TextEditingController();
   }
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final kendalaCubit = context.read<MahasiswaCubit>();
@@ -39,7 +43,12 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(242, 255, 255, 255),
       appBar: buildAppBar(),
-      body: buildBody(kendalaCubit, textFieldCubit),
+      body: RefreshIndicator(
+        onRefresh: () {
+          return context.read<GetkomenCubit>().getKomen();
+        },
+        child: buildBody(kendalaCubit, textFieldCubit),
+      ),
       resizeToAvoidBottomInset: false,
     );
   }
@@ -106,12 +115,30 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
     return Expanded(
       child: BlocBuilder<GetkomenCubit, GetkomenState>(
         builder: (context, state) {
+          if (state is GetkomenLoading) {
+            return SizedBox(
+              height: 10.h,
+              width: double.infinity,
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  height: 10.h,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+              ),
+            );
+          }
           if (state is GetkomenLoaded) {
             final data = state.komen;
             return ListView.separated(
               itemCount: data.length,
               itemBuilder: (context, index) {
-                return buildListKomenItem(data[index].deskripsi);
+                return buildListKomenItem(data[index]);
               },
               separatorBuilder: (context, index) {
                 return const SizedBox(height: 10);
@@ -124,7 +151,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
     );
   }
 
-  Widget buildListKomenItem(String komen) {
+  Widget buildListKomenItem(KomenModel komen) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -132,14 +159,33 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Text(
-        komen,
-        style: blackTextStyle.copyWith(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w500,
-          color: kTextInfoColor,
-        ),
-        textScaleFactor: 1,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                komen.author,
+                style: const TextStyle(color: kTextInfoColor, fontSize: 10),
+              ),
+              const Spacer(),
+              Text(
+                "${komen.createdAt}",
+                style: const TextStyle(color: kTextInfoColor, fontSize: 10),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6.0),
+          Text(
+            komen.deskripsi,
+            style: blackTextStyle.copyWith(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color: kTextInfoColor,
+            ),
+            textScaleFactor: 1,
+          ),
+        ],
       ),
     );
   }
@@ -224,9 +270,9 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          height: 210,
+          height: 210.h,
           width: double.infinity,
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(10.h),
           decoration: BoxDecoration(
             color: kWhiteColor,
             borderRadius: BorderRadius.circular(20),
@@ -241,6 +287,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                 style: TextStyle(color: kGreyColor.withOpacity(0.6)),
                 decoration: buildInputDecoration(),
               ),
+              const Spacer(),
               buildFeedbackContainer(),
             ],
           ),
@@ -276,7 +323,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: const Text(
-          "Berikan feedback kepada mahasiswa ...",
+          "Berikan feedback kepada Dosen ...",
         ),
       ),
     );
@@ -303,7 +350,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Container(
-        height: 270.0,
+        height: 270.h,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -323,19 +370,28 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
                   keyboardType: TextInputType.multiline,
                   maxLines: 8,
                   decoration: buildFeedbackInputDecoration(),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Feedback tidak boleh kosong';
+                    }
+                    return "";
+                  },
                 ),
                 const Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(left: 200),
                   child: Costumebutton(
-                      title: "Kirim",
-                      ontap: () {
+                    title: "Kirim",
+                    ontap: () {
+                      if (kendalaController.text.isNotEmpty) {
                         Navigator.pop(context);
                         context
                             .read<PostKomenCubit>()
                             .postKomen(feedbackController.text);
                         context.read<GetkomenCubit>().getKomen();
-                      }),
+                      }
+                    },
+                  ),
                 )
               ],
             ),
@@ -347,7 +403,7 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
 
   InputDecoration buildFeedbackInputDecoration() {
     return InputDecoration(
-      hintText: 'Deskripsikan Rencana Kegiatanmu Hari Ini',
+      hintText: 'Berikan feedback ...',
       hintStyle: TextStyle(
         color: kGreyColor.withOpacity(0.4),
         fontStyle: FontStyle.italic,
@@ -367,22 +423,25 @@ class _KendalaMahasiswaState extends State<KendalaMahasiswa> {
   }
 
   Widget buildDefaultKendalaTextField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 20.h),
-          child: TextFormField(
-            controller: kendalaController,
-            cursorColor: kBlackColor,
-            style: const TextStyle(color: kBlackColor),
-            keyboardType: TextInputType.multiline,
-            maxLines: 8,
-            decoration: buildInputDecorationWithBorders(kTextInfoColor),
+    return Form(
+      key: formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 20.h),
+            child: TextFormField(
+              controller: kendalaController,
+              cursorColor: kBlackColor,
+              style: const TextStyle(color: kBlackColor),
+              keyboardType: TextInputType.multiline,
+              maxLines: 8,
+              decoration: buildInputDecorationWithBorders(kTextInfoColor),
+            ),
           ),
-        ),
-        buildTextFieldErrorMessage(),
-      ],
+          buildTextFieldErrorMessage(),
+        ],
+      ),
     );
   }
 

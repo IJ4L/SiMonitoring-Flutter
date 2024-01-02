@@ -546,32 +546,32 @@ class LokasiPplPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                // onTap: () => data.datang.isNotEmpty
-                //     ? showDialog<void>(
-                //         context: context,
-                //         barrierDismissible: true,
-                //         builder: (BuildContext context) {
-                //           return AlertDialog(
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(20.r),
-                //             ),
-                //             contentPadding: EdgeInsets.zero,
-                //             insetPadding: EdgeInsets.zero,
-                //             content: Container(
-                //               height: 320.h,
-                //               width: 330.r,
-                //               decoration: BoxDecoration(
-                //                 borderRadius: BorderRadius.circular(20.r),
-                //                 image: DecorationImage(
-                //                   image: NetworkImage(data.datang[0].gambar),
-                //                   fit: BoxFit.cover,
-                //                 ),
-                //               ),
-                //             ),
-                //           );
-                //         },
-                //       )
-                //     : null,
+                onTap: () => data.datang.isNotEmpty
+                    ? showDialog<void>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            contentPadding: EdgeInsets.zero,
+                            insetPadding: EdgeInsets.zero,
+                            content: Container(
+                              height: 320.h,
+                              width: 330.r,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.r),
+                                image: DecorationImage(
+                                  image: NetworkImage(data.datang[0].gambar),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : null,
                 child: cardName(
                   'Jam Datang',
                   data.datang.isEmpty ? '-' : data.datang[0].jamDatang,

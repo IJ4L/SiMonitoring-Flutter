@@ -21,7 +21,16 @@ class InfoScan extends StatelessWidget {
       body: BlocListener<ComeOutCubit, ComeOutState>(
         listener: (context, state) {
           if (state is ComeOutDatang) {
-            Navigator.pushNamed(context, '/home-mahasiswa');
+            debugPrint(state.datangModel.gambar);
+            if (state.datangModel.gambar.toString() == "") {
+              Navigator.pushNamed(
+                context,
+                '/take-picture',
+                arguments: {'inOut': true},
+              );
+            } else {
+              Navigator.pushNamed(context, '/home-mahasiswa');
+            }
           }
           if (state is ComeOutPulang) {
             context.read<MahasiswaCubit>().logoutMahasiswa();
