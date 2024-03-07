@@ -77,6 +77,10 @@ class _LoginpageState extends State<Loginpage> {
             loadingCubit.toggleInit();
             Navigator.pushReplacementNamed(context, '/home-dosen');
           }
+          if (state is AuthFailed) {
+            loadingCubit.toggleInit();
+            Navigator.pushReplacementNamed(context, '/login');
+          }
         },
         builder: (context, state) {
           return GestureDetector(

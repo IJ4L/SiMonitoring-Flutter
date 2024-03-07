@@ -71,6 +71,9 @@ class _SplashscreenState extends State<Splashscreen> {
           if (state is AuthDosen) {
             Navigator.pushReplacementNamed(context, '/home-dosen');
           }
+          if (state is AuthFailed) {
+            Navigator.pushReplacementNamed(context, '/login');
+          }
         },
         child: Stack(
           children: [

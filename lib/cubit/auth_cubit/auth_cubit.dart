@@ -26,7 +26,11 @@ class AuthCubit extends Cubit<AuthState> {
   Future<String> getRole() async {
     emit(AuthLoading());
     final result = await authRepository.getRoleUser();
-    return result;
+    if (result.length < 20) {
+      return result;
+    }
+    const AuthFailed("failed");
+    return "";
   }
 
   Future<void> getDataMahasiswa() async {

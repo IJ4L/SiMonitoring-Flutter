@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -104,16 +105,24 @@ class AuthRepository {
   Future<String> getRoleUser() async {
     final token = await getUserToken();
 
-    if (token != '') {
-      final response = await client.get(
-        Uri.parse('$baseUrl/me'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+    try {
+      if (token != '') {
+        final response = await client.get(
+          Uri.parse('$baseUrl/me'),
+          headers: {'Authorization': 'Bearer $token'},
+        );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return data['data']['roles'];
+        Println(response.statusCode.toString());
+
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          return data['data']['roles'];
+        } else {
+          return '';
+        }
       }
+    } catch (e) {
+      return '';
     }
 
     return '';
